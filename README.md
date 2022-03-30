@@ -3,7 +3,10 @@ Group project repository for CS 554 - Web Programming II @ Stevens Institute of 
 
 Team Members :-
 
-Mehul Savaliya
-Niyati Bavishi
-Pallavi Jaiswal
-Vatsal Shah
+  Mehul Savaliya
+  
+  Niyati Bavishi
+  
+  Pallavi Jaiswal
+  
+  Vatsal Shah
