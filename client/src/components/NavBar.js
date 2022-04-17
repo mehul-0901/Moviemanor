@@ -71,55 +71,60 @@ const NavBar = (props) => {
         setAnchorEl(null);
     };
 
-
-    const loggedInDiv =  (
-        <div>
-            <Search>
-                <SearchIconWrapper>
-                    <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-             
-                />
-            </Search>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={4} color="error">
-                <MailIcon />
-            </Badge>
-            </IconButton>
-            <IconButton
-            size="large"
-            aria-label="show 17 new notifications"
-            color="inherit"
-            >
-            <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-            </Badge>
-            </IconButton>
-            <IconButton
-            size="large"
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-            >
-            <AccountCircle />
-            </IconButton>
-        </div>
-    )
-
-    const notLoggedInDiv = (
-        <div>
-            <Link style={{textDecoration: "none"}} to={"/login"}>
-                <Button variant="contained" sx={{ backgroundColor: "#344767", height: 70, width:240, borderRadius: "28px", fontSize: "30px", textDecoration: "none" }}>Login</Button>
-            </Link>
-        </div>
-
-    )    
+    const loggedInDiv = (x) => {
+        if (x) {
+            return (
+            <div style={{display: "flex"}}>
+                <Search>
+                    <SearchIconWrapper>
+                        <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ 'aria-label': 'search' }}
+                    onChange= {(e) => {
+                        props.setSearchTerm(e.target.value)
+                        console.log(e.target.value);
+                    }}
+                    />
+                </Search>
+                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="error">
+                    <MailIcon />
+                </Badge>
+                </IconButton>
+                <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+                >
+                <Badge badgeContent={17} color="error">
+                    <NotificationsIcon />
+                </Badge>
+                </IconButton>
+                <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+                >
+                <AccountCircle />
+                </IconButton>
+            </div>
+            );
+        } else {
+            return (
+                <div>
+                    <Link style={{textDecoration: "none"}} to={"/login"}>
+                        <Button variant="contained" sx={{ backgroundColor: "#344767", height: 70, width:240, borderRadius: "28px", fontSize: "30px", textDecoration: "none" }}>Login</Button>
+                    </Link>
+                </div>
+            );
+        }
+    }
 
     const renderMenu = (
         <Menu
@@ -157,7 +162,7 @@ const NavBar = (props) => {
                         Moviemanor  
                    </Link> 
                 </Typography>
-                {loggedIn ? loggedInDiv : notLoggedInDiv}
+                {loggedInDiv(loggedIn)}
             </Toolbar>
             {renderMenu}
         </NavDiv>
