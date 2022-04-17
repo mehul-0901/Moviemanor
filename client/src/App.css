@@ -1,6 +1,8 @@
 .App {
   text-align: center;
   background-color: #DDDFE2 !important;
+  min-height: 100vh;
+  padding-top: 2rem;
 }
 
 .App-logo {
@@ -14,19 +16,26 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
+}
+
+.navbar{
+  position: relative;
+  background: transparent !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: calc(10px + 2vmin);
+  color: #344767;
+  backdrop-filter: blur(30px);
+}
+
+.homeWithoutLogin{
+  height: 75vh;
+  margin-top: -16vh;
+  background-image: url("./img/wallpaperflare.com_wallpaper.jpg");
 }
 
 @keyframes App-logo-spin {
