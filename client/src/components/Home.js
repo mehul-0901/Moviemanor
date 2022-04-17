@@ -6,7 +6,7 @@ const Home = (props) => {
     console.log(props.searchTerm+"vdjhvcdjhcv");
     return(
         <div className="homeWithoutLogin">
-            <div>
+            <div style={{position: "absolute", margin: "auto", color: "white", width: "100%"}}>
               <h2>Moviemanor</h2>
             </div>
         </div>
