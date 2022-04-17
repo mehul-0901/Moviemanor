@@ -59,7 +59,7 @@ const NavDiv = styled("div")(({ theme }) => ({
 
 const NavBar = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
     const isMenuOpen = Boolean(anchorEl);
     const menuId = 'primary-search-account-menu';
 
@@ -71,6 +71,7 @@ const NavBar = (props) => {
         setAnchorEl(null);
     };
 
+
     const loggedInDiv =  (
         <div>
             <Search>
@@ -80,6 +81,7 @@ const NavBar = (props) => {
                 <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
+             
                 />
             </Search>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
