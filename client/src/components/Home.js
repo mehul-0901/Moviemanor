@@ -2,8 +2,15 @@ import React, {useEffect, useState} from "react";
 import '../App.css';
 
 
-const Home = () =>
+const Home = (props) =>
 {
+    const x=props.searchTerm;
+    console.log(props.searchTerm+"vdjhvcdjhcv");
+    return(
+      <div>
+        {x}
+      </div>
+    );
     
 }
 
