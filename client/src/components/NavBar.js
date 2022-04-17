@@ -151,7 +151,9 @@ const NavBar = (props) => {
                     fontSize= "50px" 
                     fontWeight={"bold"}
                 >
-                    Moviemanor
+                   <Link to={"/"} style={{textDecoration: "none", color: "inherit"}}>
+                        Moviemanor  
+                   </Link> 
                 </Typography>
                 {loggedIn ? loggedInDiv : notLoggedInDiv}
             </Toolbar>
