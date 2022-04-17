@@ -71,14 +71,6 @@ const NavBar = (props) => {
         setAnchorEl(null);
     };
 
-    // const handleChange=(e)=>
-	// {
-	// 	props.setSearchTerm(e.target.value);
-	// 	  console.log("Hell");
-	// 	  console.log(e.target.value);
-
-	// }
-
     const loggedInDiv = (x) => {
         if (x) {
             return (
