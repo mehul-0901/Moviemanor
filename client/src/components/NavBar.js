@@ -82,7 +82,7 @@ const NavBar = (props) => {
     const loggedInDiv = (x) => {
         if (x) {
             return (
-            <div>
+            <div style={{display: "flex"}}>
                 <Search>
                     <SearchIconWrapper>
                         <SearchIcon />
