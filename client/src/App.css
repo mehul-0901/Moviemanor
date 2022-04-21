@@ -9,6 +9,12 @@
   height: 40vmin;
   pointer-events: none;
 }
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -39,6 +45,10 @@
   background-image: url("./img/wallpaperflare.com_wallpaper.jpg");
 }
 
+.card{
+  align-items: center;
+  
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -13,14 +13,48 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { makeStyles } from '@material-ui/core';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+
+const useStyles = makeStyles({
+	card: {
+		maxWidth: 300,
+		height: 'auto',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		borderRadius: 5,
+		border: '1px solid #1e8678',
+		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
+	},
+	titleHead: {
+		borderBottom: '1px solid #1e8678',
+		fontWeight: 'bold'
+	},
+	grid: {
+		flexGrow: 1,
+		flexDirection: 'row'
+	},
+	media: {
+		height: '100%',
+		width: '100%'
+	},
+	button: {
+		color: '#1e8678',
+		fontWeight: 'bold',
+		fontSize: 12
+	}
+});
+
 
 
 const Home = (props) => {
 
     // const[title,setSearchTerm]=useState("");
     let card=null;
+    const classes = useStyles();
+
     const {loading, error, data, refetch} = useQuery(
         queries.GET_MOVIES,
         {
@@ -46,8 +80,8 @@ const Home = (props) => {
     const buildCard = (show) => {
         return (
             <div>
-          <Card sx={{ maxWidth: 345 }}>
-            <CardHeader
+          <Card  className={classes.card} sx={{ maxWidth: 345 }} >
+            <CardHeader 
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                   {show.title.charAt(0)}
@@ -62,7 +96,7 @@ const Home = (props) => {
             />
             <CardMedia
               component="img"
-              height="194"
+              height="400"
               image={show.image}
               alt={show.title}
             />
@@ -72,7 +106,7 @@ const Home = (props) => {
               </IconButton>
             </CardActions>
               <CardContent>
-                <Typography paragraph>
+                <Typography variant='body2' color='textSecondary' component='span'>
                   {show.plot}
                 </Typography>
               </CardContent>
