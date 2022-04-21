@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState,useContext} from "react";
 import '../App.css';
 import { styled, alpha } from '@mui/material/styles';
 import {AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button} from '@mui/material';
@@ -6,7 +6,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Link } from "react-router-dom";
+import { doSignOut } from '../firebase/FirebaseFunctions';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+
+import {BrowserRouter as Router, Route, Link, Routes,NavLink} from 'react-router-dom';
+import {AuthContext} from '../firebase/Auth';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -59,7 +64,9 @@ const NavDiv = styled("div")(({ theme }) => ({
 
 const NavBar = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false);
+    const {currentUser} = useContext(AuthContext);
+
     const isMenuOpen = Boolean(anchorEl);
     const menuId = 'primary-search-account-menu';
 
@@ -70,6 +77,7 @@ const NavBar = (props) => {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+    
 
     const loggedInDiv = (x) => {
         if (x) {
@@ -118,9 +126,13 @@ const NavBar = (props) => {
         } else {
             return (
                 <div>
-                    <Link style={{textDecoration: "none"}} to={"/login"}>
-                        <Button variant="contained" sx={{ backgroundColor: "#344767", height: 70, width:240, borderRadius: "28px", fontSize: "30px", textDecoration: "none" }}>Login</Button>
+                            <Link style={{textDecoration: "none"}} to={"/SignIn"}>
+                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 90, width:180, borderRadius: "28px", fontSize: "30px", textDecoration: "none" }} >Sign In </Button>
                     </Link>
+                    <Link style={{textDecoration: "none"}} to={"/SignUp"}>
+                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 90, width:180, borderRadius: "28px", fontSize: "30px", textDecoration: "none" }} > Sign Up</Button>
+                    </Link>
+  
                 </div>
             );
         }
@@ -144,6 +156,8 @@ const NavBar = (props) => {
         >
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={() => { doSignOut(); handleMenuClose();}} >Log out</MenuItem>
+        
         </Menu>
     );
 
@@ -162,7 +176,7 @@ const NavBar = (props) => {
                         Moviemanor  
                    </Link> 
                 </Typography>
-                {loggedInDiv(loggedIn)}
+                {loggedInDiv(currentUser)}
             </Toolbar>
             {renderMenu}
         </NavDiv>

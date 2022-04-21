@@ -19,7 +19,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const Home = (props) => {
 
-    const[title,setSearchTerm]=useState("");
+    // const[title,setSearchTerm]=useState("");
     let card=null;
     const {loading, error, data, refetch} = useQuery(
         queries.GET_MOVIES,
@@ -30,7 +30,7 @@ const Home = (props) => {
       );
     useEffect(() => {
 		console.log('on load useeffect ====='+props.searchTerm);
-        setSearchTerm(props.searchTerm);
+        // setSearchTerm(props.searchTerm);
 		async function fetchData() 
         {
             refetch({"title":props.searchTerm}); 
