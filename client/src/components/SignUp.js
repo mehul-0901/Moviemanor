@@ -5,6 +5,8 @@ import {AuthContext} from '../firebase/Auth';
 import SocialSignIn from './SocialSignIn';
 function SignUp() {
   const {currentUser} = useContext(AuthContext);
+  
+
   const [pwMatch, setPwMatch] = useState('');
   const handleSignUp = async (e) => {
     e.preventDefault();

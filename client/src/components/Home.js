@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
-import {useQuery} from '@apollo/client';
+import {useQuery, useMutation} from '@apollo/client';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -13,6 +13,12 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
+import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
+import {AuthContext} from '../firebase/Auth';
+
 import { makeStyles } from '@material-ui/core';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -51,6 +57,7 @@ const useStyles = makeStyles({
 
 const Home = (props) => {
 
+  const {currentUser} = useContext(AuthContext);
     // const[title,setSearchTerm]=useState("");
     let card=null;
     const classes = useStyles();
@@ -58,10 +65,41 @@ const Home = (props) => {
     const {loading, error, data, refetch} = useQuery(
         queries.GET_MOVIES,
         {
-            fetchPolicy:"cache-and-network",
-             
+            fetchPolicy:"cache-and-network", 
         }
       );
+
+     const [addToWatchList] = useMutation(queries.ADD_TOWATCHLIST)
+     const [removefromWatchList] = useMutation(queries.REMOVE_FROM_WATCHLIST)
+     const [addToSave] = useMutation(queries.ADD_SAVEFORLATER)
+     const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER)
+
+
+     
+    const {data: data1} =useQuery(queries.GET_USER_WATCHEDMOVIES, {
+      variables: { userId:currentUser.email}
+    })
+   // console.log(data1);
+    const set = new Set(data1?.checkIfwatched);
+
+    const {data: data2} =useQuery(queries.GET_USER_SAVEDMOVIES, {
+      variables: { userId:currentUser.email}
+    })
+    //console.log(data1);
+    const set_SAVE = new Set(data2?.savedMovies);
+
+
+
+
+
+    //  const {data:data1} = useQuery(
+    //   queries.CHECK_IF_WATCHED,
+    //   {
+    //       fetchPolicy:"cache-and-network", 
+    //   }
+    // );
+     
+
     useEffect(() => {
 		console.log('on load useeffect ====='+props.searchTerm);
         // setSearchTerm(props.searchTerm);
@@ -77,6 +115,7 @@ const Home = (props) => {
 
     }	, [props.searchTerm]);
 
+
     const buildCard = (show) => {
         return (
             <div>
@@ -88,23 +127,91 @@ const Home = (props) => {
                 </Avatar>
               }
               action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
+                <IconButton aria-label="add to favorites">
+                <FavoriteIcon />
+              </IconButton>
               }
               title={show.title}
             />
+            
+         
+
             <CardMedia
               component="img"
               height="400"
               image={show.image}
               alt={show.title}
             />
+            
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-              </IconButton>
+         
+
+              {set_SAVE.has(show.id)? 
+            
+                <IconButton aria-label="Remove saved movie" 
+                onClick={(e) => {
+                  // console.log(show);
+                  removefromSave({
+                           variables: { userId:currentUser.email, movieId: show.id}
+                        })
+                        window.location.reload();
+                 }}>
+                 <BookmarkRemoveSharpIcon/>
+                </IconButton>
+    
+               :
+    
+               <IconButton aria-label="Save for later" 
+               onClick={(e) => {
+                // console.log(show);
+                addToSave({
+                         variables: { userId:currentUser.email, movieId: show.id}
+                      })
+                      window.location.reload();
+               }}>
+               <BookmarkBorderIcon  />
+               </IconButton>
+              
+              } 
             </CardActions>
+            <CardActions disableSpacing>
+
+            {set.has(show.id)? 
+            
+            <IconButton aria-label="Delete watchlist"
+            onClick={(e) => {
+              // console.log(show);
+              removefromWatchList({
+                       variables: { userId:currentUser.email, movieId: show.id}
+                    })
+                    window.location.reload();
+             }}>
+              <RemoveCircleOutlineSharpIcon />
+            </IconButton>
+
+           :
+
+           <IconButton aria-label="Add to watchlist" 
+           onClick={(e) => {
+            // console.log(show);
+                   addToWatchList({
+                     variables: { userId:currentUser.email, movieId: show.id}
+                  })
+                  window.location.reload();
+           }}>
+             <AddIcon />
+           </IconButton>
+          
+          }
+
+
+
+
+
+         
+            
+          </CardActions>
+
               <CardContent>
                 <Typography variant='body2' color='textSecondary' component='span'>
                   {show.plot}

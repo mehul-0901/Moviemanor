@@ -5,6 +5,12 @@ const redis = require('redis');
 const client = redis.createClient();
 const uuid = require('uuid'); //for generating _id's
 
+let { ObjectId } = require('mongodb');
+const mongoCollections = require('../server/config/mongoCollections');
+const Movie = mongoCollections.Movie;
+const SaveMovie = mongoCollections.SaveMovie;
+
+
 // const { default: axios } = require('axios');
 
 // A schema is a collection of type definitions (hence "typeDefs")
@@ -31,6 +37,9 @@ const typeDefs = gql`
     plot:String!
     imDbRating:String!
 }
+type mID {
+    id: String
+}
  
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
@@ -38,6 +47,16 @@ const typeDefs = gql`
   type Query {
     movieList(title: String): [Movies]
     movieById(id:String):Movies
+    checkIfwatched(userId:String) : [String]
+    savedMovies(userId:String) : [String]
+
+
+  }
+  type Mutation {
+    AddtowacthList(userId:String,movieID:String):mID
+    removeFromWatchList(userId:String,movieID:String):Boolean
+    AddSaveforLater(userId:String,movieID:String):mID
+    removeSaveforLater(userId:String,movieID:String):Boolean
   }
 
 `;
@@ -45,6 +64,152 @@ const typeDefs = gql`
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
+    Mutation:{
+        AddtowacthList:async(_,args)=>{
+            if(args.movieID == null){
+                return
+            }
+            const addToWatch = await Movie();
+            let watchList = { 
+              userId:args.userId,
+              movieId:args.movieID
+             }
+     
+
+            const find_id = await addToWatch.findOne({userId:args.userId, movieId:args.movieID});
+            //console.log(find_id);
+
+            if(find_id){
+                throw "Movie is already added in watchlist"
+            }
+            const insertInfo = await addToWatch.insertOne(watchList);
+           
+             let new_id = insertInfo.insertedId;
+             if (insertInfo.insertedCount === 0) throw 'Unable to add in watchList';
+             
+    
+            let x  = await addToWatch.findOne(new_id);
+    
+             x._id = (x._id).toString();
+    
+    
+            return {id: x._id};
+          
+        },
+        removeFromWatchList:async(_,args)=>{
+            if(args.movieID == null){
+                return
+            }
+            const addToWatch = await Movie();
+            let watchList = { 
+              userId:args.userId,
+              movieId:args.movieID
+             }
+     
+
+            const find_id = await addToWatch.findOne({userId:args.userId, movieId:args.movieID});
+            //console.log(find_id);
+
+            if(!find_id){
+                throw "Movie does not exist in watchlist"
+            }
+            const deletionInfo = await addToWatch.deleteOne(watchList);
+          // console.log(deletionInfo);
+            if (deletionInfo.deletedCount === 0) {
+                throw 'Could not delete restaurants with given id';
+              }
+              return deletionInfo.acknowledged;
+        },
+
+        AddSaveforLater:async(_,args)=>{
+            if(args.movieID == null){
+                return
+            }
+            const saveForLater = await SaveMovie();
+            let saveList = { 
+              userId:args.userId,
+              movieId:args.movieID
+             }
+     
+
+            const find_id = await saveForLater.findOne({userId:args.userId, movieId:args.movieID});
+            //console.log(find_id);
+
+            if(find_id){
+                throw "Movie is already saved"
+            }
+            const insertInfo = await saveForLater.insertOne(saveList);
+           
+             let new_id = insertInfo.insertedId;
+             if (insertInfo.insertedCount === 0) throw 'Unable to add in saveList';
+             
+    
+            let x  = await saveForLater.findOne(new_id);
+    
+             x._id = (x._id).toString();
+    
+    
+            return {id: x._id};
+          
+        },
+
+        removeSaveforLater:async(_,args)=>{
+            if(args.movieID == null){
+                return
+            }
+            const saveForLater = await SaveMovie();
+            let saveList = { 
+              userId:args.userId,
+              movieId:args.movieID
+             }
+     
+
+            const find_id = await saveForLater.findOne({userId:args.userId, movieId:args.movieID});
+            //console.log(find_id);
+
+            if(!find_id){
+                throw "Movie does not exist in saveList"
+            }
+            const deletionInfo = await saveForLater.deleteOne(saveList);
+          // console.log(deletionInfo);
+            if (deletionInfo.deletedCount === 0) {
+                throw 'Could not delete restaurants with given id';
+              }
+              return deletionInfo.acknowledged;
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    },
     Query:{
         movieList: async (_, args) => {
         
@@ -99,6 +264,59 @@ const resolvers = {
             }}
             return arr;
           },
+//list of movies watched by user
+          checkIfwatched: async (_, args) => {
+            const addToWatch = await Movie();
+            let array = []
+            const find_ids = await addToWatch.find({  userId: args.userId } ).toArray();
+           // const find_id = await addToWatch.findOne({userId:args.userId, movieId:args.movieID});
+            //console.log(find_ids);
+            if(find_ids.length === 0) return [];
+            
+            for(list in find_ids ){
+             //   console.log("*",list);
+                array.push(find_ids[list].movieId)
+            }
+            return array;
+          },
+
+          
+
+
+          savedMovies: async (_, args) => {
+            const saveForLater = await SaveMovie();
+            let array = []
+            const find_ids = await saveForLater.find({  userId: args.userId } ).toArray();
+           // const find_id = await saveForLater.findOne({userId:args.userId, movieId:args.movieID});
+            //console.log(find_ids);
+            if(find_ids.length === 0) return [];
+            
+            for(list in find_ids ){
+             //   console.log("*",list);
+                array.push(find_ids[list].movieId)
+            }
+            return array;
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
        
         //   movieById: async (_, args) => {
         
