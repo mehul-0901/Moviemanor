@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
-import {useQuery, useMutation} from '@apollo/client';
+import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -22,6 +22,7 @@ import {AuthContext} from '../firebase/Auth';
 import { makeStyles } from '@material-ui/core';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Button } from "@mui/material";
 
 
 const useStyles = makeStyles({
@@ -62,7 +63,7 @@ const Home = (props) => {
     let card=null;
     const classes = useStyles();
 
-    const {loading, error, data, refetch} = useQuery(
+    const [getAllMovies,{loading, error, data, refetch}] = useLazyQuery(
         queries.GET_MOVIES,
         {
             fetchPolicy:"cache-and-network", 
@@ -74,51 +75,71 @@ const Home = (props) => {
      const [addToSave] = useMutation(queries.ADD_SAVEFORLATER)
      const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER)
 
-
+ 
      
-    const {data: data1} =useQuery(queries.GET_USER_WATCHEDMOVIES, {
-      variables: { userId:currentUser.email}
-    })
+    const [getUserWatchedMovies,{data: data1,refetch:refetchWatched}] =useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
    // console.log(data1);
-    const set = new Set(data1?.checkIfwatched);
 
-    const {data: data2} =useQuery(queries.GET_USER_SAVEDMOVIES, {
-      variables: { userId:currentUser.email}
-    })
+    const [getUserSavedMovies,{data: data2,refetch:refetchSaved}] =useLazyQuery(queries.GET_USER_SAVEDMOVIES,{});
     //console.log(data1);
-    const set_SAVE = new Set(data2?.savedMovies);
 
-
-
-
-
-    //  const {data:data1} = useQuery(
-    //   queries.CHECK_IF_WATCHED,
-    //   {
-    //       fetchPolicy:"cache-and-network", 
-    //   }
-    // );
-     
 
     useEffect(() => {
 		console.log('on load useeffect ====='+props.searchTerm);
         // setSearchTerm(props.searchTerm);
 		async function fetchData() 
         {
-            refetch({"title":props.searchTerm}); 
             console.log("i am here ");
-            refetch({"title":props.searchTerm});
-		}
+            if(currentUser)
+            {
+              getAllMovies({variables:{"title":props.searchTerm}}); 
+              getUserWatchedMovies({variables: { userId:currentUser.email}});
+              getUserSavedMovies({ variables: { userId:currentUser.email}});
+            }
+            console.log(data1);
+            console.log(data2); 
+         }
 		fetchData();
-        console.log(data);
-
 
     }	, [props.searchTerm]);
 
+    const removeWatchList=(email,id)=>
+    {
+      removefromWatchList({
+        variables: { userId:email, movieId: id},
+        onCompleted: refetchWatched
+     });
+     getUserWatchedMovies({variables: { userId:currentUser.email}});
+    }
+    const addWatchList=(email,id)=>{
+      
+      addToWatchList({
+        variables: { userId:email, movieId: id},
+        onCompleted: refetchWatched
+     });
+     getUserWatchedMovies({variables: { userId:currentUser.email}});
+    }
+    const removeSave=(email,id)=>
+    {
+      removefromSave({
+        variables: { userId:email, movieId: id},
+        onCompleted: refetchSaved
+     })
+     getUserSavedMovies({ variables: { userId:currentUser.email}});
+    }
+    const addSave=(email,id)=>
+    {
+                addToSave({
+                  variables: { userId:email, movieId:id},
+                  onCompleted: refetchSaved
+               })
+               getUserSavedMovies({ variables: { userId:currentUser.email}});
+    }
 
-    const buildCard = (show) => {
+
+    const buildCard = (show,save,wishList) => {
         return (
-            <div>
+            <div key={show.id}>
           <Card  className={classes.card} sx={{ maxWidth: 345 }} >
             <CardHeader 
               avatar={
@@ -133,83 +154,41 @@ const Home = (props) => {
               }
               title={show.title}
             />
-            
-         
-
             <CardMedia
               component="img"
               height="400"
               image={show.image}
               alt={show.title}
             />
-            
             <CardActions disableSpacing>
-         
-
-              {set_SAVE.has(show.id)? 
+              {save? 
             
-                <IconButton aria-label="Remove saved movie" 
-                onClick={(e) => {
-                  // console.log(show);
-                  removefromSave({
-                           variables: { userId:currentUser.email, movieId: show.id}
-                        })
-                        window.location.reload();
-                 }}>
-                 <BookmarkRemoveSharpIcon/>
-                </IconButton>
-    
+                <Button aria-label="Remove saved movie" 
+                onClick={() => {removeSave(currentUser.email,show.id)}}>
+                 <BookmarkRemoveSharpIcon/> Remove from Save
+                </Button>
                :
-    
-               <IconButton aria-label="Save for later" 
-               onClick={(e) => {
-                // console.log(show);
-                addToSave({
-                         variables: { userId:currentUser.email, movieId: show.id}
-                      })
-                      window.location.reload();
-               }}>
-               <BookmarkBorderIcon  />
-               </IconButton>
+               <Button aria-label="Save for later" 
+               onClick={() => {addSave(currentUser.email,show.id)}}>
+               <BookmarkBorderIcon  /> Add to Save
+               </Button>
               
               } 
             </CardActions>
-            <CardActions disableSpacing>
+            <CardActions >
 
-            {set.has(show.id)? 
-            
-            <IconButton aria-label="Delete watchlist"
-            onClick={(e) => {
-              // console.log(show);
-              removefromWatchList({
-                       variables: { userId:currentUser.email, movieId: show.id}
-                    })
-                    window.location.reload();
-             }}>
-              <RemoveCircleOutlineSharpIcon />
-            </IconButton>
-
+            {wishList? 
+            <Button aria-label="Delete watchlist"
+            onClick={(e) => {removeWatchList(currentUser.email,show.id) }}>
+              <RemoveCircleOutlineSharpIcon />Delete from watchlist
+            </Button>
            :
-
-           <IconButton aria-label="Add to watchlist" 
-           onClick={(e) => {
-            // console.log(show);
-                   addToWatchList({
-                     variables: { userId:currentUser.email, movieId: show.id}
-                  })
-                  window.location.reload();
-           }}>
-             <AddIcon />
-           </IconButton>
+           <Button aria-label="Add to watchlist" 
+           onClick={(e) => {addWatchList(currentUser.email,show.id)}}>
+             <AddIcon /> Add to watchlist
+           </Button>
           
           }
-
-
-
-
-
-         
-            
           </CardActions>
 
               <CardContent>
@@ -227,15 +206,28 @@ const Home = (props) => {
 
     if (data)
 {
-    console.log(data);
-  if(data.movieList!=null)
-  {
-    console.log("HELOO DUNIYA ");
+  if(data.movieList!==null)
+  {    
     card =
     data &&
     data.movieList.map((show) => {
-        if(show!=null){
-        return (buildCard(show));
+        if(show!==null){
+       
+        let save=false;
+        let wishList=false;
+          for (const x of data2.savedMovies) {
+            if(x.id===show.id)
+            {
+              save=true;
+            }
+          }
+          for (const x of data1.checkIfwatched) {
+            if(x.id===show.id)
+            {
+              wishList=true;
+            }
+          }
+        return (buildCard(show,save,wishList));
     }});
   }
 

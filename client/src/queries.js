@@ -15,17 +15,19 @@ query Query($title: String) {
 `;
 
 const GET_USER_WATCHEDMOVIES = gql`
-query checkIfwatched($userId: String) {
-  checkIfwatched(userId: $userId)
-}
-  
+query CheckIfwatched($userId: String) {
+  checkIfwatched(userId: $userId) {
+    id
+  }
+} 
 `;
 
 const GET_USER_SAVEDMOVIES = gql`
-query savedMovies($userId: String) {
-  savedMovies(userId: $userId)
-}
-  
+query SavedMovies($userId: String) {
+  savedMovies(userId: $userId) {
+    id
+  }
+} 
 `;
 
 

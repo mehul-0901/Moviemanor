@@ -38,7 +38,7 @@ const typeDefs = gql`
     imDbRating:String!
 }
 type mID {
-    id: String
+    id: ID!
 }
  
   # The "Query" type is special: it lists all of the available queries that
@@ -47,8 +47,8 @@ type mID {
   type Query {
     movieList(title: String): [Movies]
     movieById(id:String):Movies
-    checkIfwatched(userId:String) : [String]
-    savedMovies(userId:String) : [String]
+    checkIfwatched(userId:String) : [mID]
+    savedMovies(userId:String) : [mID]
 
 
   }
@@ -177,38 +177,6 @@ const resolvers = {
               }
               return deletionInfo.acknowledged;
         },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     },
     Query:{
         movieList: async (_, args) => {
@@ -275,7 +243,7 @@ const resolvers = {
             
             for(list in find_ids ){
              //   console.log("*",list);
-                array.push(find_ids[list].movieId)
+                array.push({id: find_ids[list].movieId})
             }
             return array;
           },
@@ -293,7 +261,7 @@ const resolvers = {
             
             for(list in find_ids ){
              //   console.log("*",list);
-                array.push(find_ids[list].movieId)
+                array.push({id: find_ids[list].movieId})
             }
             return array;
           }
