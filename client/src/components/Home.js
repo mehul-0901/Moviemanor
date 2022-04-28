@@ -147,11 +147,6 @@ const Home = (props) => {
                   {show.title.charAt(0)}
                 </Avatar>
               }
-              action={
-                <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-              }
               title={show.title}
             />
             <CardMedia
