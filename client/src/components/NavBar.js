@@ -55,6 +55,7 @@ const NavDiv = styled("div")(({ theme }) => ({
     margin: "auto",
     width: "auto",
     maxWidth: 1660,
+    minHeight: 122,
     height: 122,
     borderRadius: 30,
     background: "transparent"
@@ -123,12 +124,12 @@ const NavBar = (props) => {
             );
         } else {
             return (
-                <div style={{ display: "flex", columnGap: "1rem" }}>
-                    <Link style={{textDecoration: "none"}} to={"/SignIn"}>
-                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 60, width:150, borderRadius: "20px", fontSize: "25px", textDecoration: "none" }} >Sign In </Button>
+                <div>
+                            <Link style={{textDecoration: "none"}} to={"/SignIn"}>
+                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 90, width:180, borderRadius: "28px", fontSize: "30px", textDecoration: "none" }} >Sign In </Button>
                     </Link>
                     <Link style={{textDecoration: "none"}} to={"/SignUp"}>
-                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 60, width:150, borderRadius: "20px", fontSize: "25px", textDecoration: "none" }} > Sign Up</Button>
+                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 90, width:180, borderRadius: "28px", fontSize: "30px", textDecoration: "none" }} > Sign Up</Button>
                     </Link>
   
                 </div>
@@ -138,19 +139,19 @@ const NavBar = (props) => {
 
     const renderMenu = (
         <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
         >
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         <MenuItem onClick={handleMenuClose}>My account</MenuItem>

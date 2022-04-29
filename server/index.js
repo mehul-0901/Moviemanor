@@ -40,6 +40,11 @@ const typeDefs = gql`
 type mID {
     id: ID!
 }
+
+
+
+
+
  
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
@@ -47,7 +52,7 @@ type mID {
   type Query {
     movieList(title: String): [Movies]
     movieById(id:String):Movies
-    checkIfwatched(userId:String) : [mID]
+    checkIfwatched(userId:String) : [Movies]
     savedMovies(userId:String) : [mID]
 
 
@@ -232,6 +237,7 @@ const resolvers = {
             }}
             return arr;
           },
+
 //list of movies watched by user
           checkIfwatched: async (_, args) => {
             const addToWatch = await Movie();
