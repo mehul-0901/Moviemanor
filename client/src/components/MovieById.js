@@ -4,25 +4,30 @@ import queries from '../queries';
 import {useLazyQuery, useQuery} from '@apollo/client';
 import { useEffect ,useContext} from 'react';
 import {AuthContext} from '../firebase/Auth';
-import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader } from '@material-ui/core';
+import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} from '@material-ui/core';
 import noImage from '../img/download.jpeg';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
+
 
 
 const useStyles = makeStyles({
 	
 	card: {
-		maxWidth: 500,
+		maxWidth: 700,
 		height: 'auto',
 		marginLeft: 'auto', 
 		marginRight: 'auto',
+		marginTop:'2cm',
 		borderRadius: 5,
 		border: '1px solid #1e8678',
 		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
 	},
 	titleHead: {
 		borderBottom: '1px solid #1e8678',
-		fontWeight: 'bold'
-	},
+		fontWeight: 'bold',
+		fontSize: 'large'
+		},
 	grid: {
 		flexGrow: 1,
 		flexDirection: 'row'
@@ -74,7 +79,25 @@ function MovieById()
 <div className='homeWithoutLogin'>
 	<br/><br/><br/>
 <Card className={classes.card} variant='outlined'>
-				<CardHeader className={classes.titleHead} title={data.movieById.title} />
+				<CardHeader className={classes.titleHead} title={data.movieById.title} action={<Box
+     			 sx={{
+     		   		width: 200,
+					sizeWidth:800,
+     			   alignItems: 'center',
+					alignSelf:'center',
+					marginTop:'0.5cm',
+    			  }}>
+      			<Rating
+        			name="text-feedback"
+        			value={Number(data.movieById.imDbRating)/2}
+        			readOnly
+        			precision={0.5}
+        			emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+					size='large'
+      			/>
+    			</Box>} ></CardHeader>
+				
+				
 				<CardMedia
 					className={classes.media}
 					component='img'
@@ -83,7 +106,9 @@ function MovieById()
 				/>
 
 				<CardContent>
-					<Typography variant='body2' color='textSecondary' component='span'>
+					
+				
+					<Typography variant='body2' color='textPrimary' component='span'>
 						<dl>
                             
                             <h1>{data.movieById.name}</h1>
