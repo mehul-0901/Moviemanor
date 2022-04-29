@@ -14,10 +14,21 @@ query Query($title: String) {
   
 `;
 
-
+const GET_MOVIES_BY_ID=gql`
+query MovieById($id: String) {
+  movieById(id: $id) {
+    id
+    title
+    image
+    plot
+    imDbRating
+  }
+}
+`
 
 let exported = {
   GET_MOVIES,
+  GET_MOVIES_BY_ID
   };
   
 export default exported

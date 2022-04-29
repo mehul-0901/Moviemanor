@@ -27,7 +27,6 @@ const typeDefs = gql`
     id: ID!
     title: String!
     image: String!
-    description: String!
     plot:String!
     imDbRating:String!
 }
@@ -48,7 +47,6 @@ const resolvers = {
     Query:{
         movieList: async (_, args) => {
         
-            // const {data}= await axios.get(`https://imdb-api.com/API/AdvancedSearch/k_plhfxwj8?title_type=feature&title=${args.title}`);
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=1&query=${args.title}`);
             if(args.title==undefined)
             {
@@ -85,10 +83,6 @@ const resolvers = {
                 else{
                     temp["plot"]="0";
                 }
-            //     temp["title"]=x.title;
-            //     temp["image"]=x.poster_path;
-            //    // temp["description"]=x.overview;
-            //     temp["plot"]=x.overview;
             if(x.vote_average){
                 temp["imDbRating"]=x.vote_average;
                }
@@ -100,53 +94,50 @@ const resolvers = {
             return arr;
           },
        
-        //   movieById: async (_, args) => {
+          movieById: async (_, args) => {
         
-        //     const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
-          
-        //     let arr=[]
-        //     if(data.results){  
-        //         let temp={};
-        //         if(x.id)
-        //         {
-        //             temp["id"]=x.id;
-        //         }
-        //         else{
-        //             temp["id"]="0";
-        //         }
-        //         if(x.title)
-        //         {
-        //             temp["title"]=x.title;
-        //         }
-        //         else{
-        //             temp["title"]="0";
-        //         }if(x.poster_path)
-        //         {
-        //             temp["image"]="https://image.tmdb.org/t/p/w500"+x.poster_path;
-        //         }
-        //         else{
-        //             temp["image"]="0";
-        //         }if(x.overview)
-        //         {
-        //             temp["plot"]=x.overview;
-        //         }
-        //         else{
-        //             temp["plot"]="0";
-        //         }
-        //     //     temp["title"]=x.title;
-        //     //     temp["image"]=x.poster_path;
-        //     //    // temp["description"]=x.overview;
-        //     //     temp["plot"]=x.overview;
-        //     if(x.vote_average){
-        //         temp["imDbRating"]=x.vote_average;
-        //        }
-        //        else
-        //        {
-        //            temp["imDbRating"]="0"
-        //        } arr.push(temp);
-        //     }}
+            const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
+            let temp={};
+
+            if(data){  
+                if(data.id)
+                {
+                    temp["id"]=data.id;
+                }
+                else{
+                    temp["id"]="0";
+                }
+                if(data.title)
+                {
+                    temp["title"]=data.title;
+                }
+                else{
+                    temp["title"]="0";
+                }if(data.poster_path)
+                {
+                    temp["image"]="https://image.tmdb.org/t/p/w500"+data.poster_path;
+                }
+                else{
+                    temp["image"]="0";
+                }if(data.overview)
+                {
+                    temp["plot"]=data.overview;
+                }
+                else{
+                    temp["plot"]="0";
+                }
             
-        //   },
+            if(data.vote_average){
+                temp["imDbRating"]=data.vote_average;
+               }
+               else
+               {
+                   temp["imDbRating"]="0"
+               } 
+            }
+            
+            return temp;
+          },
        
 
 

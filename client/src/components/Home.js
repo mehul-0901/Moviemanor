@@ -14,8 +14,9 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { makeStyles } from '@material-ui/core';
-
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Grid } from "@mui/material";
+import noImage from '../img/download.jpeg';
 
 
 const useStyles = makeStyles({
@@ -54,6 +55,7 @@ const Home = (props) => {
     // const[title,setSearchTerm]=useState("");
     let card=null;
     const classes = useStyles();
+    const regex = /(<([^>]+)>)/gi;
 
     const {loading, error, data, refetch} = useQuery(
         queries.GET_MOVIES,
@@ -81,6 +83,7 @@ const Home = (props) => {
         return (
             <div>
           <Card  className={classes.card} sx={{ maxWidth: 345 }} >
+            
             <CardHeader 
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -97,7 +100,7 @@ const Home = (props) => {
             <CardMedia
               component="img"
               height="400"
-              image={show.image}
+              image={show.image!="0"?show.image:noImage  }
               alt={show.title}
             />
             <CardActions disableSpacing>
@@ -107,7 +110,8 @@ const Home = (props) => {
             </CardActions>
               <CardContent>
                 <Typography variant='body2' color='textSecondary' component='span'>
-                  {show.plot}
+                  {show.plot.replace(regex, '').substring(0, 139) + '...'}
+
                 </Typography>
               </CardContent>
           </Card>
@@ -139,8 +143,9 @@ const Home = (props) => {
         <div className="homeWithoutLogin">
             <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "20rem", width: "100%"}}>
               <h1 style={{ color: "white"}}>Moviemanor</h1>
+				      <Grid container className={classes.grid} spacing={3}>
               {card} 
-              
+              </Grid>
             </div>
         </div>
     );
