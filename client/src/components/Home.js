@@ -20,6 +20,7 @@ import { Grid } from "@mui/material";
 import noImage from '../img/download.jpeg';
 import { Button } from "@mui/material";
 import { Pagination } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
 	card: {
@@ -151,6 +152,8 @@ const Home = (props) => {
         return (
             <div key={show.id}>
           <Card  className={classes.card} sx={{ maxWidth: 345 }} >
+          <Link to={{pathname:`/movie/${show.id}`}} >
+
             <CardHeader 
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -181,27 +184,22 @@ const Home = (props) => {
               } 
             </CardActions>
             <CardActions >
-
-            {wishList? 
-            <Button aria-label="Delete watchlist"
+            {wishList? <Button aria-label="Delete watchlist"
             onClick={(e) => {removeWatchList(currentUser.email,show.id) }}>
               <RemoveCircleOutlineSharpIcon />Delete from watchlist
-            </Button>
-           :
-           <Button aria-label="Add to watchlist" 
+            </Button> : <Button aria-label="Add to watchlist" 
            onClick={(e) => {addWatchList(currentUser.email,show.id)}}>
-             <AddIcon /> Add to watchlist
-           </Button>
+             <AddIcon /> Add to watchlist</Button>
           
           }
           </CardActions>
-
               <CardContent>
                 <Typography variant='body2' color='textSecondary' component='span'>
                 {show.plot.replace(regex, '').substring(0, 139) + '...'}
 
                 </Typography>
               </CardContent>
+              </Link>
           </Card>
           <br></br>
           </div>

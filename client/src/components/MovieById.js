@@ -70,9 +70,9 @@ function MovieById()
 
     if(data)
     {
-        console.log(data.movieById);
         return(
-
+<div className='homeWithoutLogin'>
+	<br/><br/><br/>
 <Card className={classes.card} variant='outlined'>
 				<CardHeader className={classes.titleHead} title={data.movieById.title} />
 				<CardMedia
@@ -96,6 +96,7 @@ function MovieById()
 					</Typography>
 				</CardContent>
 			</Card>
+			</div>
 
 
         );
