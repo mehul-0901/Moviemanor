@@ -7,21 +7,17 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
 import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
 import {AuthContext} from '../firebase/Auth';
-
 import { makeStyles } from '@material-ui/core';
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Grid } from "@mui/material";
+import noImage from '../img/download.jpeg';
 import { Button } from "@mui/material";
 
 
@@ -62,6 +58,8 @@ const Home = (props) => {
     // const[title,setSearchTerm]=useState("");
     let card=null;
     const classes = useStyles();
+    const regex = /(<([^>]+)>)/gi;
+
 
     const [getAllMovies,{loading, error, data, refetch}] = useLazyQuery(
         queries.GET_MOVIES,
@@ -152,7 +150,7 @@ const Home = (props) => {
             <CardMedia
               component="img"
               height="400"
-              image={show.image}
+              image={show.image!="0"?show.image:noImage  }
               alt={show.title}
             />
             <CardActions disableSpacing>
@@ -188,7 +186,8 @@ const Home = (props) => {
 
               <CardContent>
                 <Typography variant='body2' color='textSecondary' component='span'>
-                  {show.plot}
+                {show.plot.replace(regex, '').substring(0, 139) + '...'}
+
                 </Typography>
               </CardContent>
           </Card>
@@ -210,18 +209,20 @@ const Home = (props) => {
        
         let save=false;
         let wishList=false;
+        if(data2.savedMovies){
           for (const x of data2.savedMovies) {
             if(x.id===show.id)
             {
               save=true;
             }
-          }
+          }}
+          if(data1.checkIfwatched){
           for (const x of data1.checkIfwatched) {
             if(x.id===show.id)
             {
               wishList=true;
             }
-          }
+          }}
         return (buildCard(show,save,wishList));
     }});
   }
@@ -233,8 +234,9 @@ const Home = (props) => {
         <div className="homeWithoutLogin">
             <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "20rem", width: "100%"}}>
               <h1 style={{ color: "white"}}>Moviemanor</h1>
+              <Grid container className={classes.grid} spacing={3}>
               {card} 
-              
+              </Grid>
             </div>
         </div>
     );
