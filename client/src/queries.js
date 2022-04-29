@@ -1,16 +1,16 @@
 import {gql} from '@apollo/client';
 
 const GET_MOVIES = gql`
-query Query($title: String) {
-    movieList(title: $title) {
-      id
-      title
-      image
-      
-      plot
-      imDbRating
-    }
+query MovieList($title: String, $pageNum: Int) {
+  movieList(title: $title, pageNum: $pageNum) {
+    id
+    title
+    plot
+    image
+    imDbRating
+    page
   }
+}
   
 `;
 

@@ -40,11 +40,18 @@
 }
 
 .homeWithoutLogin{
-  height: 75vh;
+  height: 550vh;
   margin-top: -16vh;
-  background-image: url("./img/wallpaperflare.com_wallpaper.jpg");
+  background-image: url("./img/background.jpg");
 }
-
+.pagination{
+  height: 7vh;
+  margin: 1cm;
+  margin-left: 15cm;
+  margin-right: 17cm;
+  background-color: white;
+  align-items: center;
+}
 .card{
   align-items: center;
   

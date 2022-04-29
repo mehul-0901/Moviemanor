@@ -19,13 +19,13 @@ import { makeStyles } from '@material-ui/core';
 import { Grid } from "@mui/material";
 import noImage from '../img/download.jpeg';
 import { Button } from "@mui/material";
-
+import { Pagination } from "@mui/material";
 
 const useStyles = makeStyles({
 	card: {
 		maxWidth: 300,
 		height: 'auto',
-		marginLeft: 'auto',
+		marginLeft: '2cm',
 		marginRight: 'auto',
 		borderRadius: 5,
 		border: '1px solid #1e8678',
@@ -55,7 +55,7 @@ const useStyles = makeStyles({
 const Home = (props) => {
 
   const {currentUser} = useContext(AuthContext);
-    // const[title,setSearchTerm]=useState("");
+    const[searchTerm,setSearchTerm]=useState();
     let card=null;
     const classes = useStyles();
     const regex = /(<([^>]+)>)/gi;
@@ -72,7 +72,7 @@ const Home = (props) => {
      const [removefromWatchList] = useMutation(queries.REMOVE_FROM_WATCHLIST)
      const [addToSave] = useMutation(queries.ADD_SAVEFORLATER)
      const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER)
-
+        const [pageNum,setPageNum]=useState();
  
      
     const [getUserWatchedMovies,{data: data1,refetch:refetchWatched}] =useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
@@ -83,14 +83,19 @@ const Home = (props) => {
 
 
     useEffect(() => {
-		console.log('on load useeffect ====='+props.searchTerm);
+		console.log('on load useeffect '+props.searchTerm);
         // setSearchTerm(props.searchTerm);
 		async function fetchData() 
         {
             console.log("i am here ");
+            if(props.searchTerm!=searchTerm)
+            {
+              setPageNum(1)
+            }
+            setSearchTerm(props.searchTerm)
             if(currentUser)
             {
-              getAllMovies({variables:{"title":props.searchTerm}}); 
+              getAllMovies({variables:{"title":props.searchTerm,"pageNum":pageNum}}); 
               getUserWatchedMovies({variables: { userId:currentUser.email}});
               getUserSavedMovies({ variables: { userId:currentUser.email}});
             }
@@ -99,7 +104,7 @@ const Home = (props) => {
          }
 		fetchData();
 
-    }	, [props.searchTerm]);
+    }	, [props.searchTerm,pageNum]);
 
     const removeWatchList=(email,id)=>
     {
@@ -134,7 +139,12 @@ const Home = (props) => {
                getUserSavedMovies({ variables: { userId:currentUser.email}});
     }
 
+    const handlePageClick =(event,page)=>
+    {
+      setPageNum(page);
+      getAllMovies({variables:{"title":props.searchTerm,"pageNum":pageNum}}); 
 
+    }
     const buildCard = (show,save,wishList) => {
         return (
             <div key={show.id}>
@@ -198,7 +208,7 @@ const Home = (props) => {
       }
     
 
-    if (data)
+    if (data && currentUser && searchTerm)
 {
   if(data.movieList!==null)
   {    
@@ -232,8 +242,15 @@ const Home = (props) => {
 
     return(
         <div className="homeWithoutLogin">
-            <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "20rem", width: "100%"}}>
-              <h1 style={{ color: "white"}}>Moviemanor</h1>
+            <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
+   {data?      <div className="pagination">     <Pagination 
+		onChange={(event,page)=>handlePageClick(event,page)}
+        count= {data.movieList[0].page}
+		page={Number(pageNum)}
+		variant="outlined"
+		color="primary" 
+		></Pagination></div> :<div></div>}
+    <br></br>
               <Grid container className={classes.grid} spacing={3}>
               {card} 
               </Grid>

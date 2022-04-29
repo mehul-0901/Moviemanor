@@ -26,34 +26,23 @@ const SaveMovie = mongoCollections.SaveMovie;
 //   })();
   
 const typeDefs = gql`
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
-
-  # This "Book" type defines the queryable fields for every book in our data source.
   type Movies {
     id: ID!
     title: String!
     image: String!
     plot:String!
     imDbRating:String!
+    page:Int!
 }
 type mID {
     id: ID!
 }
 
-
-
-
-
- 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
-    movieList(title: String): [Movies]
+    movieList(title: String,pageNum:Int): [Movies]
     movieById(id:String):Movies
     checkIfwatched(userId:String) : [Movies]
     savedMovies(userId:String) : [mID]
-
 
   }
   type Mutation {
@@ -184,9 +173,8 @@ const resolvers = {
     },
     Query:{
         movieList: async (_, args) => {
-        
-            // const {data}= await axios.get(`https://imdb-api.com/API/AdvancedSearch/k_plhfxwj8?title_type=feature&title=${args.title}`);
-            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=1&query=${args.title}`);
+
+            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}`);
             if(args.title==undefined)
             {
                 return [];
@@ -229,7 +217,9 @@ const resolvers = {
                else
                {
                    temp["imDbRating"]="0"
-               } arr.push(temp);
+               } 
+               temp["page"]=data.total_pages;
+               arr.push(temp);
             }}
             return arr;
           },
