@@ -8,7 +8,8 @@ import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} 
 import noImage from '../img/download.jpeg';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-
+import Avatar from '@mui/material/Avatar';
+import { blue } from '@mui/material/colors';
 
 
 const useStyles = makeStyles({
@@ -26,7 +27,12 @@ const useStyles = makeStyles({
 	titleHead: {
 		borderBottom: '1px solid #1e8678',
 		fontWeight: 'bold',
-		fontSize: 'large'
+		fontSize: 'x',
+
+		},
+		title:{
+			fontSize:"xx-large",
+			font:'bold'
 		},
 	grid: {
 		flexGrow: 1,
@@ -79,7 +85,11 @@ function MovieById()
 <div className='homeWithoutLogin'>
 	<br/><br/><br/>
 <Card className={classes.card} variant='outlined'>
-				<CardHeader className={classes.titleHead} title={data.movieById.title} action={<Box
+				<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
+                <Avatar sx={{ bgcolor: blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
+                  {data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
+                </Avatar>
+              } action={<Box
      			 sx={{
      		   		width: 200,
 					sizeWidth:800,
@@ -107,18 +117,24 @@ function MovieById()
 
 				<CardContent>
 					
+				<Typography className='tagline'>
+					<div className='tagline'> {data.movieById.tagline}</div>
+				</Typography>
 				
 					<Typography variant='body2' color='textPrimary' component='span'>
 						<dl>
                             
                             <h1>{data.movieById.name}</h1>
 							<p>
-								<dt className='title'>Description:</dt>
+								<dt className='title'>Description:</dt><br></br>
 								{data.movieById && data.movieById.plot ? <dd>{data.movieById.plot}</dd> : <dd>N/A</dd>}
 							</p>
 						
 						</dl>
 					</Typography>
+					<Typography >
+					<div className='releaseDate' >Release Date : {data.movieById.releaseDate}</div>
+				</Typography>
 					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
 
 				</CardContent>

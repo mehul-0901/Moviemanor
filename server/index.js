@@ -33,6 +33,9 @@ const typeDefs = gql`
     plot:String!
     imDbRating:String!
     page:Int!
+    tagline:String
+    releaseDate:String
+    adult:Boolean
 }
 type mID {
     id: ID!
@@ -237,10 +240,6 @@ const resolvers = {
             }
             return array;
           },
-
-          
-
-
           savedMovies: async (_, args) => {
             const saveForLater = await SaveMovie();
             let array = []
@@ -295,6 +294,27 @@ const resolvers = {
                {
                    temp["imDbRating"]="0"
                } 
+               if(data.tagline)
+               {
+                   temp["tagline"]=data.tagline;
+               }
+               else{
+                temp["tagline"]="";
+            }
+            if(data.release_date)
+            {
+                temp["releaseDate"]=data.release_date;
+            }
+            else
+            {
+                temp["releaseDate"]=""
+            }
+            if(data.adult==true || data.adult==false){
+                temp["adult"]=data.adult;
+            }
+            else{
+                temp["adult"]=true;
+            }
             }
             
             return temp;

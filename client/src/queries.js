@@ -22,6 +22,9 @@ query MovieById($id: String) {
     image
     plot
     imDbRating
+    releaseDate
+    tagline
+    adult
   }
 }
 `

@@ -59,6 +59,14 @@
 .title{
   font-size: x-large;
 }
+.tagline{
+  font-size: xx-large;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.releaseDate{
+  font-size: medium;
+  
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
