@@ -210,18 +210,20 @@ const Home = (props) => {
        
         let save=false;
         let wishList=false;
+        if(data2.savedMovies){
           for (const x of data2.savedMovies) {
             if(x.id===show.id)
             {
               save=true;
             }
-          }
+          }}
+          if(data1.checkIfwatched){
           for (const x of data1.checkIfwatched) {
             if(x.id===show.id)
             {
               wishList=true;
             }
-          }
+          }}
         return (buildCard(show,save,wishList));
     }});
   }

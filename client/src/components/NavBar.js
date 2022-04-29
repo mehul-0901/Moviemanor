@@ -7,8 +7,6 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { doSignOut } from '../firebase/FirebaseFunctions';
-
-
 import {BrowserRouter as Router, Route, Link, Routes,NavLink} from 'react-router-dom';
 import {AuthContext} from '../firebase/Auth';
 

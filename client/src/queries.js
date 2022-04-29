@@ -27,7 +27,8 @@ query SavedMovies($userId: String) {
   savedMovies(userId: $userId) {
     id
   }
-} 
+}
+  
 `;
 
 
