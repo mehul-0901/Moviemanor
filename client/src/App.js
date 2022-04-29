@@ -40,6 +40,7 @@ function App() {
               <Route path='/SignUp' element={ <SignUp/> } />
               <Route path='/movie/:id' element={ <MovieById/> } />
               
+
             </Routes>
           </div>
         </div>
