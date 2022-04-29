@@ -253,10 +253,10 @@ const paginate = (page) => {
 }
 if(data)
 {
-  if(data.movieList[0])
+ if(data.movieList) {if(data.movieList.length!=0)
   {
     pagination=paginate(data.movieList[0].page)
-  }
+  }}
 }
 
 
