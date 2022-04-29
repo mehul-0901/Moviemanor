@@ -73,7 +73,7 @@ function MovieById()
 
     }	, [id]);
 
-    if(data)
+    if(data && currentUser)
     {
         return(
 <div className='homeWithoutLogin'>
@@ -119,6 +119,8 @@ function MovieById()
 						
 						</dl>
 					</Typography>
+					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
+
 				</CardContent>
 			</Card>
 			</div>

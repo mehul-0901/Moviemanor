@@ -104,6 +104,10 @@ const Home = (props) => {
               getUserWatchedMovies({variables: { userId:currentUser.email}});
               getUserSavedMovies({ variables: { userId:currentUser.email}});
             }
+            if(props.searchTerm=="")
+            {
+              getAllMovies({variables:{"title":props.searchTerm,"pageNum":pageNum}}); 
+            }
             console.log(data);
             console.log(data1);
             console.log(data2); 
@@ -255,7 +259,7 @@ const paginate = (page) => {
     color="primary" 
     ></Pagination></div>);
 }
-if(data)
+if(data && currentUser)
 {
  if(data.movieList) {if(data.movieList.length!=0)
   {

@@ -7,9 +7,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { doSignOut } from '../firebase/FirebaseFunctions';
-import {BrowserRouter as Router, Route, Link, Routes,NavLink} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Routes,NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../firebase/Auth';
-
+import { Navigate } from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,7 +62,7 @@ const NavBar = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
     const {currentUser} = useContext(AuthContext);
-
+    const navigate=useNavigate();
     const isMenuOpen = Boolean(anchorEl);
     const menuId = 'primary-search-account-menu';
 
@@ -89,6 +89,7 @@ const NavBar = (props) => {
                     onChange= {(e) => {
                         props.setSearchTerm(e.target.value)
                         console.log(e.target.value);
+                        navigate('/')
                     }}
                     />
                 </Search>

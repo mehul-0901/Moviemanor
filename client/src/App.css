@@ -56,6 +56,9 @@
   align-items: center;
   
 }
+.title{
+  font-size: x-large;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
