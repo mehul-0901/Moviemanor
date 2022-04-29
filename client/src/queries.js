@@ -1,17 +1,30 @@
 import {gql} from '@apollo/client';
 
 const GET_MOVIES = gql`
-query Query($title: String) {
-    movieList(title: $title) {
-      id
-      image
-      imDbRating
-      plot
-      title
-    }
+query MovieList($title: String, $pageNum: Int) {
+  movieList(title: $title, pageNum: $pageNum) {
+    id
+    title
+    plot
+    image
+    imDbRating
+    page
   }
+}
+  
 `;
 
+const GET_MOVIES_BY_ID=gql`
+query MovieById($id: String) {
+  movieById(id: $id) {
+    id
+    title
+    image
+    plot
+    imDbRating
+  }
+}
+`
 const GET_USER_WATCHEDMOVIES = gql`
 query CheckIfwatched($userId: String) {
   checkIfwatched(userId: $userId) {
@@ -67,7 +80,8 @@ let exported = {
   REMOVE_FROM_WATCHLIST,
   GET_USER_SAVEDMOVIES,
   ADD_SAVEFORLATER,
-  REMOVE_SAVEFORLATER
+  REMOVE_SAVEFORLATER, 
+  GET_MOVIES_BY_ID
   };
   
 export default exported

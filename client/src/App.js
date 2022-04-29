@@ -6,7 +6,7 @@ import React, {useState} from 'react';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import  {AuthProvider}  from './firebase/Auth';
-
+import MovieById from './components/MovieById';
 
 import {
   ApolloClient,
@@ -38,7 +38,8 @@ function App() {
 
               <Route path='/SignIn' element={ <SignIn/> } />
               <Route path='/SignUp' element={ <SignUp/> } />
-              
+              <Route path='/movie/:id' element={ <MovieById/> } />
+
             </Routes>
           </div>
         </div>
