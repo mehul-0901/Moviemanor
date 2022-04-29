@@ -57,6 +57,7 @@ const Home = (props) => {
   const {currentUser} = useContext(AuthContext);
     const[searchTerm,setSearchTerm]=useState();
     let card=null;
+    let pagination=null;
     const classes = useStyles();
     const regex = /(<([^>]+)>)/gi;
 
@@ -99,6 +100,7 @@ const Home = (props) => {
               getUserWatchedMovies({variables: { userId:currentUser.email}});
               getUserSavedMovies({ variables: { userId:currentUser.email}});
             }
+            console.log(data);
             console.log(data1);
             console.log(data2); 
          }
@@ -238,19 +240,28 @@ const Home = (props) => {
   }
 
 }
+const paginate = (page) => {
+  return (<div className="pagination"> <Pagination 
+    onChange={(event,page)=>handlePageClick(event,page)}
+        count= {page}
+    page={Number(pageNum)}
+    variant="outlined"
+    color="primary" 
+    ></Pagination></div>);
+}
+if(data)
+{
+  if(data.movieList[0])
+  {
+    pagination=paginate(data.movieList[0].page)
+  }
+}
 
 
     return(
         <div className="homeWithoutLogin">
             <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
-   {data?      <div className="pagination">     <Pagination 
-		onChange={(event,page)=>handlePageClick(event,page)}
-        count= {data.movieList[0].page}
-		page={Number(pageNum)}
-		variant="outlined"
-		color="primary" 
-		></Pagination></div> :<div></div>}
-    <br></br>
+            {pagination}
               <Grid container className={classes.grid} spacing={3}>
               {card} 
               </Grid>
