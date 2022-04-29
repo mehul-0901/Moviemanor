@@ -168,6 +168,7 @@ const Home = (props) => {
               image={show.image!="0"?show.image:noImage  }
               alt={show.title}
             />
+              </Link>
             <CardActions disableSpacing>
               {save? 
             
@@ -199,7 +200,7 @@ const Home = (props) => {
 
                 </Typography>
               </CardContent>
-              </Link>
+            
           </Card>
           <br></br>
           </div>
