@@ -1,0 +1,66 @@
+.App {
+  text-align: center;
+  background-color: #DDDFE2 !important;
+  min-height: 100vh;
+  padding-top: 2rem;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.navbar{
+  position: relative;
+  background: transparent !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: calc(10px + 2vmin);
+  color: #344767;
+  backdrop-filter: blur(30px);
+  z-index: 10;
+}
+
+.homeWithoutLogin{
+  height: 550vh;
+  margin-top: -16vh;
+  background-image: url("./img/background.jpg");
+}
+.pagination{
+  height: 7vh;
+  margin: 1cm;
+  margin-left: 15cm;
+  margin-right: 17cm;
+  background-color: white;
+  align-items: center;
+}
+.card{
+  align-items: center;
+  
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

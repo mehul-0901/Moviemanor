@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Moviemanor Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vatsal Shah | Niyati Bavishi | Mehul Savaliya | Pallavi Jaiswal",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.6.7",
+    "axios": "^0.26.1",
+    "graphql": "^16.3.0",
+    "mongodb": "^4.5.0",
+    "nodemon": "^2.0.15",
+    "redis": "^4.0.6"
+  }
+}
