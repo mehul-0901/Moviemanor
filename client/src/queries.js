@@ -4,14 +4,12 @@ const GET_MOVIES = gql`
 query Query($title: String) {
     movieList(title: $title) {
       id
-      title
       image
-      
-      plot
       imDbRating
+      plot
+      title
     }
   }
-  
 `;
 
 const GET_USER_WATCHEDMOVIES = gql`
@@ -61,12 +59,6 @@ mutation RemoveSaveforLater($userId: String, $movieId: String) {
   removeSaveforLater(userId: $userId, movieID: $movieId)
 }
 `;
-
-
-
-
-
-
 
 let exported = {
   GET_MOVIES,

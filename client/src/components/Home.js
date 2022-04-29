@@ -7,21 +7,16 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
 import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
 import {AuthContext} from '../firebase/Auth';
-
 import { makeStyles } from '@material-ui/core';
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Button } from "@mui/material";
 
 
@@ -53,8 +48,6 @@ const useStyles = makeStyles({
 		fontSize: 12
 	}
 });
-
-
 
 const Home = (props) => {
 
@@ -223,12 +216,14 @@ const Home = (props) => {
             }
           }
         return (buildCard(show,save,wishList));
+    } else {
+      return null
     }});
   }
 
 }
 
-
+  console.log("Data from searching", data);
     return(
         <div className="homeWithoutLogin">
             <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "20rem", width: "100%"}}>

@@ -33,7 +33,6 @@ const typeDefs = gql`
     id: ID!
     title: String!
     image: String!
-    description: String!
     plot:String!
     imDbRating:String!
 }
