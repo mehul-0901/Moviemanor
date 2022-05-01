@@ -155,9 +155,9 @@ const NavBar = (props) => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        <MenuItem onClick={() => { doSignOut(); handleMenuClose();}} >Log out</MenuItem>
+        <MenuItem sx={{color: "#888989"}} onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem sx={{color: "#888989"}} onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem sx={{color: "#888989"}} onClick={() => { doSignOut(); handleMenuClose();}} >Log out</MenuItem>
         
         </Menu>
     );
@@ -175,6 +175,7 @@ const NavBar = (props) => {
                    <Link to={"/"} onClick={(e) => {
                        e.preventDefault()
                        props.setSearchTerm("")
+                       navigate("/")
                        if(currentUser){
                            let searchBox = document.getElementById("searchInput")
                            searchBox.value = ""

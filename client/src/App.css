@@ -43,6 +43,19 @@ body {
   z-index: 10;
 }
 
+.loginBtn {
+  background: transparent !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(30px);
+  align-items: center;
+  color: #002b52 !important;
+  border-radius: 10px !important;
+}
+
+.loginBtn:hover {
+  color: #fff !important;
+}
+
 .homeWithoutLogin{
   height: 100vh;
   margin-top: -16vh;
