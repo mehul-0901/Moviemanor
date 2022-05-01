@@ -1,7 +1,11 @@
+body {
+  background-color: #203141;
+}
 .App {
   text-align: center;
-  background-color: #DDDFE2 !important;
+  background-color: #203141 !important;
   min-height: 100vh;
+  height: auto;
   padding-top: 2rem;
 }
 
@@ -40,15 +44,19 @@
 }
 
 .homeWithoutLogin{
-  height: 550vh;
+  height: 100vh;
   margin-top: -16vh;
-  background-image: url("./img/background.jpg");
 }
 .pagination{
+  display: flex;
+  justify-content: center;
   height: 7vh;
-  margin: 1cm;
-  margin-left: 15cm;
-  margin-right: 17cm;
+  width: 500px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   background-color: white;
   align-items: center;
 }

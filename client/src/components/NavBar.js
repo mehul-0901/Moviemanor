@@ -84,6 +84,7 @@ const NavBar = (props) => {
                         <SearchIcon />
                     </SearchIconWrapper>
                     <StyledInputBase
+                    id="searchInput"
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
                     onChange= {(e) => {
@@ -165,11 +166,17 @@ const NavBar = (props) => {
                     variant="h6"
                     noWrap
                     component="div"
-                    sx={{ display: { xs: 'none', sm: 'block' } }}
-                    fontSize= "50px" 
+                    sx={{ display: { xs: 'none', sm: 'block' }, fontSize: "50px" }} 
                     fontWeight={"bold"}
                 >
-                   <Link to={"/"} style={{textDecoration: "none", color: "inherit"}}>
+                   <Link to={"/"} onClick={(e) => {
+                       e.preventDefault()
+                       props.setSearchTerm("")
+                       if(currentUser){
+                           let searchBox = document.getElementById("searchInput")
+                           searchBox.value = ""
+                       }
+                   }} style={{textDecoration: "none", color: "inherit"}}>
                         Moviemanor  
                    </Link> 
                 </Typography>

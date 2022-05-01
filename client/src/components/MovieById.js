@@ -111,7 +111,7 @@ function MovieById()
 				<CardMedia
 					className={classes.media}
 					component='img'
-					image={data.movieById.image!="0"?data.movieById.image:noImage  }
+					image={data.movieById.image!=="0"?data.movieById.image:noImage  }
 					title='show image'  
 				/>
 
