@@ -93,7 +93,7 @@ const HomeDataGrid = (props) => {
         return (
           <Grid item key={show.id} sx={{paddingLeft: "0px"}}>
             <Card  className={classes.card} sx={{ maxWidth: 345 }} >
-              <Link to={{pathname:`/movie/${show.id}`}} >
+              <Link to={{pathname:`/movie/${show.id}`}} style={{textDecoration: "none"}} >
 
                 <CardHeader 
                   avatar={

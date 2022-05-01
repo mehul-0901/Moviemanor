@@ -32,7 +32,7 @@ const typeDefs = gql`
     image: String!
     plot:String!
     imDbRating:String!
-    page:Int!
+    page:Int
     tagline:String
     releaseDate:String
     adult:Boolean
@@ -42,7 +42,7 @@ type mID {
 }
   type Query {
     movieList(title: String,pageNum:Int): [Movies]
-    movieById(id:String):Movies
+    movieById(id: ID!): Movies
     checkIfwatched(userId:String) : [mID]
     savedMovies(userId:String) : [mID]
 

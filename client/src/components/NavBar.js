@@ -169,7 +169,7 @@ const NavBar = (props) => {
                     variant="h6"
                     noWrap
                     component="div"
-                    sx={{ display: { xs: 'none', sm: 'block' }, fontSize: "50px" }} 
+                    sx={{ display: { xs: 'none', sm: 'block' }, fontSize: "50px !important" }} 
                     fontWeight={"bold"}
                 >
                    <Link to={"/"} onClick={(e) => {

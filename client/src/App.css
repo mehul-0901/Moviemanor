@@ -4,8 +4,6 @@ body {
 .App {
   text-align: center;
   background-color: #202226 !important;
-  min-height: 100vh;
-  height: auto;
   padding-top: 2rem;
 }
 

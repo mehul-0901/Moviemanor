@@ -9,7 +9,7 @@ import noImage from '../img/download.jpeg';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import Avatar from '@mui/material/Avatar';
-import { blue } from '@mui/material/colors';
+import { blue,red } from '@mui/material/colors';
 
 
 const useStyles = makeStyles({
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 		height: 'auto',
 		marginLeft: 'auto', 
 		marginRight: 'auto',
-		marginTop:'2cm',
+		marginTop:'10rem',
 		borderRadius: 5,
 		border: '1px solid #1e8678',
 		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
@@ -82,11 +82,11 @@ function MovieById()
     if(data && currentUser)
     {
         return(
-<div className='homeWithoutLogin'>
-	<br/><br/><br/>
-<Card className={classes.card} variant='outlined'>
+			<div className='homeWithoutLogin'>
+			<br/><br/><br/>
+			<Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
 				<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
-                <Avatar sx={{ bgcolor: blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
+                <Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
                   {data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
                 </Avatar>
               } action={<Box
@@ -139,9 +139,8 @@ function MovieById()
 
 				</CardContent>
 			</Card>
-			</div>
-
-
+			<br />
+		</div>
         );
     }
     else
