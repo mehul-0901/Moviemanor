@@ -4,7 +4,6 @@ const { default: axios } = require('axios');
 const redis = require('redis');
 const client = redis.createClient();
 const uuid = require('uuid'); //for generating _id's
-
 let { ObjectId } = require('mongodb');
 const mongoCollections = require('../server/config/mongoCollections');
 const Movie = mongoCollections.Movie;
