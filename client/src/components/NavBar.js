@@ -4,8 +4,8 @@ import { styled, alpha } from '@mui/material/styles';
 import {AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import { doSignOut } from '../firebase/FirebaseFunctions';
 import {BrowserRouter as Router, Route, Link, Routes,NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../firebase/Auth';
@@ -86,6 +86,7 @@ const NavBar = (props) => {
                     <StyledInputBase
                     id="searchInput"
                     placeholder="Search…"
+                    autoComplete="false"
                     inputProps={{ 'aria-label': 'search' }}
                     onChange= {(e) => {
                         props.setSearchTerm(e.target.value)
@@ -94,18 +95,19 @@ const NavBar = (props) => {
                     }}
                     />
                 </Search>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
-                    <MailIcon />
+                <IconButton size="large" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} color="inherit" title="My Watchlist Movies">
+                <Badge badgeContent={props.noOfBookmarks} color="error">
+                    <BookmarksIcon />
                 </Badge>
                 </IconButton>
                 <IconButton
                 size="large"
-                aria-label="show 17 new notifications"
+                aria-label={`show ${props.noOfWatchedMovies} watchlisted movies`}
                 color="inherit"
+                title="My Watched Movies"
                 >
-                <Badge badgeContent={17} color="error">
-                    <NotificationsIcon />
+                <Badge badgeContent={props.noOfWatchedMovies} color="error">
+                    <ListAltIcon />
                 </Badge>
                 </IconButton>
                 <IconButton
@@ -116,6 +118,7 @@ const NavBar = (props) => {
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 color="inherit"
+                title="Profile"
                 >
                 <AccountCircle />
                 </IconButton>

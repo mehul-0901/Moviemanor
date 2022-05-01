@@ -2,15 +2,8 @@ import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
 import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination} from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
-import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
 import {AuthContext} from '../firebase/Auth';
 import { makeStyles } from '@material-ui/core';
-import noImage from '../img/download.jpeg';
-import { Link } from "react-router-dom";
 import HomeDataGrid from "./HomeDataGrid";
 import MoodDetector from "./MoodDetector";
 

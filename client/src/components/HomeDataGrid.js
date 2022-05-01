@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
 import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
 import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination} from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
 import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
@@ -120,7 +120,7 @@ const HomeDataGrid = (props) => {
                   :
                   <Button aria-label="Save for later" 
                   onClick={() => {addSave(currentUser.email,show.id)}}>
-                  <BookmarkBorderIcon  /> Add to Save
+                  <BookmarkAddOutlinedIcon /> Add to Save
                   </Button>
                   
                   } 
@@ -158,24 +158,24 @@ const HomeDataGrid = (props) => {
           if(show!==null){
             let save=false;
             let wishList=false;
-            if(props.data2.savedMovies.length !== 0) {
-              if(props.data2.savedMovies){
-                for (const x of props.data2.savedMovies) {
-                  if(x.id===show.id)
-                  {
-                    save=true;
-                  }
-                }
-              }
-            }
-            if (props.data1.checkIfwatched.length !== 0) {
-              if(props.data1.checkIfwatched){
-                for (const x of props.data1.checkIfwatched) {
-                    if(x.id===show.id) {
-                    wishList=true;
+            if(props.data2.savedMovies.length !== 0) {  
+                if(props.data2.savedMovies){
+                    for (const x of props.data2.savedMovies) {
+                        if(x.id===show.id)
+                        {
+                            save=true;
+                        }
                     }
                 }
-            } 
+            }
+            if (props.data1.checkIfwatched.length !== 0) {
+                if(props.data1.checkIfwatched){
+                    for (const x of props.data1.checkIfwatched) {
+                        if(x.id===show.id) {
+                        wishList=true;
+                        }
+                    }
+                } 
           }
           return (buildCard(show,save,wishList));
           }
