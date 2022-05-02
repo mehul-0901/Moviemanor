@@ -159,7 +159,13 @@ const NavBar = (props) => {
         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
         <MenuItem component="a" href="/SavedMovies">My Saved Movies</MenuItem>
         <MenuItem component="a" href="/WatchList">My Watched List</MenuItem>
-        <MenuItem onClick={() => { navigate("/"); doSignOut(); handleMenuClose();}} >Log out</MenuItem>
+        <MenuItem onClick={(e) => { 
+            e.preventDefault()
+            props.setSearchTerm("")
+            navigate("/") 
+            doSignOut() 
+            handleMenuClose()
+            }} >Log out</MenuItem>
         
         </Menu>
     );
