@@ -1,7 +1,9 @@
+body {
+  background-color: #202226;
+}
 .App {
   text-align: center;
-  background-color: #DDDFE2 !important;
-  min-height: 100vh;
+  background-color: #202226 !important;
   padding-top: 2rem;
 }
 
@@ -39,21 +41,49 @@
   z-index: 10;
 }
 
+.loginBtn {
+  background: transparent !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(30px);
+  align-items: center;
+  color: #002b52 !important;
+  border-radius: 10px !important;
+}
+
+.loginBtn:hover {
+  color: #fff !important;
+}
+
 .homeWithoutLogin{
-  height: 550vh;
+  height: 100vh;
   margin-top: -16vh;
-  background-image: url("./img/background.jpg");
 }
 .pagination{
+  display: flex;
+  justify-content: center;
   height: 7vh;
-  margin: 1cm;
-  margin-left: 15cm;
-  margin-right: 17cm;
+  width: 500px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   background-color: white;
   align-items: center;
 }
 .card{
   align-items: center;
+  
+}
+.title{
+  font-size: x-large;
+}
+.tagline{
+  font-size: xx-large;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.releaseDate{
+  font-size: medium;
   
 }
 @keyframes App-logo-spin {

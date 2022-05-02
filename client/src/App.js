@@ -26,16 +26,19 @@ const client = new ApolloClient({
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [noOfBookmarks, setNoOfBookmarks] = useState(0)
+  const [noOfWatchedMovies, setNoOfWatchedMovies] = useState(0)
 
   return (
     <AuthProvider>
     <ApolloProvider client = {client}>
            <Router>
         <div className="App">
-          <NavBar setSearchTerm={setSearchTerm}/>
+          <NavBar setSearchTerm={setSearchTerm} noOfBookmarks={noOfBookmarks} noOfWatchedMovies={noOfWatchedMovies} loggedIn={setLoggedIn}/>
           <div className='App-body'>
             <Routes>
-              <Route path='/' element={ <Home searchTerm={searchTerm}/> } />
+              <Route path='/' element={ <Home searchTerm={searchTerm} setNoOfBookmarks={setNoOfBookmarks} setNoOfWatchedMovies={setNoOfWatchedMovies}/> } />
 
               <Route path='/SignIn' element={ <SignIn/> } />
               <Route path='/SignUp' element={ <SignUp/> } />
