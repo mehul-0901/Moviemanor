@@ -11,6 +11,7 @@ const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
 
 
+
 // const { default: axios } = require('axios');
 
 // A schema is a collection of type definitions (hence "typeDefs")
@@ -30,19 +31,25 @@ const typeDefs = gql`
     id: ID!
     title: String!
     image: String!
-    description: String!
+    description: String
     plot:String!
     imDbRating:String!
-    page:Int!
+    page:Int
 }
 type mID {
     id: ID!
 }
+
+
+
+
   type Query {
     movieList(title: String,pageNum:Int): [Movies]
     movieById(id:String):Movies
+    moviesByIds(ids:[String]):[Movies]
     checkIfwatched(userId:String) : [mID]
     savedMovies(userId:String) : [mID]
+   
 
   }
   type Mutation {
@@ -51,6 +58,8 @@ type mID {
     AddSaveforLater(userId:String,movieID:String):mID
     removeSaveforLater(userId:String,movieID:String):Boolean
   }
+
+
 
 `;
 
@@ -256,6 +265,64 @@ const resolvers = {
             }
             return array;
           },
+
+          
+          moviesByIds:async (_, args) => {
+            let movieArray = []
+            for(id in args.ids){
+               // console.log(args.ids[id]);
+                const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.ids[id]}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
+                let temp={};
+
+                if(data){  
+                    if(data.id)
+                    {
+                        temp["id"]=data.id;
+                    }
+                    else{
+                        temp["id"]="0";
+                    }
+                    if(data.title)
+                    {
+                        temp["title"]=data.title;
+                    }
+                    else{
+                        temp["title"]="0";
+                    }if(data.poster_path)
+                    {
+                        temp["image"]="https://image.tmdb.org/t/p/w500"+data.poster_path;
+                    }
+                    else{
+                        temp["image"]="0";
+                    }if(data.overview)
+                    {
+                        temp["plot"]=data.overview;
+                    }
+                    else{
+                        temp["plot"]="0";
+                    }
+                
+                if(data.vote_average){
+                    temp["imDbRating"]=data.vote_average;
+                   }
+                   else
+                   {
+                       temp["imDbRating"]="0"
+                   } 
+                }
+
+                movieArray.push(temp)
+            }
+
+            return movieArray
+          },
+
+
+
+
+
+
+
           movieById: async (_, args) => {
         
             const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
@@ -300,6 +367,8 @@ const resolvers = {
             
             return temp;
           },
+
+   
        
           
     },
