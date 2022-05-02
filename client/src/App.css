@@ -61,7 +61,7 @@ body {
 .pagination{
   display: flex;
   justify-content: center;
-  height: 7vh;
+  height: 3rem;
   width: 500px;
   max-width: 500px;
   margin-left: auto;

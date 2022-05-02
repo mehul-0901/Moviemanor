@@ -179,13 +179,22 @@ const SavedMovies = (props) => {
         )
     }
 
+if(saved_movies && saved_movies.moviesByIds.length!=0){
+  
     card =
     saved_movies &&
     saved_movies.moviesByIds.map((show) => {
         return buildCard(show);
       });
 
-
+    }
+    else{
+        return(
+            <div style={{color:"white"}}>
+            "Kindly save movies to show!"
+            </div>
+        )
+    }
 
 
     if (loading) {

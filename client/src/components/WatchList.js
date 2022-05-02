@@ -176,11 +176,20 @@ const WatchList = (props) => {
         )
     }
    // console.log(watched_movies);
-    card =
+   if(watched_movies && watched_movies.moviesByIds.length!=0){ card =
     watched_movies &&
     watched_movies.moviesByIds.map((show) => {
         return buildCard(show);
-      });
+      });}
+      else
+      {
+          return(
+              <div style={{color:"white"}}>  "Kindly add movies to watch!"
+              </div>
+          );
+      }
+
+
       if (loading) {
         return (
           <div>
