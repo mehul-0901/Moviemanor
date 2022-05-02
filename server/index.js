@@ -31,7 +31,6 @@ const typeDefs = gql`
     id: ID!
     title: String!
     image: String!
-    description: String
     plot:String!
     imDbRating:String!
     page:Int
@@ -182,7 +181,7 @@ const resolvers = {
     },
     Query:{
         movieList: async (_, args) => {
-
+            
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}`);
             if(args.title==undefined)
             {
