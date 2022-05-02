@@ -31,10 +31,12 @@ const typeDefs = gql`
     id: ID!
     title: String!
     image: String!
-    description: String
     plot:String!
     imDbRating:String!
     page:Int
+    tagline:String
+    releaseDate:String
+    adult:Boolean
 }
 type mID {
     id: ID!
@@ -175,7 +177,7 @@ const resolvers = {
             const deletionInfo = await saveForLater.deleteOne(saveList);
           // console.log(deletionInfo);
             if (deletionInfo.deletedCount === 0) {
-                throw 'Could not delete restaurants with given id';
+                throw 'Could not delete movie with given id';
               }
               return deletionInfo.acknowledged;
         },
@@ -317,12 +319,6 @@ const resolvers = {
             return movieArray
           },
 
-
-
-
-
-
-
           movieById: async (_, args) => {
         
             const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
@@ -363,16 +359,34 @@ const resolvers = {
                {
                    temp["imDbRating"]="0"
                } 
+               if(data.tagline)
+               {
+                   temp["tagline"]=data.tagline;
+               }
+               else{
+                temp["tagline"]="";
+            }
+            if(data.release_date)
+            {
+                temp["releaseDate"]=data.release_date;
+            }
+            else
+            {
+                temp["releaseDate"]=""
+            }
+            if(data.adult==true || data.adult==false){
+                temp["adult"]=data.adult;
+            }
+            else{
+                temp["adult"]=true;
+            }
             }
             
             return temp;
           },
-
-   
        
           
     },
-
 
 
     };

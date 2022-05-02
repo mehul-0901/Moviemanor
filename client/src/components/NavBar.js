@@ -159,10 +159,7 @@ const NavBar = (props) => {
         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
         <MenuItem component="a" href="/SavedMovies">My Saved Movies</MenuItem>
         <MenuItem component="a" href="/WatchList">My Watched List</MenuItem>
-        <MenuItem onClick={() => { doSignOut(); handleMenuClose();}} >Log out</MenuItem>
-        <MenuItem sx={{color: "#888989"}} onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem sx={{color: "#888989"}} onClick={handleMenuClose}>My account</MenuItem>
-        <MenuItem sx={{color: "#888989"}} onClick={() => { doSignOut(); handleMenuClose();}} >Log out</MenuItem>
+        <MenuItem onClick={() => { navigate("/"); doSignOut(); handleMenuClose();}} >Log out</MenuItem>
         
         </Menu>
     );

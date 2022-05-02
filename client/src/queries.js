@@ -15,13 +15,14 @@ query MovieList($title: String, $pageNum: Int) {
 `;
 
 const GET_MOVIES_BY_ID=gql`
-query MovieById($id: ID!) {
+query MovieById($id: String) {
   movieById(id: $id) {
     id
     title
     image
     plot
     imDbRating
+    page
     tagline
     releaseDate
     adult
@@ -35,12 +36,14 @@ query MoviesByIds($ids: [String]) {
     id
     title
     image
-    description
     plot
+    page
     imDbRating
+    tagline
+    releaseDate
+    adult
   }
 }
-
 `
 
 const GET_USER_WATCHEDMOVIES = gql`
