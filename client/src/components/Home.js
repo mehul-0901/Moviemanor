@@ -66,7 +66,7 @@ const Home = (props) => {
           // setSearchTerm(props.searchTerm);
     async function fetchData() {
       console.log("i am here ");
-      if(props.moodId){
+      if(props.moodId !== 0){
         await getMoodBasedMovies({
           variables: {
             moodId: props.moodId
