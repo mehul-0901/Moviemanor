@@ -12,7 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
-
+import { Navigate } from 'react-router-dom';
 const useStyles = makeStyles({
 	
 	card: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
 function MovieById()
 {
     const classes = useStyles();
-
+	const navigate=useNavigate()
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
 	const [checked,setChecked] = useState(false);
@@ -90,12 +90,7 @@ function MovieById()
 		async function fetchData() 
         {
 			console.log(currentUser);
-            if(currentUser)
-            {
-                console.log(currentUser.email);
-                getMoviesById({variables:{id:id}});
-                console.log("sfdhfgdgs",data);
-            }
+			getMoviesById({variables:{id:id}});
 		}
 		fetchData();
 
@@ -110,8 +105,13 @@ function MovieById()
 	const addComment=()=>{
 		
 		let com=(document.getElementById("comment").value);
+		if(currentUser){
 		addCommentDB({variables:{movieId: id, userId: currentUser.displayName, comment: com}})
-		
+		}
+		else{
+			alert("Login to add a comment");
+			navigate('/SignIn');
+		}
 		document.getElementById("comment").value="";
 
 
@@ -152,7 +152,7 @@ const commentCard = (comment)=>{
 		})
 	}
 
-    if(data && currentUser)
+    if(data )
     {
         return(
 			<div className='homeWithoutLogin'>
