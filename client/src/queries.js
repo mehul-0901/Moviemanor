@@ -7,7 +7,7 @@ query MovieList($title: String, $pageNum: Int) {
     title
     plot
     image
-    imDbRating
+    tmDbRating
     page
   }
 }
@@ -21,14 +21,14 @@ query MovieById($id: String) {
     title
     image
     plot
-    imDbRating
+    tmDbRating
     page
     tagline
     releaseDate
     adult
   }
 }
-`
+`;
 
 const Get_Movies_By_IDS =  gql`
 query MoviesByIds($ids: [String]) {
@@ -38,13 +38,13 @@ query MoviesByIds($ids: [String]) {
     image
     plot
     page
-    imDbRating
+    tmDbRating
     tagline
     releaseDate
     adult
   }
 }
-`
+`;
 
 const GET_USER_WATCHEDMOVIES = gql`
 query CheckIfwatched($userId: String) {
@@ -60,10 +60,19 @@ query SavedMovies($userId: String) {
     id
   }
 }
-  
 `;
 
-
+const GET_MOOD_BASED_MOVIES = gql`
+  query MoodBasedMovies($moodId: ID!, $pageNum: Int) {
+    moodBasedMovies(moodId: $moodId, pageNum: $pageNum) {
+      id
+      title
+      image
+      plot
+      page
+    }
+  }
+`;
 
 
 const ADD_TOWATCHLIST = gql`
@@ -130,6 +139,7 @@ let exported = {
   REMOVE_SAVEFORLATER, 
   GET_MOVIES_BY_ID,
   Get_Movies_By_IDS,
+  GET_MOOD_BASED_MOVIES,
   ADD_COMMENT,
   SHOW_COMMENTS
   };

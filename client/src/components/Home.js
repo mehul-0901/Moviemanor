@@ -57,16 +57,23 @@ const Home = (props) => {
   const [addToSave] = useMutation(queries.ADD_SAVEFORLATER)
   const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER)
   const [pageNum,setPageNum] = useState();
-  const [getUserWatchedMovies,{data: data1,refetch:refetchWatched}] = useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
-  const [getUserSavedMovies,{data: data2,refetch:refetchSaved}] = useLazyQuery(queries.GET_USER_SAVEDMOVIES,{});
-
+  const [getUserWatchedMovies,{data: data1, loading: watchedLoading, refetch:refetchWatched}] = useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
+  const [getUserSavedMovies,{data: data2, loading: savedLoading, refetch:refetchSaved}] = useLazyQuery(queries.GET_USER_SAVEDMOVIES,{});
+  const [getMoodBasedMovies, {data: moodData, loading: moodMoviesLoading, refetch: moodRefetch}] = useLazyQuery(queries.GET_MOOD_BASED_MOVIES, {})
 
   useEffect(() => {
     console.log('on load useeffect '+props.searchTerm);
           // setSearchTerm(props.searchTerm);
     async function fetchData() {
       console.log("i am here ");
-      if(props.searchTerm!=searchTerm) {
+      if(props.moodId){
+        await getMoodBasedMovies({
+          variables: {
+            moodId: props.moodId
+          }
+        })
+      }
+      if(props.searchTerm!==searchTerm) {
         setPageNum(1)
       }
       setSearchTerm(props.searchTerm)
@@ -80,18 +87,27 @@ const Home = (props) => {
       }
       console.log(data);
       console.log(data1);
-      console.log(data2); 
+      console.log(data2);
+      console.log(moodData); 
     }
 		fetchData();
-    }	, [props.searchTerm,pageNum]);
+    }	, [props.searchTerm, pageNum, props.moodId]);
   
+  if (loading || moodMoviesLoading || savedLoading || watchedLoading) {
+    return(
+      <div style={{color: "white"}}>Loading Movies...</div>
+    )
+  } else {
+    
+  }
   return (
     <div className="homeWithoutLogin">
       <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
-        {searchTerm ? <HomeDataGrid data={data} data1={data1} data2={data2} pageNum={pageNum} setPageNum={setPageNum} searchTerm={searchTerm} getAllMovies={getAllMovies} 
-            getUserSavedMovies={getUserSavedMovies} addToSave={addToSave} refetchSaved={refetchSaved} removefromSave={removefromSave}
-            getUserWatchedMovies={getUserWatchedMovies} refetchWatched={refetchWatched} removefromWatchList={removefromWatchList} addToWatchList={addToWatchList}/>
-        : <MoodDetector /> }
+        {searchTerm || props.moodId ? <HomeDataGrid data={data} data1={data1} data2={data2} pageNum={pageNum} setPageNum={setPageNum} searchTerm={searchTerm} getAllMovies={getAllMovies} 
+            getUserSavedMovies={getUserSavedMovies} addToSave={addToSave} refetchSaved={refetchSaved} removefromSave={removefromSave} getUserWatchedMovies={getUserWatchedMovies}
+            refetchWatched={refetchWatched} removefromWatchList={removefromWatchList} addToWatchList={addToWatchList} moodData={moodData} moodRefetch={moodRefetch}
+            getMoodBasedMovies={getMoodBasedMovies} moodId={props.moodId}/>
+        : <MoodDetector setMoodId={props.setMoodId} /> }
       </div>
     </div>
     );

@@ -9,6 +9,7 @@ import  {AuthProvider}  from './firebase/Auth';
 import MovieById from './components/MovieById';
 import SavedMovies from './components/SavedMovies';
 import WatchList from './components/WatchList';
+import Profile from './components/Profile';
 import {
   ApolloClient,
   InMemoryCache,
@@ -29,23 +30,25 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [noOfBookmarks, setNoOfBookmarks] = useState(0)
   const [noOfWatchedMovies, setNoOfWatchedMovies] = useState(0)
+  const [moodMovieList, setMoodMovieList] = useState(false)
+  const [moodId, setMoodId] = useState(0)
 
   return (
     <AuthProvider>
     <ApolloProvider client = {client}>
            <Router>
         <div className="App">
-          <NavBar setSearchTerm={setSearchTerm} noOfBookmarks={noOfBookmarks} noOfWatchedMovies={noOfWatchedMovies} loggedIn={setLoggedIn}/>
+          <NavBar setSearchTerm={setSearchTerm} setMoodId={setMoodId} noOfBookmarks={noOfBookmarks} noOfWatchedMovies={noOfWatchedMovies} loggedIn={setLoggedIn}/>
           <div className='App-body'>
             <Routes>
-              <Route path='/' element={ <Home searchTerm={searchTerm} setNoOfBookmarks={setNoOfBookmarks} setNoOfWatchedMovies={setNoOfWatchedMovies}/> } />
+              <Route path='/' element={ <Home searchTerm={searchTerm} moodId={moodId} setMoodId={setMoodId} setNoOfBookmarks={setNoOfBookmarks} setNoOfWatchedMovies={setNoOfWatchedMovies}/> } />
 
               <Route path='/SignIn' element={ <SignIn/> } />
               <Route path='/SignUp' element={ <SignUp/> } />
               <Route path='/movie/:id' element={ <MovieById/> } />
               <Route path='/SavedMovies' element={ <SavedMovies/> } />
               <Route path='/WatchList' element={ <WatchList/> } />
-
+              <Route path='/Profile' element={<Profile/>} />
             </Routes>
           </div>
         </div>
