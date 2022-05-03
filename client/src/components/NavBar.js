@@ -91,7 +91,7 @@ const NavBar = (props) => {
                     onChange= {(e) => {
                         props.setSearchTerm(e.target.value)
                         console.log(e.target.value);
-                        navigate('/')
+                        navigate("/")
                     }}
                     />
                 </Search>
@@ -154,19 +154,25 @@ const NavBar = (props) => {
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}
+            sx={{marginTop: "4rem", marginLeft: "6rem"}}
         >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        <MenuItem component="a" href="/SavedMovies">My Saved Movies</MenuItem>
-        <MenuItem component="a" href="/WatchList">My Watched List</MenuItem>
-        <MenuItem onClick={(e) => { 
-            e.preventDefault()
-            props.setSearchTerm("")
-            navigate("/") 
-            doSignOut() 
-            handleMenuClose()
-            }} >Log out</MenuItem>
-        
+        <Link to={"/profile"} sx={{textDecoration: "none"}}>
+            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        </Link>
+        <Link to={"/SavedMovies"} sx={{textDecoration: "none"}}>
+            <MenuItem >My Saved Movies</MenuItem>
+        </Link>
+        <Link to={"/WatchList"} sx={{textDecoration: "none"}}>
+            <MenuItem >My Watched List</MenuItem>
+        </Link>
+        <Link to={"/"} sx={{textDecoration: "none"}}>
+            <MenuItem onClick={(e) => { 
+                e.preventDefault()
+                props.setSearchTerm("")
+                doSignOut() 
+                handleMenuClose()
+                }} >Log out</MenuItem>
+        </Link>
         </Menu>
     );
 
