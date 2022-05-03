@@ -75,6 +75,7 @@ const HomeDataGrid = (props) => {
   
       const addSave=(email,id)=>
       {
+        console.log("here");
         props.addToSave({
           variables: { userId:email, movieId:id},
           onCompleted: props.refetchSaved
@@ -82,10 +83,19 @@ const HomeDataGrid = (props) => {
         props.getUserSavedMovies({ variables: { userId:currentUser.email}});
       }
   
-      const handlePageClick =(event,page)=>
+      const handlePageClick =(event, page)=>
       {
         props.setPageNum(page);
-        props.getAllMovies({variables:{"title":props.searchTerm,"pageNum":props.pageNum}}); 
+        if(props.moodData){
+          props.getMoodBasedMovies({
+            variables: {
+              moodId: props.moodId,
+              pageNum: page
+            }
+          })
+        }else{
+          props.getAllMovies({variables:{"title":props.searchTerm,"pageNum":props.pageNum}}); 
+        }
       }
 
       
@@ -93,7 +103,7 @@ const HomeDataGrid = (props) => {
         return (
           <Grid item key={show.id} sx={{paddingLeft: "0px"}}>
             <Card  className={classes.card} sx={{ maxWidth: 345 }} >
-              <Link to={{pathname:`/movie/${show.id}`}} style={{textDecoration: "none"}} >
+              <Link to={`/movie/${show.id}`} style={{textDecoration: "none"}} >
 
                 <CardHeader 
                   avatar={
@@ -106,7 +116,7 @@ const HomeDataGrid = (props) => {
                 <CardMedia
                   component="img"
                   height="400"
-                  image={show.image!="0"?show.image:noImage  }
+                  image={show.image!=="0"?show.image: noImage  }
                   alt={show.title}
                 />
                   </Link>
@@ -137,7 +147,7 @@ const HomeDataGrid = (props) => {
               </CardActions>
                   <CardContent>
                     <Typography variant='body2' color='textSecondary' component='span'>
-                    {show.plot.replace(regex, '').substring(0, 139) + '...'}
+                    {show.plot ? show.plot.replace(regex, '').substring(0, 139) + '...' : `NA`}
 
                     </Typography>
                   </CardContent>
@@ -146,72 +156,86 @@ const HomeDataGrid = (props) => {
             <br></br>
           </Grid>
         );
-      
       }
-
-    if (props.data && currentUser && props.searchTerm) {
-      if(props.data.movieList!==null)
-      {    
-        card =
-        props.data &&
-        props.data.movieList.map((show) => {
-          if(show!==null){
-            let save=false;
-            let wishList=false;
-            if(props.data2 && props.data2.savedMovies) {  
-                if(props.data2.savedMovies.length !== 0){
-                    for (const x of props.data2.savedMovies) {
-                        if(x.id===show.id)
-                        {
-                            save=true;
-                        }
-                    }
-                }
+      if (props.moodData) {
+        if (props.moodData.moodBasedMovies !== null) {
+          card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
+            if (!currentUser) {
+              return (buildCard(movie, false, false));
             }
-            if (props.data1 && props.data1.checkIfwatched) {
-                if(props.data1.checkIfwatched.length !== 0){
-                    for (const x of props.data1.checkIfwatched) {
-                        if(x.id===show.id) {
-                        wishList=true;
-                        }
-                    }
-                } 
-          }
-          return (buildCard(show,save,wishList));
-          }
-        });
-      }
-    }
-
-    const paginate = (page) => {
-        return (
-        <div className="pagination"> 
-            <Pagination 
-            onChange={(event,page)=>handlePageClick(event,page)}
-            count= {page}
-            page={Number(props.pageNum)}
-            variant="outlined"
-            color="primary" ></Pagination>
-        </div>
-        );
-    }
-  
-    if(props.data && currentUser) {
-        if(props.data.movieList) {
-            if(props.data.movieList.length!=0){
-                pagination=paginate(props.data.movieList[0].page)
-            }
+          })
         }
-    }
+      } else if (props.data && currentUser && props.searchTerm) {
+        if(props.data.movieList!==null)
+        {    
+          card =
+          props.data &&
+          props.data.movieList.map((show) => {
+            if(show!==null){
+              let save=false;
+              let wishList=false;
+              if(props.data2 && props.data2.savedMovies) {  
+                  if(props.data2.savedMovies.length !== 0){
+                      for (const x of props.data2.savedMovies) {
+                          if(x.id===show.id)
+                          {
+                              save=true;
+                          }
+                      }
+                  }
+              }
+              if (props.data1 && props.data1.checkIfwatched) {
+                  if(props.data1.checkIfwatched.length !== 0){
+                      for (const x of props.data1.checkIfwatched) {
+                          if(x.id===show.id) {
+                          wishList=true;
+                          }
+                      }
+                  } 
+            }
+            return (buildCard(show,save,wishList));
+            }
+          });
+        }
+      }
 
-    return (
+      //// PAGINATION STARTS ////
+      // Pagination Function
+      const paginate = (page) => {
+          return (
+          <div className="pagination"> 
+              <Pagination 
+              onChange={(event, page)=>handlePageClick(event, page)}
+              count= {page}
+              page={Number(props.pageNum)}
+              variant="outlined"
+              color="primary" ></Pagination>
+          </div>
+          );
+      }
+    
+      // Checking If Data Exists And User Has Logged In And Setting Pagination
+      if(props.data && currentUser) {
+          if(props.data.movieList) {
+              if(props.data.movieList.length!==0){
+                  pagination=paginate(props.data.movieList[0].page)
+              }
+          }
+      } else if (props.moodData) { //If Moods have been Selected And Setting Pagination
+        if (props.moodData.moodBasedMovies && props.moodData.moodBasedMovies.length !== 0) {
+          pagination=paginate(props.moodData.moodBasedMovies[0].page)
+        }
+      }
+      //// PAGINATION ENDS ////
+
+      return (
         <div>
             {pagination}
             <Grid container sx={{marginTop: 0, maxWidth: "1660px", marginLeft: "auto", marginRight: "auto", justifyContent: "center", gridGap: "3.5rem"}} className={classes.grid} spacing={3}>
                 {card} 
             </Grid>
         </div>
-    )
-}
+      )
+    }
 
 export default HomeDataGrid

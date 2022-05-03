@@ -1,8 +1,8 @@
 import { Link, useParams,useNavigate } from 'react-router-dom';
 import '../App.css';
 import queries from '../queries';
-import {useLazyQuery, useQuery} from '@apollo/client';
-import { useEffect ,useContext} from 'react';
+import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
+import React, { useEffect ,useContext, useState} from 'react';
 import {AuthContext} from '../firebase/Auth';
 import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} from '@material-ui/core';
 import noImage from '../img/download.jpeg';
@@ -10,6 +10,8 @@ import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
+import CommentIcon from '@mui/icons-material/Comment';
+import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
 
 const useStyles = makeStyles({
 	
@@ -55,13 +57,33 @@ function MovieById()
 
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
-
+	const [checked,setChecked] = useState(false);
+	let displayComment=null;
+	const [defaultVal,setDefault]=useState("");
     const [getMoviesById, {loading, error, data}] = useLazyQuery(
         queries.GET_MOVIES_BY_ID,
         {
             fetchPolicy:"cache-and-network",
         }
       );
+
+	  const [showComments, {loading:loading1, error:error1, data:comments,refetch:refetch1}] = useLazyQuery(
+        queries.SHOW_COMMENTS,
+        {
+            fetchPolicy:"cache-and-network",
+
+        }
+      );
+
+	  const [addCommentDB, {loading:loading2, error:error2, data:add}] = useMutation(
+        queries.ADD_COMMENT,
+        {
+            fetchPolicy:"network-only",
+			onCompleted:refetch1
+        }
+      );
+
+
       useEffect(() => {
 		console.log('on load useeffect');
         console.log(id);
@@ -72,12 +94,63 @@ function MovieById()
             {
                 console.log(currentUser.email);
                 getMoviesById({variables:{id:id}});
-                console.log(data);
+                console.log("sfdhfgdgs",data);
             }
 		}
 		fetchData();
 
     }	, [id]);
+
+	const showCommentsOfMovie=()=>{
+		setChecked((prev)=>!prev);
+		showComments({variables:{movieId:id}})
+		console.log(comments);
+
+	}
+	const addComment=()=>{
+		
+		let com=(document.getElementById("comment").value);
+		addCommentDB({variables:{movieId: id, userId: currentUser.displayName, comment: com}})
+		
+		document.getElementById("comment").value="";
+
+
+	}
+const commentCard = (comment)=>{
+	return(
+		<Paper sx={{m:1}} elevation={4}>
+			<List sx={{width:'100%', maxwidth:360, bgcolor:'background.paper'}}>
+				<ListItem alignItems="flex-start">
+					<ListItemAvatar>
+						<Avatar sx={{ bgcolor: "blue" }} >
+							 {comment.UserID?comment.UserID.charAt(0):" "}
+						</Avatar>
+					</ListItemAvatar>
+					<ListItemText
+						  primary={comment.UserID}
+						  secondary={
+						<React.Fragment>
+						  <Typography
+						sx={{ display: 'inline' }}
+						component="span"
+						variant="body2"
+						color="text.primary"
+					  ></Typography>
+						  {comment.comment}
+						</React.Fragment>}/>
+				</ListItem>
+			</List>
+		</Paper>
+	 );
+	}
+
+
+
+	if(comments && comments.listOfComments && comments.listOfComments.comment){
+		displayComment =comments.listOfComments.comment.map((comment)=>{
+			return commentCard(comment);
+		})
+	}
 
     if(data && currentUser)
     {
@@ -89,23 +162,18 @@ function MovieById()
                 <Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
                   {data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
                 </Avatar>
-              } action={<Box
-     			 sx={{
-     		   		width: 200,
-					sizeWidth:800,
-     			   alignItems: 'center',
-					alignSelf:'center',
-					marginTop:'0.5cm',
-    			  }}>
-      			<Rating
-        			name="text-feedback"
-        			value={Number(data.movieById.imDbRating)/2}
-        			readOnly
-        			precision={0.5}
-        			emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-					size='large'
-      			/>
-    			</Box>} ></CardHeader>
+              } action={
+				<Box sx={{ width: 200, sizeWidth:800, alignItems: 'center', alignSelf:'center', marginTop:'0.5cm',}} title='TMDB Rating'>		  
+					<Rating
+						name="text-feedback"
+						value={Number(data.movieById.tmDbRating)/2}
+						readOnly
+						precision={0.5}
+						emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+						size='large'
+					/>
+				</Box>}>
+				</CardHeader>
 				
 				
 				<CardMedia
@@ -138,6 +206,12 @@ function MovieById()
 					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
 
 				</CardContent>
+				<div><Button checked={checked} onClick={()=>showCommentsOfMovie()}><CommentIcon/>Comment</Button></div>
+				{checked?<div>
+					<TextField required id="comment" label="Enter Comment" />
+					<button onClick={addComment}>Submit</button></div>
+				:<div></div>}
+				  {checked?displayComment:<div></div>}
 			</Card>
 			<br />
 		</div>
