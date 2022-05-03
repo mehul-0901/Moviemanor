@@ -4,12 +4,12 @@ import { styled, alpha } from '@mui/material/styles';
 import {AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import { doSignOut } from '../firebase/FirebaseFunctions';
-import {BrowserRouter as Router, Route, Link, Routes,NavLink} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Routes,NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../firebase/Auth';
-
+import { Navigate } from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,7 +62,7 @@ const NavBar = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
     const {currentUser} = useContext(AuthContext);
-
+    const navigate=useNavigate();
     const isMenuOpen = Boolean(anchorEl);
     const menuId = 'primary-search-account-menu';
 
@@ -84,26 +84,30 @@ const NavBar = (props) => {
                         <SearchIcon />
                     </SearchIconWrapper>
                     <StyledInputBase
+                    id="searchInput"
                     placeholder="Search…"
+                    autoComplete="false"
                     inputProps={{ 'aria-label': 'search' }}
                     onChange= {(e) => {
                         props.setSearchTerm(e.target.value)
                         console.log(e.target.value);
+                        navigate("/")
                     }}
                     />
                 </Search>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
-                    <MailIcon />
+                <IconButton size="large" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} color="inherit" title="My Watchlist Movies">
+                <Badge badgeContent={props.noOfBookmarks} color="error">
+                    <BookmarksIcon />
                 </Badge>
                 </IconButton>
                 <IconButton
                 size="large"
-                aria-label="show 17 new notifications"
+                aria-label={`show ${props.noOfWatchedMovies} watchlisted movies`}
                 color="inherit"
+                title="My Watched Movies"
                 >
-                <Badge badgeContent={17} color="error">
-                    <NotificationsIcon />
+                <Badge badgeContent={props.noOfWatchedMovies} color="error">
+                    <ListAltIcon />
                 </Badge>
                 </IconButton>
                 <IconButton
@@ -114,6 +118,7 @@ const NavBar = (props) => {
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 color="inherit"
+                title="Profile"
                 >
                 <AccountCircle />
                 </IconButton>
@@ -149,11 +154,25 @@ const NavBar = (props) => {
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}
+            sx={{marginTop: "4rem", marginLeft: "6rem"}}
         >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        <MenuItem onClick={() => { doSignOut(); handleMenuClose();}} >Log out</MenuItem>
-        
+        <Link to={"/profile"} sx={{textDecoration: "none"}}>
+            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        </Link>
+        <Link to={"/SavedMovies"} sx={{textDecoration: "none"}}>
+            <MenuItem >My Saved Movies</MenuItem>
+        </Link>
+        <Link to={"/WatchList"} sx={{textDecoration: "none"}}>
+            <MenuItem >My Watched List</MenuItem>
+        </Link>
+        <Link to={"/"} sx={{textDecoration: "none"}}>
+            <MenuItem onClick={(e) => { 
+                e.preventDefault()
+                props.setSearchTerm("")
+                doSignOut() 
+                handleMenuClose()
+                }} >Log out</MenuItem>
+        </Link>
         </Menu>
     );
 
@@ -164,11 +183,18 @@ const NavBar = (props) => {
                     variant="h6"
                     noWrap
                     component="div"
-                    sx={{ display: { xs: 'none', sm: 'block' } }}
-                    fontSize= "50px" 
+                    sx={{ display: { xs: 'none', sm: 'block' }, fontSize: "50px !important" }} 
                     fontWeight={"bold"}
                 >
-                   <Link to={"/"} style={{textDecoration: "none", color: "inherit"}}>
+                   <Link to={"/"} onClick={(e) => {
+                       e.preventDefault()
+                       props.setSearchTerm("")
+                       navigate("/")
+                       if(currentUser){
+                           let searchBox = document.getElementById("searchInput")
+                           searchBox.value = ""
+                       }
+                   }} style={{textDecoration: "none", color: "inherit"}}>
                         Moviemanor  
                    </Link> 
                 </Typography>

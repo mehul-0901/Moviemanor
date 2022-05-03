@@ -3,6 +3,9 @@ import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 import {AuthContext} from '../firebase/Auth';
 import SocialSignIn from './SocialSignIn';
+import { Button } from '@mui/material';
+
+
 function SignUp() {
   const {currentUser} = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
@@ -31,11 +34,11 @@ function SignUp() {
 
   return (
     <div>
-      <h1>Sign up</h1>
+      <h1 style={{color: "#fff"}}>Sign up</h1>
       {pwMatch && <h4 className='error'>{pwMatch}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
-          <label>
+          <label style={{color: "#888989"}}>
             Name:
             <input
               className='form-control'
@@ -47,7 +50,7 @@ function SignUp() {
           </label>
         </div>
         <div className='form-group'>
-          <label>
+          <label style={{color: "#888989"}}>
             Email:
             <input
               className='form-control'
@@ -59,7 +62,7 @@ function SignUp() {
           </label>
         </div>
         <div className='form-group'>
-          <label>
+          <label style={{color: "#888989"}}>
             Password:
             <input
               className='form-control'
@@ -73,7 +76,7 @@ function SignUp() {
           </label>
         </div>
         <div className='form-group'>
-          <label>
+          <label style={{color: "#888989"}}>
             Confirm Password:
             <input
               className='form-control'
@@ -85,9 +88,9 @@ function SignUp() {
             />
           </label>
         </div>
-        <button id='submitButton' name='submitButton' type='submit'>
+        <Button id='submitButton' className='loginBtn' name='submitButton' type='submit'>
           Sign Up
-        </button>
+        </Button>
       </form>
       <br />
       <SocialSignIn />

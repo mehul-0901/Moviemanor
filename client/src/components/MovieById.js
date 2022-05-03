@@ -8,7 +8,9 @@ import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} 
 import noImage from '../img/download.jpeg';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-
+import Avatar from '@mui/material/Avatar';
+import { blue,red } from '@mui/material/colors';
+import CommentIcon from '@mui/icons-material/Comment';
 
 
 const useStyles = makeStyles({
@@ -18,7 +20,7 @@ const useStyles = makeStyles({
 		height: 'auto',
 		marginLeft: 'auto', 
 		marginRight: 'auto',
-		marginTop:'2cm',
+		marginTop:'10rem',
 		borderRadius: 5,
 		border: '1px solid #1e8678',
 		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
@@ -26,7 +28,12 @@ const useStyles = makeStyles({
 	titleHead: {
 		borderBottom: '1px solid #1e8678',
 		fontWeight: 'bold',
-		fontSize: 'large'
+		fontSize: 'x',
+
+		},
+		title:{
+			fontSize:"xx-large",
+			font:'bold'
 		},
 	grid: {
 		flexGrow: 1,
@@ -66,20 +73,24 @@ function MovieById()
             {
                 console.log(currentUser.email);
                 getMoviesById({variables:{id:id}});
-                console.log(data);
+                console.log("sfdhfgdgs",data);
             }
 		}
 		fetchData();
 
     }	, [id]);
 
-    if(data)
+    if(data && currentUser)
     {
         return(
-<div className='homeWithoutLogin'>
-	<br/><br/><br/>
-<Card className={classes.card} variant='outlined'>
-				<CardHeader className={classes.titleHead} title={data.movieById.title} action={<Box
+			<div className='homeWithoutLogin'>
+			<br/><br/><br/>
+			<Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
+				<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
+                <Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
+                  {data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
+                </Avatar>
+              } action={<Box
      			 sx={{
      		   		width: 200,
 					sizeWidth:800,
@@ -101,29 +112,38 @@ function MovieById()
 				<CardMedia
 					className={classes.media}
 					component='img'
-					image={data.movieById.image!="0"?data.movieById.image:noImage  }
+					image={data.movieById.image!=="0"?data.movieById.image:noImage  }
 					title='show image'  
 				/>
 
 				<CardContent>
 					
+				<Typography className='tagline'>
+					<div className='tagline'> {data.movieById.tagline}</div>
+				</Typography>
 				
 					<Typography variant='body2' color='textPrimary' component='span'>
 						<dl>
                             
                             <h1>{data.movieById.name}</h1>
 							<p>
-								<dt className='title'>Description:</dt>
+								<dt className='title'>Description:</dt><br></br>
 								{data.movieById && data.movieById.plot ? <dd>{data.movieById.plot}</dd> : <dd>N/A</dd>}
 							</p>
 						
 						</dl>
 					</Typography>
+					<Typography >
+					<div className='releaseDate' >Release Date : {data.movieById.releaseDate}</div>
+				</Typography>
+					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
+
 				</CardContent>
+				<div><Link><CommentIcon/>Comment</Link></div>
+
 			</Card>
-			</div>
-
-
+			<br />
+		</div>
         );
     }
     else

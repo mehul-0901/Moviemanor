@@ -9,6 +9,8 @@ let { ObjectId } = require('mongodb');
 const mongoCollections = require('../server/config/mongoCollections');
 const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
+const Comments = mongoCollections.Comments;
+
 
 
 // const { default: axios } = require('axios');
@@ -32,16 +34,32 @@ const typeDefs = gql`
     image: String!
     plot:String!
     imDbRating:String!
-    page:Int!
+    page:Int
+    tagline:String
+    releaseDate:String
+    adult:Boolean
 }
 type mID {
     id: ID!
 }
+
+type Comments{
+    MovieId:ID!
+    comment: [UserComments]
+}
+type UserComments{
+    UserID:ID
+    comment:String
+
+}
   type Query {
     movieList(title: String,pageNum:Int): [Movies]
     movieById(id:String):Movies
+    moviesByIds(ids:[String]):[Movies]
     checkIfwatched(userId:String) : [mID]
     savedMovies(userId:String) : [mID]
+    listOfComments(movieId:String): Comments
+   
 
   }
   type Mutation {
@@ -49,7 +67,10 @@ type mID {
     removeFromWatchList(userId:String,movieID:String):Boolean
     AddSaveforLater(userId:String,movieID:String):mID
     removeSaveforLater(userId:String,movieID:String):Boolean
+    addComments(movieID:String, userID:String, comment:String):Boolean
   }
+
+
 
 `;
 
@@ -57,6 +78,26 @@ type mID {
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
     Mutation:{
+        addComments:async(_,args)=>{
+            
+            const addToComment = await Comments();
+            const MovieIDExist = await addToComment.findOne({MovieId:args.movieID})
+            if (MovieIDExist){
+                let array=MovieIDExist.comment;
+                console.log(MovieIDExist);
+                let temp={UserID:args.userID,comment:args.comment}
+                array.push(temp);
+                const addMovieCommentToDB=await addToComment.updateOne({MovieId:args.movieID},{$set:{comment:array}});
+            }
+            else{
+                let addMovieComment = {
+                    MovieId:args.movieID,
+                    comment:[{UserID:args.userID,comment:args.comment}]
+                }
+                const addMovieCommentToDB = await addToComment.insertOne(addMovieComment)
+            }
+            return true
+        },
         AddtowacthList:async(_,args)=>{
             if(args.movieID == null){
                 return
@@ -65,19 +106,16 @@ const resolvers = {
             let watchList = { 
               userId:args.userId,
               movieId:args.movieID
-             }
-     
-
+            }    
             const find_id = await addToWatch.findOne({userId:args.userId, movieId:args.movieID});
             //console.log(find_id);
-
             if(find_id){
                 throw "Movie is already added in watchlist"
             }
             const insertInfo = await addToWatch.insertOne(watchList);
            
-             let new_id = insertInfo.insertedId;
-             if (insertInfo.insertedCount === 0) throw 'Unable to add in watchList';
+            let new_id = insertInfo.insertedId;
+            if (insertInfo.insertedCount === 0) throw 'Unable to add in watchList';
              
     
             let x  = await addToWatch.findOne(new_id);
@@ -165,14 +203,14 @@ const resolvers = {
             const deletionInfo = await saveForLater.deleteOne(saveList);
           // console.log(deletionInfo);
             if (deletionInfo.deletedCount === 0) {
-                throw 'Could not delete restaurants with given id';
+                throw 'Could not delete movie with given id';
               }
               return deletionInfo.acknowledged;
         },
     },
     Query:{
         movieList: async (_, args) => {
-
+            
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}`);
             if(args.title==undefined)
             {
@@ -238,7 +276,24 @@ const resolvers = {
             return array;
           },
 
-          
+          listOfComments: async(_,args)=>{
+
+            const addToComment = await Comments();
+            const commentByMovie = await addToComment.find({MovieId: args.movieId}).toArray();
+            // console.log(commentByMovie[0].comment);
+            // let array=[];
+            // for (const x of commentByMovie[0].comment) {
+            //     // console.log(x.UserID+"      "+x.comment);
+            //     array.push({UserID:x.UserID,comment:x.comment});
+            // }
+
+            // let temp={}
+            // temp["MovieId"]=commentByMovie[0].MovieId;
+            // temp["comment"]=array;
+            // console.log(temp);
+            return commentByMovie[0]
+
+          },
 
 
           savedMovies: async (_, args) => {
@@ -255,6 +310,58 @@ const resolvers = {
             }
             return array;
           },
+
+          
+          moviesByIds:async (_, args) => {
+            let movieArray = []
+            for(id in args.ids){
+               // console.log(args.ids[id]);
+                const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.ids[id]}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
+                let temp={};
+
+                if(data){  
+                    if(data.id)
+                    {
+                        temp["id"]=data.id;
+                    }
+                    else{
+                        temp["id"]="0";
+                    }
+                    if(data.title)
+                    {
+                        temp["title"]=data.title;
+                    }
+                    else{
+                        temp["title"]="0";
+                    }if(data.poster_path)
+                    {
+                        temp["image"]="https://image.tmdb.org/t/p/w500"+data.poster_path;
+                    }
+                    else{
+                        temp["image"]="0";
+                    }if(data.overview)
+                    {
+                        temp["plot"]=data.overview;
+                    }
+                    else{
+                        temp["plot"]="0";
+                    }
+                
+                if(data.vote_average){
+                    temp["imDbRating"]=data.vote_average;
+                   }
+                   else
+                   {
+                       temp["imDbRating"]="0"
+                   } 
+                }
+
+                movieArray.push(temp)
+            }
+
+            return movieArray
+          },
+
           movieById: async (_, args) => {
         
             const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
@@ -295,6 +402,27 @@ const resolvers = {
                {
                    temp["imDbRating"]="0"
                } 
+               if(data.tagline)
+               {
+                   temp["tagline"]=data.tagline;
+               }
+               else{
+                temp["tagline"]="";
+            }
+            if(data.release_date)
+            {
+                temp["releaseDate"]=data.release_date;
+            }
+            else
+            {
+                temp["releaseDate"]=""
+            }
+            if(data.adult==true || data.adult==false){
+                temp["adult"]=data.adult;
+            }
+            else{
+                temp["adult"]=true;
+            }
             }
             
             return temp;
@@ -302,7 +430,6 @@ const resolvers = {
        
           
     },
-
 
 
     };

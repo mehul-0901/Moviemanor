@@ -2,17 +2,19 @@ import React, {useContext} from 'react';
 import SocialSignIn from './SocialSignIn';
 import {Navigate} from 'react-router-dom';
 import {AuthContext} from '../firebase/Auth';
+import { Button } from '@mui/material';
 import {
   doSignInWithEmailAndPassword,
   doPasswordReset
 } from '../firebase/FirebaseFunctions';
 
+
 function SignIn() {
   const {currentUser} = useContext(AuthContext);
+
   const handleLogin = async (event) => {
     event.preventDefault();
     let {email, password} = event.target.elements;
-
     try {
       await doSignInWithEmailAndPassword(email.value, password.value);
     } catch (error) {
@@ -32,15 +34,17 @@ function SignIn() {
       );
     }
   };
+
   if (currentUser) {
     return <Navigate to='/' />;
   }
+
   return (
     <div>
-      <h1>Log in</h1>
+      <h1 style={{color: "#fff"}}>Log in</h1>
       <form onSubmit={handleLogin}>
         <div className='form-group'>
-          <label>
+          <label style={{color: "#888989"}}>
             Email:
             <input
               className='form-control'
@@ -53,7 +57,7 @@ function SignIn() {
           </label>
         </div>
         <div className='form-group'>
-          <label>
+          <label style={{color: "#888989"}}>
             Password:
             <input
               className='form-control'
@@ -65,11 +69,12 @@ function SignIn() {
             />
           </label>
         </div>
-        <button type='submit'>Log in</button>
-
-        <button className='forgotPassword' onClick={passwordReset}>
+        <Button className='loginBtn' type='submit'>Log in</Button>
+        <br />
+        <br />
+        <Button className='forgotPassword' sx={{color: "#5089dc"}} onClick={passwordReset}>
           Forgot Password
-        </button>
+        </Button>
       </form>
 
       <br />

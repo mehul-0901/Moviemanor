@@ -22,9 +22,30 @@ query MovieById($id: String) {
     image
     plot
     imDbRating
+    page
+    tagline
+    releaseDate
+    adult
   }
 }
 `
+
+const Get_Movies_By_IDS =  gql`
+query MoviesByIds($ids: [String]) {
+  moviesByIds(ids: $ids) {
+    id
+    title
+    image
+    plot
+    page
+    imDbRating
+    tagline
+    releaseDate
+    adult
+  }
+}
+`
+
 const GET_USER_WATCHEDMOVIES = gql`
 query CheckIfwatched($userId: String) {
   checkIfwatched(userId: $userId) {
@@ -88,7 +109,8 @@ let exported = {
   GET_USER_SAVEDMOVIES,
   ADD_SAVEFORLATER,
   REMOVE_SAVEFORLATER, 
-  GET_MOVIES_BY_ID
+  GET_MOVIES_BY_ID,
+  Get_Movies_By_IDS
   };
   
 export default exported
