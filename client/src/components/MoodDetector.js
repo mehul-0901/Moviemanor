@@ -182,6 +182,9 @@ const MoodDetector = (props) => {
         )
     }
 
+    if(!props.moodId){
+        props.setPageNum()
+    }
     return(
         <div style={{marginTop: "11rem"}}>
             <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
