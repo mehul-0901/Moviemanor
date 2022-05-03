@@ -176,7 +176,8 @@ const WatchList = (props) => {
         )
     }
    // console.log(watched_movies);
-   if(watched_movies && watched_movies.moviesByIds.length!=0){ card =
+   if(watched_movies && watched_movies.moviesByIds.length!==0){ 
+    card =
     watched_movies &&
     watched_movies.moviesByIds.map((show) => {
         return buildCard(show);

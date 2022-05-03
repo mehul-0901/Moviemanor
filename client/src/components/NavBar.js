@@ -9,8 +9,8 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import { doSignOut } from '../firebase/FirebaseFunctions';
 import {BrowserRouter as Router, Route, Link, Routes,NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../firebase/Auth';
-import { Navigate } from "react-router-dom";
 
+ 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -95,21 +95,20 @@ const NavBar = (props) => {
                     }}
                     />
                 </Search>
-                <IconButton size="large" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} color="inherit" title="My Watchlist Movies">
-                <Badge badgeContent={props.noOfBookmarks} color="error">
-                    <BookmarksIcon />
-                </Badge>
-                </IconButton>
-                <IconButton
-                size="large"
-                aria-label={`show ${props.noOfWatchedMovies} watchlisted movies`}
-                color="inherit"
-                title="My Watched Movies"
-                >
-                <Badge badgeContent={props.noOfWatchedMovies} color="error">
-                    <ListAltIcon />
-                </Badge>
-                </IconButton>
+                <Link to={"/SavedMovies"}>
+                    <IconButton size="large" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} sx={{color: "rgb(52 71 103) !important"}} title="My Watchlist Movies">
+                        <Badge badgeContent={props.noOfBookmarks} color="error">
+                            <BookmarksIcon />
+                        </Badge>
+                    </IconButton>
+                </Link>
+                <Link to={"/WatchList"}>
+                    <IconButton size="large" aria-label={`show ${props.noOfWatchedMovies} watched movies`} sx={{color: "rgb(52 71 103) !important"}} title="My Watched Movies">
+                        <Badge badgeContent={props.noOfWatchedMovies} color="error">
+                            <ListAltIcon />
+                        </Badge>
+                    </IconButton>
+                </Link>
                 <IconButton
                 size="large"
                 edge="end"
@@ -120,7 +119,7 @@ const NavBar = (props) => {
                 color="inherit"
                 title="Profile"
                 >
-                <AccountCircle />
+                    <AccountCircle />
                 </IconButton>
             </div>
             );
