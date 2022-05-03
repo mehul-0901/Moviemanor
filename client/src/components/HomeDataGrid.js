@@ -158,8 +158,8 @@ const HomeDataGrid = (props) => {
           if(show!==null){
             let save=false;
             let wishList=false;
-            if(props.data2.savedMovies.length !== 0) {  
-                if(props.data2.savedMovies){
+            if(props.data2 && props.data2.savedMovies) {  
+                if(props.data2.savedMovies.length !== 0){
                     for (const x of props.data2.savedMovies) {
                         if(x.id===show.id)
                         {
@@ -168,8 +168,8 @@ const HomeDataGrid = (props) => {
                     }
                 }
             }
-            if (props.data1.checkIfwatched.length !== 0) {
-                if(props.data1.checkIfwatched){
+            if (props.data1 && props.data1.checkIfwatched) {
+                if(props.data1.checkIfwatched.length !== 0){
                     for (const x of props.data1.checkIfwatched) {
                         if(x.id===show.id) {
                         wishList=true;
