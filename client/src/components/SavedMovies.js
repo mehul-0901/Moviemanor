@@ -2,23 +2,19 @@ import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
 import {  useParams } from 'react-router-dom';
-import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
+import { useMutation, useLazyQuery} from '@apollo/client';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
 import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
 import {AuthContext} from '../firebase/Auth';
-
 import { makeStyles,Box} from '@material-ui/core';
 import { Grid } from "@mui/material";
 import noImage from '../img/download.jpeg';
@@ -27,6 +23,7 @@ import { Pagination } from "@mui/material";
 import { Link } from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
+
 
 const useStyles = makeStyles({
 	card: {
@@ -57,9 +54,6 @@ const useStyles = makeStyles({
 	}
 });
 
-
-
-
 const SavedMovies = (props) => {
 
     const classes = useStyles();
@@ -68,7 +62,7 @@ const SavedMovies = (props) => {
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
 
-    const [getusersavedmovies, {loading, error, data,refetch:refetchSaved}] = useLazyQuery(
+    const [getusersavedmovies, {loading, error, data, refetch:refetchSaved}] = useLazyQuery(
         queries.GET_USER_SAVEDMOVIES,
         {
             fetchPolicy:"cache-and-network",
@@ -179,43 +173,37 @@ const SavedMovies = (props) => {
         )
     }
 
-if(saved_movies && saved_movies.moviesByIds.length!=0){
-  
+  if(saved_movies && saved_movies.moviesByIds.length!==0){
     card =
-    saved_movies &&
-    saved_movies.moviesByIds.map((show) => {
+      saved_movies &&
+      saved_movies.moviesByIds.map((show) => {
         return buildCard(show);
       });
+  } else {
+    return(
+      <div style={{color:"white"}}>
+        "Kindly save movies to show!"
+      </div>
+    );
+  }
 
-    }
-    else{
-        return(
-            <div style={{color:"white"}}>
-            "Kindly save movies to show!"
-            </div>
-        )
-    }
-
-
-    if (loading) {
-        return (
-          <div>
-            <h2>Loading....</h2>
-          </div>
-        );
-      } else if (error) {
-        return <div>{error.message}</div>;
-      } else {
-        return (
-            <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
-
-          <Grid container className={classes.grid} spacing={3}>
-              {card}
-            </Grid>
-          </div>
-        );
-      }
-
+  if (loading) {
+    return (
+      <div>
+        <h2>Loading....</h2>
+      </div>
+    );
+  } else if (error) {
+    return <div>{error.message}</div>;
+  } else {
+    return (
+      <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
+        <Grid container className={classes.grid} spacing={3}>
+          {card}
+        </Grid>
+      </div>
+    );
+  }
 }
 
 export default SavedMovies

@@ -90,23 +90,18 @@ function MovieById()
                 <Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
                   {data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
                 </Avatar>
-              } action={<Box
-     			 sx={{
-     		   		width: 200,
-					sizeWidth:800,
-     			   alignItems: 'center',
-					alignSelf:'center',
-					marginTop:'0.5cm',
-    			  }}>
-      			<Rating
-        			name="text-feedback"
-        			value={Number(data.movieById.imDbRating)/2}
-        			readOnly
-        			precision={0.5}
-        			emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-					size='large'
-      			/>
-    			</Box>} ></CardHeader>
+              } action={
+				<Box sx={{ width: 200, sizeWidth:800, alignItems: 'center', alignSelf:'center', marginTop:'0.5cm',}} title='TMDB Rating'>		  
+					<Rating
+						name="text-feedback"
+						value={Number(data.movieById.tmDbRating)/2}
+						readOnly
+						precision={0.5}
+						emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+						size='large'
+					/>
+				</Box>}>
+				</CardHeader>
 				
 				
 				<CardMedia
@@ -139,7 +134,11 @@ function MovieById()
 					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
 
 				</CardContent>
-				<div><Link><CommentIcon/>Comment</Link></div>
+				<div>
+					{/* <Link> */}
+						<CommentIcon/>Comment
+					{/* </Link> */}
+				</div>
 
 			</Card>
 			<br />

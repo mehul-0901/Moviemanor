@@ -67,11 +67,26 @@ const MoodDetector = (props) => {
     const happyMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
-                <Button className={classes.button}>Romantic</Button>
-                <Button className={classes.button}>Glamorous</Button>
-                <Button className={classes.button}>Powerful</Button>
-                <Button className={classes.button}>Euphoric</Button>
-                <Button className={classes.button}>Trippy</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(710356)
+                }}>Romantic</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(14267)
+                }}>Glamorous</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(128)
+                }}>Powerful</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(5590)
+                }}>Euphoric</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(26302)
+                }}>Trippy</Button>
             </div>
         )
     }
@@ -79,11 +94,26 @@ const MoodDetector = (props) => {
     const sadMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
-                <Button className={classes.button}>Ashamed</Button>
-                <Button className={classes.button}>Lonely</Button>
-                <Button className={classes.button}>Depressed</Button>
-                <Button className={classes.button}>Empty</Button>
-                <Button className={classes.button}>Devastated</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(892772)
+                }}>Ashamed</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(2039)
+                }}>Lonely</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(62215)
+                }}>Depressed</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(1807)
+                }}>Empty</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(544)
+                }}>Devastated</Button>
             </div>
         )
     }
@@ -91,9 +121,18 @@ const MoodDetector = (props) => {
     const angryMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
-                <Button className={classes.button}>Tough</Button>
-                <Button className={classes.button}>Grumpy</Button>
-                <Button className={classes.button}>Riled Up</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(9067)
+                }}>Tough</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(36850)
+                }}>Grumpy</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(11524)
+                }}>Riled Up</Button>
             </div>
         )
     }
@@ -101,11 +140,26 @@ const MoodDetector = (props) => {
     const neutralMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
-                <Button className={classes.button}>Bored</Button>
-                <Button className={classes.button}>Skeptical</Button>
-                <Button className={classes.button}>Horny</Button>
-                <Button className={classes.button}>Curious</Button>
-                <Button className={classes.button}>Safe</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(103328)
+                }}>Bored</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(24192)
+                }}>Skeptical</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(2105)
+                }}>Horny</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(44479)
+                }}>Curious</Button>
+                <Button className={classes.button} onClick={(e) => {
+                    e.preventDefault()
+                    props.setMoodId(9353)
+                }}>Safe</Button>
             </div>
         )
     }
@@ -117,6 +171,7 @@ const MoodDetector = (props) => {
             </Typography>
             <br />
             <br />
+            
             {initialMoods && initialMood()}
             {happyMoods && happyMood()}
             {sadMoods && sadMood()}
