@@ -134,7 +134,11 @@ function MovieById()
 					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
 
 				</CardContent>
-				<div><Link><CommentIcon/>Comment</Link></div>
+				<div>
+					{/* <Link> */}
+						<CommentIcon/>Comment
+					{/* </Link> */}
+				</div>
 
 			</Card>
 			<br />

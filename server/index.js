@@ -38,32 +38,37 @@ const typeDefs = gql`
         adult: Boolean
     }
 
-type Comments{
-    MovieId:ID!
-    comment: [UserComments]
-}
-type UserComments{
-    UserID:ID
-    comment:String
+    type movieId {
+        id: ID!
+    }
+    type Comments{
+        MovieId: ID!
+        comment: [UserComments]
+    }
+    
+    type UserComments{
+        UserID:ID
+        comment:String
 
-}
-    movieList(title: String,pageNum:Int): [Movies]
-  type Query {
-    movieById(id:String):Movies
-    checkIfwatched(userId:String) : [mID]
-    moviesByIds(ids:[String]):[Movies]
-    savedMovies(userId:String) : [mID]
-    listOfComments(movieId:String): Comments
-        moodBasedMovies(moodId: ID!): [Movies]
+    }
+
+    type Query {
+        movieById(id:String):Movies
+        checkIfwatched(userId:String) : [movieId]
+        moviesByIds(ids:[String]):[Movies]
+        savedMovies(userId:String) : [movieId]
+        listOfComments(movieId:String): Comments
+        moodBasedMovies(moodId: ID!, pageNum: Int): [Movies]
+        movieList(title: String,pageNum:Int): [Movies]
     }
 
     type Mutation {
         removeFromWatchList(userId: String, movieID: String): Boolean
-        AddtowacthList(userId: String, movieID: String): movieID
-        AddSaveforLater(userId: String, movieID: String): movieID
+        AddtowacthList(userId: String, movieID: String): movieId
+        AddSaveforLater(userId: String, movieID: String): movieId
         removeSaveforLater(userId: String, movieID: String): Boolean
-    addComments(movieID:String, userID:String, comment:String):Boolean
-  }
+        addComments(movieID:String, userID:String, comment:String):Boolean
+    }
 `;
 
 // Resolvers define the technique for fetching the types defined in the
@@ -410,6 +415,9 @@ const resolvers = {
         },
 
         moodBasedMovies: async(_, args) => {
+            if(args.moodId == 0){
+                return [null]
+            }
             if(!args.pageNum) {
                 args.pageNum = 1
             }
@@ -420,9 +428,9 @@ const resolvers = {
                 let movie = {
                     id: x.id,
                     title: x.title ? x.title : `NA`,
-                    image: x.poster_path ? x.poster_path : `NA`,
-                    plot: x.overview ? x.overview : `NA`,
-                    page: data.page 
+                    image: x.poster_path ? "https://image.tmdb.org/t/p/w500"+x.poster_path : `NA`,
+                    plot: x.overview,
+                    page: data.total_pages 
                 }
                 moviesArray.push(movie)
             })

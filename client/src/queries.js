@@ -62,7 +62,17 @@ query SavedMovies($userId: String) {
 }
 `;
 
-
+const GET_MOOD_BASED_MOVIES = gql`
+  query MoodBasedMovies($moodId: ID!, $pageNum: Int) {
+    moodBasedMovies(moodId: $moodId, pageNum: $pageNum) {
+      id
+      title
+      image
+      plot
+      page
+    }
+  }
+`;
 
 
 const ADD_TOWATCHLIST = gql`
@@ -109,7 +119,8 @@ let exported = {
   ADD_SAVEFORLATER,
   REMOVE_SAVEFORLATER, 
   GET_MOVIES_BY_ID,
-  Get_Movies_By_IDS
+  Get_Movies_By_IDS,
+  GET_MOOD_BASED_MOVIES
   };
   
 export default exported
