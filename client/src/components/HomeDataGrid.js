@@ -75,6 +75,7 @@ const HomeDataGrid = (props) => {
   
       const addSave=(email,id)=>
       {
+        console.log("here");
         props.addToSave({
           variables: { userId:email, movieId:id},
           onCompleted: props.refetchSaved

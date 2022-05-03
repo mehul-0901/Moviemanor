@@ -10,6 +10,7 @@ import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
+import CommentIcon from '@mui/icons-material/Comment';
 
 
 const useStyles = makeStyles({
@@ -72,7 +73,7 @@ function MovieById()
             {
                 console.log(currentUser.email);
                 getMoviesById({variables:{id:id}});
-                console.log(data);
+                console.log("sfdhfgdgs",data);
             }
 		}
 		fetchData();
@@ -138,6 +139,8 @@ function MovieById()
 					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
 
 				</CardContent>
+				<div><Link><CommentIcon/>Comment</Link></div>
+
 			</Card>
 			<br />
 		</div>

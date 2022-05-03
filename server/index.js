@@ -9,6 +9,7 @@ let { ObjectId } = require('mongodb');
 const mongoCollections = require('../server/config/mongoCollections');
 const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
+const Comments = mongoCollections.Comments;
 
 
 
@@ -42,15 +43,22 @@ type mID {
     id: ID!
 }
 
+type Comments{
+    MovieId:ID!
+    comment: [UserComments]
+}
+type UserComments{
+    UserID:ID
+    comment:String
 
-
-
+}
   type Query {
     movieList(title: String,pageNum:Int): [Movies]
     movieById(id:String):Movies
     moviesByIds(ids:[String]):[Movies]
     checkIfwatched(userId:String) : [mID]
     savedMovies(userId:String) : [mID]
+    listOfComments(movieId:String): Comments
    
 
   }
@@ -59,6 +67,7 @@ type mID {
     removeFromWatchList(userId:String,movieID:String):Boolean
     AddSaveforLater(userId:String,movieID:String):mID
     removeSaveforLater(userId:String,movieID:String):Boolean
+    addComments(movieID:String, userID:String, comment:String):Boolean
   }
 
 
@@ -69,6 +78,26 @@ type mID {
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
     Mutation:{
+        addComments:async(_,args)=>{
+            
+            const addToComment = await Comments();
+            const MovieIDExist = await addToComment.findOne({MovieId:args.movieID})
+            if (MovieIDExist){
+                let array=MovieIDExist.comment;
+                console.log(MovieIDExist);
+                let temp={UserID:args.userID,comment:args.comment}
+                array.push(temp);
+                const addMovieCommentToDB=await addToComment.updateOne({MovieId:args.movieID},{$set:{comment:array}});
+            }
+            else{
+                let addMovieComment = {
+                    MovieId:args.movieID,
+                    comment:[{UserID:args.userID,comment:args.comment}]
+                }
+                const addMovieCommentToDB = await addToComment.insertOne(addMovieComment)
+            }
+            return true
+        },
         AddtowacthList:async(_,args)=>{
             if(args.movieID == null){
                 return
@@ -77,19 +106,16 @@ const resolvers = {
             let watchList = { 
               userId:args.userId,
               movieId:args.movieID
-             }
-     
-
+            }    
             const find_id = await addToWatch.findOne({userId:args.userId, movieId:args.movieID});
             //console.log(find_id);
-
             if(find_id){
                 throw "Movie is already added in watchlist"
             }
             const insertInfo = await addToWatch.insertOne(watchList);
            
-             let new_id = insertInfo.insertedId;
-             if (insertInfo.insertedCount === 0) throw 'Unable to add in watchList';
+            let new_id = insertInfo.insertedId;
+            if (insertInfo.insertedCount === 0) throw 'Unable to add in watchList';
              
     
             let x  = await addToWatch.findOne(new_id);
@@ -250,7 +276,24 @@ const resolvers = {
             return array;
           },
 
-          
+          listOfComments: async(_,args)=>{
+
+            const addToComment = await Comments();
+            const commentByMovie = await addToComment.find({MovieId: args.movieId}).toArray();
+            // console.log(commentByMovie[0].comment);
+            // let array=[];
+            // for (const x of commentByMovie[0].comment) {
+            //     // console.log(x.UserID+"      "+x.comment);
+            //     array.push({UserID:x.UserID,comment:x.comment});
+            // }
+
+            // let temp={}
+            // temp["MovieId"]=commentByMovie[0].MovieId;
+            // temp["comment"]=array;
+            // console.log(temp);
+            return commentByMovie[0]
+
+          },
 
 
           savedMovies: async (_, args) => {
