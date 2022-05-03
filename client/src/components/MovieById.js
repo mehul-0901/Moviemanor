@@ -118,7 +118,7 @@ function MovieById()
 	}
 const commentCard = (comment)=>{
 	return(
-		<Paper sx={{m:1}} elevation={4}>
+		<Paper sx={{m:1}} elevation={4} key={comment.UserID}>
 			<List sx={{width:'100%', maxwidth:360, bgcolor:'background.paper'}}>
 				<ListItem alignItems="flex-start">
 					<ListItemAvatar>
