@@ -11,7 +11,6 @@ import StarIcon from '@mui/icons-material/Star';
 import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 
-
 const useStyles = makeStyles({
 	
 	card: {
@@ -68,6 +67,7 @@ function MovieById()
         console.log(id);
 		async function fetchData() 
         {
+			console.log(currentUser);
             if(currentUser)
             {
                 console.log(currentUser.email);
