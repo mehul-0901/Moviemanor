@@ -171,7 +171,7 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
-      if (props.moodData) {
+      if (!props.searchTerm && props.moodData) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
             if (!currentUser) {
