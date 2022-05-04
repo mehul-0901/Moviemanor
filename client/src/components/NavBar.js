@@ -170,6 +170,7 @@ const NavBar = (props) => {
                 props.setSearchTerm("")
                 doSignOut() 
                 handleMenuClose()
+                navigate("/")
                 }} >Log out</MenuItem>
         </Link>
         </Menu>
