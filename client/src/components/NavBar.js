@@ -96,13 +96,14 @@ const NavBar = (props) => {
                     />
                 </Search>
                 <Link to={"/SavedMovies"}>
-                    <IconButton size="large" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} sx={{color: "rgb(52 71 103) !important"}} title="My Watchlist Movies">
+                    <IconButton size="large" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} sx={{color: "rgb(52 71 103) !important"}} title="My Watchlist Movies"
+                    onClick={() => {props.setSearchTerm("")}}>
                         <Badge badgeContent={props.noOfBookmarks} color="error">
                             <BookmarksIcon />
                         </Badge>
                     </IconButton>
                 </Link>
-                <Link to={"/WatchList"}>
+                <Link to={"/WatchList"} onClick={() => {props.setSearchTerm("")}}>
                     <IconButton size="large" aria-label={`show ${props.noOfWatchedMovies} watched movies`} sx={{color: "rgb(52 71 103) !important"}} title="My Watched Movies">
                         <Badge badgeContent={props.noOfWatchedMovies} color="error">
                             <ListAltIcon />
