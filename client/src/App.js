@@ -46,9 +46,9 @@ function App() {
               <Route path='/SignIn' element={ <SignIn/> } />
               <Route path='/SignUp' element={ <SignUp/> } />
               <Route path='/movie/:id' element={ <MovieById/> } />
-              <Route path='/SavedMovies' element={ <SavedMovies/> } />
-              <Route path='/WatchList' element={ <WatchList/> } />
-              <Route path='/UserProfile' element={<UserProfile/>} />
+              <Route path='/SavedMovies' element={ <SavedMovies setSearchTerm={setSearchTerm}/> } />
+              <Route path='/WatchList' element={ <WatchList setSearchTerm={setSearchTerm}/> } />
+              <Route path='/UserProfile' element={<UserProfile setSearchTerm={setSearchTerm}/>} />
             </Routes>
           </div>
         </div>
