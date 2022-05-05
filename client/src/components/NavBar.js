@@ -155,7 +155,7 @@ const NavBar = (props) => {
             onClose={handleMenuClose}
             sx={{marginTop: "4rem", marginLeft: "6rem"}}
         >
-        <Link to={"/Profile"} sx={{textDecoration: "none"}}>
+        <Link to={"/UserProfile"} sx={{textDecoration: "none"}}>
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         </Link>
         <Link to={"/SavedMovies"} sx={{textDecoration: "none"}}>

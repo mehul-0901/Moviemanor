@@ -3,11 +3,17 @@ const { ApolloServer, gql } = require('apollo-server');
 const { default: axios } = require('axios');
 const redis = require('redis');
 const client = redis.createClient();
+// var fs = require('file-system');
+// const fetch = require('node-fetch');
 const uuid = require('uuid'); //for generating _id's
+let { ObjectId } = require('mongodb');
 const mongoCollections = require('../server/config/mongoCollections');
 const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
 const Comments = mongoCollections.Comments;
+const UserImage = mongoCollections.UserImage;
+
+
 
 
 
@@ -52,6 +58,10 @@ const typeDefs = gql`
 
     }
 
+   # type userImage{ 
+   #     image: String
+   #    }
+
     type Query {
         movieById(id:String):Movies
         checkIfwatched(userId:String) : [movieId]
@@ -60,6 +70,7 @@ const typeDefs = gql`
         listOfComments(movieId:String): Comments
         moodBasedMovies(moodId: ID!, pageNum: Int): [Movies]
         movieList(title: String,pageNum:Int): [Movies]
+      ##  getUserImage(userId:String): userImage
     }
 
     type Mutation {
@@ -68,6 +79,7 @@ const typeDefs = gql`
         AddSaveforLater(userId: String, movieID: String): movieId
         removeSaveforLater(userId: String, movieID: String): Boolean
         addComments(movieID:String, userID:String, comment:String):Boolean
+       ## addImage(userID:String, image: String): userImage
     }
 `;
 
@@ -197,6 +209,53 @@ const resolvers = {
             }
             return deletionInfo.acknowledged;
         },
+
+        // addImage:async(_,args)=>{
+        //     const getImage = await  UserImage();
+        //     let url = URL.createObjectURL("blob:http://localhost:3000/80e22920-e523-461e-9f08-b9f963b6af32")
+        //     console.log(url);
+        //     fs.copyFile("blob:http://localhost:3000/80e22920-e523-461e-9f08-b9f963b6af32", '../client/src/userImages/HW_07_Plot.png')
+        //     const newImage ={
+        //         userId:args.userID,
+        //         userImage:args.image 
+        //     }
+
+        //     const find_id = await getImage.findOne({userId:args.userID});
+        //     //console.log(find_id);
+
+        //     if(find_id){
+        //         console.log(find_id);
+        //         let parsedId = ObjectId(find_id._id); 
+        //     console.log(parsedId);
+        //         const updatedProfile = {
+        //             userId:args.userID,
+        //             userImage:args.image 
+    
+        //         };
+        //         if(args.image === find_id.userImage){
+        //             return {image: updatedProfile.userImage}
+        //         }
+    
+        //         const updatedInfo = await getImage.updateOne(
+        //             {  _id: parsedId},
+        //             { $set: updatedProfile }
+        //         );
+    
+        //         if (updatedInfo.modifiedCount === 0) {
+        //             throw 'could not update user image successfully';
+        //         }
+
+        //         return {image: updatedProfile.userImage}
+        //     }
+        //     else{
+        //     const insertInfo = await getImage.insertOne(newImage);
+        //     if (insertInfo.insertedCount === 0) throw 'Unable to add in saveList';
+    
+        //     return {image: newImage.userImage}
+
+        //     } 
+        // }
+
     },
 
     Query:{
@@ -436,6 +495,26 @@ const resolvers = {
             })
             return moviesArray
         }
+
+
+        // getUserImage: async(_, args) => {
+
+        //     const getImage = await  UserImage(); 
+        //     const find_image = await getImage.find({  userId: args.userId } ).toArray();
+        //     if(find_image.length === 0) return {};
+        //     let image = {}
+        //     for(list in find_image ){
+        //         image = {image: find_image[list].userImage}
+               
+        //     }
+        //     return image;
+
+        // }
+
+
+
+
+
     },
 };
 

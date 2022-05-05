@@ -9,7 +9,7 @@ import  {AuthProvider}  from './firebase/Auth';
 import MovieById from './components/MovieById';
 import SavedMovies from './components/SavedMovies';
 import WatchList from './components/WatchList';
-import Profile from './components/Profile';
+import UserProfile from './components/UserProfile';
 import {
   ApolloClient,
   InMemoryCache,
@@ -48,7 +48,7 @@ function App() {
               <Route path='/movie/:id' element={ <MovieById/> } />
               <Route path='/SavedMovies' element={ <SavedMovies/> } />
               <Route path='/WatchList' element={ <WatchList/> } />
-              <Route path='/Profile' element={<Profile/>} />
+              <Route path='/UserProfile' element={<UserProfile/>} />
             </Routes>
           </div>
         </div>
