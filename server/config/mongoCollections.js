@@ -17,6 +17,7 @@ const getCollectionFn = (collection) => {
 module.exports = {
 Movie: getCollectionFn('Movie'),
 SaveMovie:getCollectionFn('SaveMovie'),
-Comments: getCollectionFn('Comments')
+Comments: getCollectionFn('Comments'),
+UserImage:  getCollectionFn('UserImage')
 
 };

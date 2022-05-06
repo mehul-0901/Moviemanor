@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   await firebase.auth().createUserWithEmailAndPassword(email, password);
-  firebase.auth().currentUser.updateProfile({displayName: displayName});
+  await firebase.auth().currentUser.updateProfile({displayName: displayName});
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
@@ -31,8 +31,13 @@ async function doSocialSignIn(provider) {
 }
 
 async function doPasswordReset(email) {
+  try{
   await firebase.auth().sendPasswordResetEmail(email);
 }
+catch(e)
+{
+  throw `Provided email is not an User.`
+}}
 
 async function doPasswordUpdate(password) {
   await firebase.auth().updatePassword(password);

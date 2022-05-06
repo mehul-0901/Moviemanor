@@ -16,6 +16,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 
+import { Navigate } from 'react-router-dom';
 const useStyles = makeStyles({
 	
 	card: {
@@ -57,7 +58,7 @@ const useStyles = makeStyles({
 function MovieById()
 {
     const classes = useStyles();
-
+	const navigate=useNavigate()
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
 	const [checked,setChecked] = useState(false);
@@ -92,12 +93,8 @@ function MovieById()
         console.log(id);
 		async function fetchData() 
         {
-            if(currentUser)
-            {
-                console.log(currentUser.email);
-                getMoviesById({variables:{id:id}});
-                console.log("sfdhfgdgs",data);
-            }
+			console.log(currentUser);
+			getMoviesById({variables:{id:id}});
 		}
 		fetchData();
 
@@ -112,15 +109,20 @@ function MovieById()
 	const addComment=()=>{
 		
 		let com=(document.getElementById("comment").value);
+		if(currentUser){
 		addCommentDB({variables:{movieId: id, userId: currentUser.displayName, comment: com}})
-		
+		}
+		else{
+			alert("Login to add a comment");
+			navigate('/SignIn');
+		}
 		document.getElementById("comment").value="";
 
 
 	}
 const commentCard = (comment)=>{
 	return(
-		<Paper sx={{m:1}} elevation={4}>
+		<Paper sx={{m:1}} elevation={4} key={comment.UserID}>
 			<List sx={{width:'100%', maxwidth:360, bgcolor:'background.paper'}}>
 				<ListItem alignItems="flex-start">
 					<ListItemAvatar>
@@ -158,7 +160,7 @@ const commentCard = (comment)=>{
 		})
 	}
 
-    if(data && currentUser)
+    if(data )
     {
         return(
 			<div className='homeWithoutLogin'>
