@@ -66,7 +66,7 @@ const Home = (props) => {
           // setSearchTerm(props.searchTerm);
     async function fetchData() {
       console.log("i am here ");
-      if(props.moodId){
+      if(props.moodId !== 0){
         await getMoodBasedMovies({
           variables: {
             moodId: props.moodId
@@ -107,7 +107,7 @@ const Home = (props) => {
             getUserSavedMovies={getUserSavedMovies} addToSave={addToSave} refetchSaved={refetchSaved} removefromSave={removefromSave} getUserWatchedMovies={getUserWatchedMovies}
             refetchWatched={refetchWatched} removefromWatchList={removefromWatchList} addToWatchList={addToWatchList} moodData={moodData} moodRefetch={moodRefetch}
             getMoodBasedMovies={getMoodBasedMovies} moodId={props.moodId}/>
-        : <MoodDetector setMoodId={props.setMoodId} /> }
+        : <MoodDetector setMoodId={props.setMoodId} setPageNum={setPageNum}/> }
       </div>
     </div>
     );

@@ -129,7 +129,14 @@ const HomeDataGrid = (props) => {
                     </Button>
                   :
                   <Button aria-label="Save for later" 
-                  onClick={() => {addSave(currentUser.email,show.id)}}>
+                  onClick={(e) => { 
+                    e.preventDefault()
+                    if(!currentUser){
+                      alert("Please Sign In to Save a movie or to add it to watched List")
+                    }else{
+                      addSave(currentUser.email,show.id)
+                    }
+                  }}>
                   <BookmarkAddOutlinedIcon /> Add to Save
                   </Button>
                   
@@ -138,10 +145,17 @@ const HomeDataGrid = (props) => {
                 <CardActions >
                 {wishList? <Button aria-label="Delete watchlist"
                 onClick={(e) => {removeWatchList(currentUser.email,show.id) }}>
-                  <RemoveCircleOutlineSharpIcon />Delete from watchlist
+                  <RemoveCircleOutlineSharpIcon />Delete from watched list
                 </Button> : <Button aria-label="Add to watchlist" 
-              onClick={(e) => {addWatchList(currentUser.email,show.id)}}>
-                <AddIcon /> Add to watchlist</Button>
+              onClick={(e) => {
+                e.preventDefault()
+                if(!currentUser){
+                  alert("Please Sign In to Save a movie or to add it to watched List")
+                }else{
+                  addWatchList(currentUser.email,show.id)  
+                }
+              }}>
+                <AddIcon /> Add to watched list</Button>
               
               }
               </CardActions>
@@ -157,7 +171,7 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
-      if (props.moodData) {
+      if (!props.searchTerm && props.moodData) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
             if (!currentUser) {

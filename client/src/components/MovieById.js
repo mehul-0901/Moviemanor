@@ -1,8 +1,8 @@
 import { Link, useParams,useNavigate } from 'react-router-dom';
 import '../App.css';
 import queries from '../queries';
-import {useLazyQuery, useQuery} from '@apollo/client';
-import { useEffect ,useContext} from 'react';
+import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
+import React, { useEffect ,useContext, useState} from 'react';
 import {AuthContext} from '../firebase/Auth';
 import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} from '@material-ui/core';
 import noImage from '../img/download.jpeg';
@@ -11,8 +11,12 @@ import StarIcon from '@mui/icons-material/Star';
 import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
+import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 
+import { Navigate } from 'react-router-dom';
 const useStyles = makeStyles({
 	
 	card: {
@@ -54,33 +58,109 @@ const useStyles = makeStyles({
 function MovieById()
 {
     const classes = useStyles();
-
+	const navigate=useNavigate()
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
-
+	const [checked,setChecked] = useState(false);
+	let displayComment=null;
+	const [defaultVal,setDefault]=useState("");
     const [getMoviesById, {loading, error, data}] = useLazyQuery(
         queries.GET_MOVIES_BY_ID,
         {
             fetchPolicy:"cache-and-network",
         }
       );
+
+	  const [showComments, {loading:loading1, error:error1, data:comments,refetch:refetch1}] = useLazyQuery(
+        queries.SHOW_COMMENTS,
+        {
+            fetchPolicy:"cache-and-network",
+
+        }
+      );
+
+	  const [addCommentDB, {loading:loading2, error:error2, data:add}] = useMutation(
+        queries.ADD_COMMENT,
+        {
+            fetchPolicy:"network-only",
+			onCompleted:refetch1
+        }
+      );
+
+
       useEffect(() => {
 		console.log('on load useeffect');
         console.log(id);
 		async function fetchData() 
         {
-            if(currentUser)
-            {
-                console.log(currentUser.email);
-                getMoviesById({variables:{id:id}});
-                console.log("sfdhfgdgs",data);
-            }
+			console.log(currentUser);
+			getMoviesById({variables:{id:id}});
 		}
 		fetchData();
 
     }	, [id]);
 
-    if(data && currentUser)
+	const showCommentsOfMovie=()=>{
+		setChecked((prev)=>!prev);
+		showComments({variables:{movieId:id}})
+		console.log(comments);
+
+	}
+	const addComment=()=>{
+		
+		let com=(document.getElementById("comment").value);
+		if(currentUser){
+		addCommentDB({variables:{movieId: id, userId: currentUser.displayName, comment: com}})
+		}
+		else{
+			alert("Login to add a comment");
+			navigate('/SignIn');
+		}
+		document.getElementById("comment").value="";
+
+
+	}
+const commentCard = (comment)=>{
+	return(
+		<Paper sx={{m:1}} elevation={4} key={comment.UserID}>
+			<List sx={{width:'100%', maxwidth:360, bgcolor:'background.paper'}}>
+				<ListItem alignItems="flex-start">
+					<ListItemAvatar>
+						<Avatar sx={{ bgcolor: "blue" }} >
+							 {comment.UserID?comment.UserID.charAt(0):" "}
+						</Avatar>
+					</ListItemAvatar>
+					<ListItemText 
+						  primary={comment.UserID}
+						  secondary={
+						<React.Fragment>
+						  <Typography
+						sx={{ display: 'inline' }}
+						component="span"
+						variant="body2"
+						color="text.primary"
+					  ></Typography>
+						  {comment.comment}
+						</React.Fragment>}/>
+						<ThumbUpIcon/>Like &nbsp;&nbsp;&nbsp;&nbsp;
+						<br></br>count
+						<ThumbDownIcon/>Dislike<br></br>
+						Count
+				</ListItem>
+			</List>
+		</Paper>
+	 );
+	}
+
+
+
+	if(comments && comments.listOfComments && comments.listOfComments.comment){
+		displayComment =comments.listOfComments.comment.map((comment)=>{
+			return commentCard(comment);
+		})
+	}
+
+    if(data )
     {
         return(
 			<div className='homeWithoutLogin'>
@@ -134,12 +214,12 @@ function MovieById()
 					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
 
 				</CardContent>
-				<div>
-					{/* <Link> */}
-						<CommentIcon/>Comment
-					{/* </Link> */}
-				</div>
-
+				<div><Button checked={checked} onClick={()=>showCommentsOfMovie()}><CommentIcon/>Comment</Button></div>
+				{checked?<div>
+					<TextField required id="comment" label="Enter Comment" />
+					<button onClick={addComment}>Submit</button></div>
+				:<div></div>}
+				  {checked?displayComment:<div></div>}
 			</Card>
 			<br />
 		</div>

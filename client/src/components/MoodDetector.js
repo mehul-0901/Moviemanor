@@ -69,22 +69,27 @@ const MoodDetector = (props) => {
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(710356)
                 }}>Romantic</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(14267)
                 }}>Glamorous</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(128)
                 }}>Powerful</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(5590)
                 }}>Euphoric</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(26302)
                 }}>Trippy</Button>
             </div>
@@ -96,22 +101,27 @@ const MoodDetector = (props) => {
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(892772)
                 }}>Ashamed</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(2039)
                 }}>Lonely</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(62215)
                 }}>Depressed</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(1807)
                 }}>Empty</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(544)
                 }}>Devastated</Button>
             </div>
@@ -123,14 +133,17 @@ const MoodDetector = (props) => {
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(9067)
                 }}>Tough</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(36850)
                 }}>Grumpy</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(11524)
                 }}>Riled Up</Button>
             </div>
@@ -142,28 +155,36 @@ const MoodDetector = (props) => {
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(103328)
                 }}>Bored</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(24192)
                 }}>Skeptical</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(2105)
                 }}>Horny</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(44479)
                 }}>Curious</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
+                    props.setPageNum(1)
                     props.setMoodId(9353)
                 }}>Safe</Button>
             </div>
         )
     }
 
+    if(!props.moodId){
+        props.setPageNum()
+    }
     return(
         <div style={{marginTop: "11rem"}}>
             <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>

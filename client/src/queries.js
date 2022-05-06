@@ -104,6 +104,27 @@ mutation RemoveSaveforLater($userId: String, $movieId: String) {
 }
 `;
 
+const ADD_COMMENT = gql`
+mutation AddComments($movieId: String, $userId: String, $comment: String) {
+  addComments(movieID: $movieId, userID: $userId, comment: $comment)
+}
+`;
+
+
+const SHOW_COMMENTS = gql`
+query ListOfComments($movieId: String) {
+  listOfComments(movieId: $movieId) {
+    MovieId
+    comment {
+      UserID
+      comment
+      like
+      dislike
+    }
+  }
+}
+`;
+
 
 
 
@@ -120,7 +141,9 @@ let exported = {
   REMOVE_SAVEFORLATER, 
   GET_MOVIES_BY_ID,
   Get_Movies_By_IDS,
-  GET_MOOD_BASED_MOVIES
+  GET_MOOD_BASED_MOVIES,
+  ADD_COMMENT,
+  SHOW_COMMENTS
   };
   
 export default exported
