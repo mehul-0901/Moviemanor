@@ -118,6 +118,8 @@ query ListOfComments($movieId: String) {
     comment {
       UserID
       comment
+      like
+      dislike
     }
   }
 }

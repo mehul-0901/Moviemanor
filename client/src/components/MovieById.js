@@ -12,6 +12,8 @@ import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 
 const useStyles = makeStyles({
@@ -126,7 +128,7 @@ const commentCard = (comment)=>{
 							 {comment.UserID?comment.UserID.charAt(0):" "}
 						</Avatar>
 					</ListItemAvatar>
-					<ListItemText
+					<ListItemText 
 						  primary={comment.UserID}
 						  secondary={
 						<React.Fragment>
@@ -138,6 +140,10 @@ const commentCard = (comment)=>{
 					  ></Typography>
 						  {comment.comment}
 						</React.Fragment>}/>
+						<ThumbUpIcon/>Like &nbsp;&nbsp;&nbsp;&nbsp;
+						<br></br>count
+						<ThumbDownIcon/>Dislike<br></br>
+						Count
 				</ListItem>
 			</List>
 		</Paper>

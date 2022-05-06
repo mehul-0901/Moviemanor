@@ -3,7 +3,7 @@ const { ApolloServer, gql } = require('apollo-server');
 const { default: axios } = require('axios');
 const redis = require('redis');
 const client = redis.createClient();
-const uuid = require('uuid'); //for generating _id's
+const {v4:uuid} = require('uuid');
 const mongoCollections = require('../server/config/mongoCollections');
 const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
@@ -47,8 +47,11 @@ const typeDefs = gql`
     }
     
     type UserComments{
+        id:ID!
         UserID:ID
         comment:String
+        like: [String]
+        dislike: [String]
 
     }
 
@@ -68,6 +71,8 @@ const typeDefs = gql`
         AddSaveforLater(userId: String, movieID: String): movieId
         removeSaveforLater(userId: String, movieID: String): Boolean
         addComments(movieID:String, userID:String, comment:String):Boolean
+        addLike(movieID:String,commentID:String, emailID:String):Boolean
+        addDislike(movieID:String,commentID:String, emailID:String):Boolean
     }
 `;
 
@@ -81,20 +86,161 @@ const resolvers = {
             const MovieIDExist = await addToComment.findOne({MovieId:args.movieID})
             if (MovieIDExist){
                 let array=MovieIDExist.comment;
-                console.log(MovieIDExist);
-                let temp={UserID:args.userID,comment:args.comment}
+                let temp={id:uuid(),UserID:args.userID,comment:args.comment,like:[],dislike:[]}
                 array.push(temp);
                 const addMovieCommentToDB=await addToComment.updateOne({MovieId:args.movieID},{$set:{comment:array}});
             }
             else{
                 let addMovieComment = {
                     MovieId:args.movieID,
-                    comment:[{UserID:args.userID,comment:args.comment}]
+                    comment:[{id:uuid(),UserID:args.userID,comment:args.comment,like:[],dislike:[]}]
                 }
                 const addMovieCommentToDB = await addToComment.insertOne(addMovieComment)
             }
             return true
         },
+
+        addLike:async(_,args)=>{
+
+            const addToComment = await Comments();
+            const findCommentLike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{like:args.emailID}});
+            let temp=null;
+            let like=false;
+            if(findCommentLike!=null)
+            {
+                for (const x of findCommentLike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp=x;
+                        break;
+                    }
+                }
+            }
+            if(temp!=null)
+            {
+                for (const x of temp.like) {
+                    if(x==args.emailID)
+                    {
+                        like=true;
+                    }
+                    
+                }
+            }
+            const findCommentDisike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{dislike:args.emailID}});
+            let temp1=null;
+            let dislike=false;
+            if(findCommentDisike!=null)
+            {
+                for (const x of findCommentDisike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp1=x;
+                        break;
+                    }
+                }
+            }
+            if(temp1!=null)
+            {
+                for (const x of temp1.dislike) {
+                    if(x==args.emailID)
+                    {
+                        dislike=true;
+                    }
+                    
+                }
+            }
+
+            if (!like && !dislike){
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+            {$push:{"comment.$.like":args.emailID}},false, true)
+            console.log("here");
+            }
+
+            else if(dislike && !like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.dislike":args.emailID}},false, true)
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$push:{"comment.$.like":args.emailID}},false, true)
+            }
+            else if(!dislike && like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.like":args.emailID}},false, true)
+            }
+
+            return true
+        },
+
+
+
+        addDislike:async(_,args)=>{
+
+            const addToComment = await Comments();
+            const findCommentLike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{like:args.emailID}});
+            let temp=null;
+            let like=false;
+            if(findCommentLike!=null)
+            {
+                for (const x of findCommentLike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp=x;
+                        break;
+                    }
+                }
+            }
+            if(temp!=null)
+            {
+                for (const x of temp.like) {
+                    if(x==args.emailID)
+                    {
+                        like=true;
+                    }
+                    
+                }
+            }
+            const findCommentDisike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{dislike:args.emailID}});
+            let temp1=null;
+            let dislike=false;
+            if(findCommentDisike!=null)
+            {
+                for (const x of findCommentDisike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp1=x;
+                        break;
+                    }
+                }
+            }
+            if(temp1!=null)
+            {
+                for (const x of temp1.dislike) {
+                    if(x==args.emailID)
+                    {
+                        dislike=true;
+                    }
+                    
+                }
+            }
+
+            if (!like && !dislike){
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+            {$push:{"comment.$.dislike":args.emailID}},false, true)
+            console.log("here");
+            }
+
+            else if(!dislike && like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.like":args.emailID}},false, true)
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$push:{"comment.$.dislike":args.emailID}},false, true)
+            }
+            else if(dislike && !like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.dislike":args.emailID}},false, true)
+            }
+            return true
+        },
+
         AddtowacthList:async(_,args)=>{
             if(args.movieID == null){
                 return
