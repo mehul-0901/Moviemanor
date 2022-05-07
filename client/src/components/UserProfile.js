@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useContext} from "react";
-import Dropzone from 'react-dropzone-uploader'
 import {AuthContext} from '../firebase/Auth';
 import { makeStyles } from '@material-ui/core';
 import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination} from '@mui/material';
