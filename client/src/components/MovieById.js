@@ -15,18 +15,15 @@ import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField 
 import ThumbDownIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUpOutlined';
 import { Navigate } from 'react-router-dom';
+import { textAlign } from '@mui/system';
 
 
 const useStyles = makeStyles({
 	
-	card: {
-		maxWidth: 700,
+	card: {	
+		maxWidth: 500,
 		height: 'auto',
-		marginLeft: 'auto', 
-		marginRight: 'auto',
-		marginTop:'10rem',
-		borderRadius: 5,
-		border: '1px solid #1e8678',
+		borderRadius: 15,
 		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
 	},
 	titleHead: {
@@ -34,11 +31,11 @@ const useStyles = makeStyles({
 		fontWeight: 'bold',
 		fontSize: 'x',
 
-		},
-		title:{
+	},
+	title:{
 			fontSize:"xx-large",
 			font:'bold'
-		},
+	},
 	grid: {
 		flexGrow: 1,
 		flexDirection: 'row'
@@ -64,15 +61,12 @@ const useStyles = makeStyles({
 	fontSize: 12,
 	border:"none"	
 	},
-
 	commentDisLikeButton:
 	{
 		background:'#DE1818',fontWeight: 'bold',
 		fontSize: 12,
 		border:"none"
 	}
-
-	
 });
 
 function MovieById(props)
@@ -224,9 +218,43 @@ const commentCard = (comment)=>{
     {
 		props.setSearchTerm("")
         return(
-			<div className='homeWithoutLogin'>
-				<br/><br/><br/>
-				<Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
+			<div className='homeWithoutLogin' style={{marginTop: "5rem"}}>
+				<Link to={"/"} style={{textDecoration: "none", color: "#c384d2", fontSize: "larger", textAlign: "start"}}>Back to all shows...</Link>
+				<br /><br />
+				<div className='movieDetailsBox'>
+					<Card className={classes.card}>
+						<CardMedia
+							className={classes.media}
+							component='img'
+							height="700"
+							image={data.movieById.image!=="0"?data.movieById.image:noImage  }
+							title='show image'  
+						/>
+					</Card>
+					<Typography variant='body1' component="div" color='primary' style={{width: "850px", display: "flex", flexDirection: "column", alignItems: "start"}}>
+						<Typography variant='h2' component="h1" style={{color: "#676fe9", fontWeight: "bold"}}>
+							{data.movieById.title}
+						</Typography>
+						<Typography variant='body2' component="div" style={{ display: "flex", width: "auto", columnGap: "1.7rem", maxWidth: "850px"}} >		  
+							<Rating
+								name="text-feedback"
+								value={Number(data.movieById.tmDbRating)/2}
+								readOnly
+								precision={0.5}
+								emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+								size='large'
+								title='TMDB Rating'
+							/>
+							<Typography variant='h6' component="h2" style={{color: "#ffffffb5"}}>
+								Released: {data.movieById.releaseDate}
+							</Typography>
+						</Typography>
+						<Typography variant='body2' component="div" style={{display: "flex", fontSize: "30px", color: "whitesmoke", textAlign: "justify", marginTop: "1.5rem"}}>
+							{data.movieById && data.movieById.plot ? data.movieById.plot : `N/A`}
+						</Typography>
+					</Typography>
+				</div>
+				{/* <Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
 					<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
 					<Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
 					{data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
@@ -273,7 +301,7 @@ const commentCard = (comment)=>{
 						<button onClick={addComment}>Submit</button></div>
 					:<div></div>}
 					{checked?displayComment:<div></div>}
-				</Card>
+				</Card> */}
 				<br />
 			</div>
         );
