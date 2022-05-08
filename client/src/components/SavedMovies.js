@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, {useEffect, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
 import {  useParams } from 'react-router-dom';
@@ -11,18 +11,14 @@ import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
 import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
 import {AuthContext} from '../firebase/Auth';
-import { makeStyles,Box} from '@material-ui/core';
+import { makeStyles} from '@material-ui/core';
 import { Grid } from "@mui/material";
 import noImage from '../img/download.jpeg';
 import { Button } from "@mui/material";
-import { Pagination } from "@mui/material";
 import { Link } from "react-router-dom";
-import Rating from '@mui/material/Rating';
-import StarIcon from '@mui/icons-material/Star';
+
 
 
 const useStyles = makeStyles({
@@ -65,19 +61,16 @@ const SavedMovies = (props) => {
       const [getmoviesbyIDS, {data: saved_movies}] = useLazyQuery(
         queries.Get_Movies_By_IDS,
         {
-            // onCompleted:refetchSaved1
         }
       ); 
       
     const [getusersavedmovies, {loading, error, data, refetch:refetchSaved}] = useLazyQuery(
         queries.GET_USER_SAVEDMOVIES,
         {
-            // onCompleted: refetchSaved1
         }
       );
 
       const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER, {
-       // onCompleted:refetchSaved
     });
 
       useEffect(() => {
@@ -93,33 +86,11 @@ const SavedMovies = (props) => {
                 const idArray = data?.savedMovies?.map((node)=> node.id)
             console.log(idArray);
                 getmoviesbyIDS({variables:{ids:idArray}});
-             //   getmoviesbyIDS({variables:{ids:data}});
-              //  console.log(data);
             }
 		}
 		fetchData();
 
     }	, [data]);
-
-    // useEffect(() => {
-		// console.log('on load useeffect2');
-    //     console.log(id);
-		// async function fetchData() 
-    //     {
-    //         if(currentUser)
-    //         {
-    //             console.log(data);
-    //         const idArray = data?.savedMovies?.map((node)=> node.id)
-    //         console.log(idArray);
-    //             getmoviesbyIDS({variables:{ids:idArray}});
-    //            console.log(data);
-             
-    //         }
-		// }
-		// fetchData();
-
-    // }	, [data]);
-
 
     const removeSave=(email,id)=>
     {
