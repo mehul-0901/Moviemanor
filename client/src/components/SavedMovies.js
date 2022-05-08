@@ -99,9 +99,6 @@ const SavedMovies = (props) => {
         onCompleted: refetchSaved
      })
      getusersavedmovies({ variables: { userId:currentUser.email}});
-     const idArray = data?.savedMovies?.map((node)=> node.id)
-            console.log(idArray);
-                getmoviesbyIDS({variables:{ids:idArray}});
     }
 
 
