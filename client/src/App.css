@@ -1,9 +1,9 @@
 body {
-  background-color: #202226;
+  background-color: #253544;
 }
 .App {
   text-align: center;
-  background-color: #202226 !important;
+  background-color: #253544 !important;
 }
 
 .App-logo {
@@ -54,6 +54,7 @@ body {
   height: 100vh;
   margin-top: -16vh;
 }
+
 .pagination{
   display: flex;
   justify-content: center;
@@ -67,21 +68,30 @@ body {
   background-color: rgba(255, 255, 255, 0);
   align-items: center;
 }
+
 .card{
-  align-items: center;
-  
+  align-items: center; 
 }
+
 .title{
   font-size: x-large;
 }
+
+.movieDetailsBox{
+  display: flex;
+  justify-content: space-around;
+}
+
 .tagline{
   font-size: xx-large;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
+
 .releaseDate{
   font-size: medium;
   
 }
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -5,11 +5,11 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	button: {
-		color: '#515ce2',
+		color: '#676fe9',
 		fontWeight: 'bold',
 		fontSize: "2rem",
         '&:hover': {
-            backgroundColor: "#515ce2",
+            backgroundColor: "#676fe9",
             color: "white"
         }
 	}
@@ -204,7 +204,7 @@ const MoodDetector = (props) => {
             {neutralMoods && neutralMood()}
             <br />
             <br />
-            {backOption && <Button sx={{fontSize: "1rem"}} onClick={(e) => {
+            {backOption && <Button sx={{fontSize: "1rem", color: "#6f9ce6"}} onClick={(e) => {
                 e.preventDefault()
                 setSadMoods(false)
                 setAngryMoods(false)
