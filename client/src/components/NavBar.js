@@ -158,10 +158,10 @@ const NavBar = (props) => {
         <Link to={"/Profile"} sx={{textDecoration: "none"}}>
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         </Link>
-        <Link to={"/SavedMovies"} sx={{textDecoration: "none"}}>
+        <Link to={"/SavedMovies"} sx={{textDecoration: "none"}} onClick={handleMenuClose}>
             <MenuItem >My Saved Movies</MenuItem>
         </Link>
-        <Link to={"/WatchList"} sx={{textDecoration: "none"}}>
+        <Link to={"/WatchList"} sx={{textDecoration: "none"}} onClick={handleMenuClose}>
             <MenuItem >My Watched List</MenuItem>
         </Link>
         <Link to={"/"} sx={{textDecoration: "none"}}>

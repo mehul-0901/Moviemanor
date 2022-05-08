@@ -152,7 +152,7 @@ const commentCard = (comment)=>{
 		})
 	}
 
-    if(data )
+    if(data && !isNaN(id))
     {
         return(
 			<div className='homeWithoutLogin'>
@@ -220,7 +220,7 @@ const commentCard = (comment)=>{
     else
     {
         return(
-            <div>Error</div>
+            <div style={{color:"green"}}><h1>404 Error <br/> Wrong Id</h1> </div>
         );
     }
 }
