@@ -3,11 +3,15 @@ const { ApolloServer, gql } = require('apollo-server');
 const { default: axios } = require('axios');
 const redis = require('redis');
 const client = redis.createClient();
-const uuid = require('uuid'); //for generating _id's
+const {v4:uuid} = require('uuid');
+const {ObjectId} = require('mongodb')
 const mongoCollections = require('../server/config/mongoCollections');
 const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
 const Comments = mongoCollections.Comments;
+const UserImage = mongoCollections.UserImage;
+
+
 
 
 
@@ -47,10 +51,17 @@ const typeDefs = gql`
     }
     
     type UserComments{
+        id:ID!
         UserID:ID
         comment:String
+        like: [String]
+        dislike: [String]
 
     }
+
+   # type userImage{ 
+   #     image: String
+   #    }
 
     type Query {
         movieById(id:String):Movies
@@ -60,6 +71,7 @@ const typeDefs = gql`
         listOfComments(movieId:String): Comments
         moodBasedMovies(moodId: ID!, pageNum: Int): [Movies]
         movieList(title: String,pageNum:Int): [Movies]
+      ##  getUserImage(userId:String): userImage
     }
 
     type Mutation {
@@ -68,6 +80,9 @@ const typeDefs = gql`
         AddSaveforLater(userId: String, movieID: String): movieId
         removeSaveforLater(userId: String, movieID: String): Boolean
         addComments(movieID:String, userID:String, comment:String):Boolean
+        addLike(movieID:String,commentID:String, emailID:String):Boolean
+        addDislike(movieID:String,commentID:String, emailID:String):Boolean
+       ## addImage(userID:String, image: String): userImage
     }
 `;
 
@@ -81,20 +96,161 @@ const resolvers = {
             const MovieIDExist = await addToComment.findOne({MovieId:args.movieID})
             if (MovieIDExist){
                 let array=MovieIDExist.comment;
-                console.log(MovieIDExist);
-                let temp={UserID:args.userID,comment:args.comment}
+                let temp={id:uuid(),UserID:args.userID,comment:args.comment,like:[],dislike:[]}
                 array.push(temp);
                 const addMovieCommentToDB=await addToComment.updateOne({MovieId:args.movieID},{$set:{comment:array}});
             }
             else{
                 let addMovieComment = {
                     MovieId:args.movieID,
-                    comment:[{UserID:args.userID,comment:args.comment}]
+                    comment:[{id:uuid(),UserID:args.userID,comment:args.comment,like:[],dislike:[]}]
                 }
                 const addMovieCommentToDB = await addToComment.insertOne(addMovieComment)
             }
             return true
         },
+
+        addLike:async(_,args)=>{
+
+            const addToComment = await Comments();
+            const findCommentLike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{like:args.emailID}});
+            let temp=null;
+            let like=false;
+            if(findCommentLike!=null)
+            {
+                for (const x of findCommentLike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp=x;
+                        break;
+                    }
+                }
+            }
+            if(temp!=null)
+            {
+                for (const x of temp.like) {
+                    if(x==args.emailID)
+                    {
+                        like=true;
+                    }
+                    
+                }
+            }
+            const findCommentDisike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{dislike:args.emailID}});
+            let temp1=null;
+            let dislike=false;
+            if(findCommentDisike!=null)
+            {
+                for (const x of findCommentDisike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp1=x;
+                        break;
+                    }
+                }
+            }
+            if(temp1!=null)
+            {
+                for (const x of temp1.dislike) {
+                    if(x==args.emailID)
+                    {
+                        dislike=true;
+                    }
+                    
+                }
+            }
+
+            if (!like && !dislike){
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+            {$push:{"comment.$.like":args.emailID}},false, true)
+            console.log("here");
+            }
+
+            else if(dislike && !like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.dislike":args.emailID}},false, true)
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$push:{"comment.$.like":args.emailID}},false, true)
+            }
+            else if(!dislike && like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.like":args.emailID}},false, true)
+            }
+
+            return true
+        },
+
+
+
+        addDislike:async(_,args)=>{
+
+            const addToComment = await Comments();
+            const findCommentLike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{like:args.emailID}});
+            let temp=null;
+            let like=false;
+            if(findCommentLike!=null)
+            {
+                for (const x of findCommentLike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp=x;
+                        break;
+                    }
+                }
+            }
+            if(temp!=null)
+            {
+                for (const x of temp.like) {
+                    if(x==args.emailID)
+                    {
+                        like=true;
+                    }
+                    
+                }
+            }
+            const findCommentDisike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{dislike:args.emailID}});
+            let temp1=null;
+            let dislike=false;
+            if(findCommentDisike!=null)
+            {
+                for (const x of findCommentDisike.comment) {
+                    if(x.id==args.commentID)
+                    {
+                        temp1=x;
+                        break;
+                    }
+                }
+            }
+            if(temp1!=null)
+            {
+                for (const x of temp1.dislike) {
+                    if(x==args.emailID)
+                    {
+                        dislike=true;
+                    }
+                    
+                }
+            }
+
+            if (!like && !dislike){
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+            {$push:{"comment.$.dislike":args.emailID}},false, true)
+            console.log("here");
+            }
+
+            else if(!dislike && like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.like":args.emailID}},false, true)
+                const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$push:{"comment.$.dislike":args.emailID}},false, true)
+            }
+            else if(dislike && !like){
+                const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
+                {$pull:{"comment.$.dislike":args.emailID}},false, true)
+            }
+            return true
+        },
+
         AddtowacthList:async(_,args)=>{
             if(args.movieID == null){
                 return
@@ -197,6 +353,53 @@ const resolvers = {
             }
             return deletionInfo.acknowledged;
         },
+
+        // addImage:async(_,args)=>{
+        //     const getImage = await  UserImage();
+        //     let url = URL.createObjectURL("blob:http://localhost:3000/80e22920-e523-461e-9f08-b9f963b6af32")
+        //     console.log(url);
+        //     fs.copyFile("blob:http://localhost:3000/80e22920-e523-461e-9f08-b9f963b6af32", '../client/src/userImages/HW_07_Plot.png')
+        //     const newImage ={
+        //         userId:args.userID,
+        //         userImage:args.image 
+        //     }
+
+        //     const find_id = await getImage.findOne({userId:args.userID});
+        //     //console.log(find_id);
+
+        //     if(find_id){
+        //         console.log(find_id);
+        //         let parsedId = ObjectId(find_id._id); 
+        //     console.log(parsedId);
+        //         const updatedProfile = {
+        //             userId:args.userID,
+        //             userImage:args.image 
+    
+        //         };
+        //         if(args.image === find_id.userImage){
+        //             return {image: updatedProfile.userImage}
+        //         }
+    
+        //         const updatedInfo = await getImage.updateOne(
+        //             {  _id: parsedId},
+        //             { $set: updatedProfile }
+        //         );
+    
+        //         if (updatedInfo.modifiedCount === 0) {
+        //             throw 'could not update user image successfully';
+        //         }
+
+        //         return {image: updatedProfile.userImage}
+        //     }
+        //     else{
+        //     const insertInfo = await getImage.insertOne(newImage);
+        //     if (insertInfo.insertedCount === 0) throw 'Unable to add in saveList';
+    
+        //     return {image: newImage.userImage}
+
+        //     } 
+        // }
+
     },
 
     Query:{
@@ -436,6 +639,26 @@ const resolvers = {
             })
             return moviesArray
         }
+
+
+        // getUserImage: async(_, args) => {
+
+        //     const getImage = await  UserImage(); 
+        //     const find_image = await getImage.find({  userId: args.userId } ).toArray();
+        //     if(find_image.length === 0) return {};
+        //     let image = {}
+        //     for(list in find_image ){
+        //         image = {image: find_image[list].userImage}
+               
+        //     }
+        //     return image;
+
+        // }
+
+
+
+
+
     },
 };
 

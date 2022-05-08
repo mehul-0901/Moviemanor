@@ -12,7 +12,11 @@ import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
+import ThumbDownIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
+import ThumbUpIcon from '@mui/icons-material/ThumbUpOutlined';
 import { Navigate } from 'react-router-dom';
+
+
 const useStyles = makeStyles({
 	
 	card: {
@@ -48,10 +52,30 @@ const useStyles = makeStyles({
 		fontWeight: 'bold',
 		fontSize: 12
 	},
+	commentLikeButton:
+	{
+		background:'#0A7BF6',fontWeight: 'bold',
+		fontSize: 12,
+		border:"none"
+	},
+	commentNormalLikeButton:
+	{	color: '#1e8678',
+	fontWeight: 'bold',
+	fontSize: 12,
+	border:"none"	
+	},
+
+	commentDisLikeButton:
+	{
+		background:'#DE1818',fontWeight: 'bold',
+		fontSize: 12,
+		border:"none"
+	}
+
 	
 });
 
-function MovieById()
+function MovieById(props)
 {
     const classes = useStyles();
 	const navigate=useNavigate()
@@ -83,6 +107,21 @@ function MovieById()
         }
       );
 
+
+	  const [addLikeToComment, {loading:loading3, error:error3, data:addLikeComment}] = useMutation(
+        queries.ADD_LIKE,
+        {
+            fetchPolicy:"network-only",
+			onCompleted:refetch1
+        }
+      );
+	  const [addDisLikeToComment, {loading:loading4, error:error4, data:addDisLikeComment}] = useMutation(
+        queries.ADD_DISLIKE,
+        {
+            fetchPolicy:"network-only",
+			onCompleted:refetch1
+        }
+      );
 
       useEffect(() => {
 		console.log('on load useeffect');
@@ -116,6 +155,26 @@ function MovieById()
 
 
 	}
+	const likeComment=(commentID)=>{
+		console.log("here");
+		console.log(commentID);
+		if(currentUser){
+		addLikeToComment({variables:{movieID:id,  commentID: commentID, emailID: currentUser.email}})
+		}else{
+			alert("Login to add a comment");
+			navigate('/SignIn');
+		}
+
+	}
+	const dislikeComment=(commentID)=>{
+		if(currentUser){
+		addDisLikeToComment({variables:{movieID:id,  commentID: commentID, emailID: currentUser.email}})
+		}
+		else{
+			alert("Login to add a comment");
+			navigate('/SignIn');
+		}
+	}
 const commentCard = (comment)=>{
 	return(
 		<Paper sx={{m:1}} elevation={4} key={comment.UserID}>
@@ -126,7 +185,7 @@ const commentCard = (comment)=>{
 							 {comment.UserID?comment.UserID.charAt(0):" "}
 						</Avatar>
 					</ListItemAvatar>
-					<ListItemText
+					<ListItemText 
 						  primary={comment.UserID}
 						  secondary={
 						<React.Fragment>
@@ -136,8 +195,17 @@ const commentCard = (comment)=>{
 						variant="body2"
 						color="text.primary"
 					  ></Typography>
-						  {comment.comment}
+						  {comment.comment} 
 						</React.Fragment>}/>
+						{comment.like.includes(currentUser.email)?
+						<button className={classes.commentLikeButton}  onClick={()=>likeComment(comment.id)}><ThumbUpIcon/>Like </button>:
+						<button className={classes.commentNormalLikeButton}  onClick={()=>likeComment(comment.id)}><ThumbUpIcon/>Like </button>} &nbsp;&nbsp;&nbsp;&nbsp; 
+						{comment.like.length-comment.dislike.length} &nbsp;&nbsp;&nbsp;&nbsp;
+						{comment.dislike.includes(currentUser.email)?
+						<button className={classes.commentDisLikeButton} onClick={()=>dislikeComment(comment.id)}><ThumbDownIcon/>Dislike</button>:
+						<button className={classes.commentNormalLikeButton}   onClick={()=>dislikeComment(comment.id)}><ThumbDownIcon/>Dislike</button>}
+						<br></br>
+						
 				</ListItem>
 			</List>
 		</Paper>
@@ -154,71 +222,65 @@ const commentCard = (comment)=>{
 
     if(data && !isNaN(id))
     {
+		props.setSearchTerm("")
         return(
 			<div className='homeWithoutLogin'>
-			<br/><br/><br/>
-			<Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
-				<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
-                <Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
-                  {data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
-                </Avatar>
-              } action={
-				<Box sx={{ width: 200, sizeWidth:800, alignItems: 'center', alignSelf:'center', marginTop:'0.5cm',}} title='TMDB Rating'>		  
-					<Rating
-						name="text-feedback"
-						value={Number(data.movieById.tmDbRating)/2}
-						readOnly
-						precision={0.5}
-						emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-						size='large'
+				<br/><br/><br/>
+				<Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
+					<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
+					<Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
+					{data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
+					</Avatar>
+				} action={
+					<Box sx={{ width: 200, sizeWidth:800, alignItems: 'center', alignSelf:'center', marginTop:'0.5cm',}} title='TMDB Rating'>		  
+						<Rating
+							name="text-feedback"
+							value={Number(data.movieById.tmDbRating)/2}
+							readOnly
+							precision={0.5}
+							emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+							size='large'
+						/>
+					</Box>}>
+					</CardHeader>				
+					<CardMedia
+						className={classes.media}
+						component='img'
+						image={data.movieById.image!=="0"?data.movieById.image:noImage  }
+						title='show image'  
 					/>
-				</Box>}>
-				</CardHeader>
-				
-				
-				<CardMedia
-					className={classes.media}
-					component='img'
-					image={data.movieById.image!=="0"?data.movieById.image:noImage  }
-					title='show image'  
-				/>
-
-				<CardContent>
-					
-				<Typography className='tagline'>
-					<div className='tagline'> {data.movieById.tagline}</div>
-				</Typography>
-				
-					<Typography variant='body2' color='textPrimary' component='span'>
-						<dl>
-                            
-                            <h1>{data.movieById.name}</h1>
-							<p>
-								<dt className='title'>Description:</dt><br></br>
-								{data.movieById && data.movieById.plot ? <dd>{data.movieById.plot}</dd> : <dd>N/A</dd>}
-							</p>
-						
-						</dl>
-					</Typography>
-					<Typography >
-					<div className='releaseDate' >Release Date : {data.movieById.releaseDate}</div>
-				</Typography>
-					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
-
-				</CardContent>
-				<div><Button checked={checked} onClick={()=>showCommentsOfMovie()}><CommentIcon/>Comment</Button></div>
-				{checked?<div>
-					<TextField required id="comment" label="Enter Comment" />
-					<button onClick={addComment}>Submit</button></div>
-				:<div></div>}
-				  {checked?displayComment:<div></div>}
-			</Card>
-			<br />
-		</div>
+					<CardContent>	
+						<Typography className='tagline'>
+							<div className='tagline'> {data.movieById.tagline}</div>
+						</Typography>
+							<Typography variant='body2' color='textPrimary' component='span'>
+								<dl>
+									<h1>{data.movieById.name}</h1>
+									<p>
+										<dt className='title'>Description:</dt><br></br>
+										{data.movieById && data.movieById.plot ? <dd>{data.movieById.plot}</dd> : <dd>N/A</dd>}
+									</p>
+								</dl>
+							</Typography>
+							<Typography >
+							<div className='releaseDate' >Release Date : {data.movieById.releaseDate}</div>
+						</Typography>
+						<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
+					</CardContent>
+					<div><Button checked={checked} onClick={()=>showCommentsOfMovie()}><CommentIcon/>Comment</Button></div>
+					{checked?<div>
+						<TextField required id="comment" label="Enter Comment" />
+						<button onClick={addComment}>Submit</button></div>
+					:<div></div>}
+					{checked?displayComment:<div></div>}
+				</Card>
+				<br />
+			</div>
         );
     }
     else
     {
+		props.setSearchTerm("")
         return(
             <div style={{color:"green"}}><h1>404 Error <br/> Wrong Id</h1> </div>
         );
