@@ -12,6 +12,10 @@ import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+
+
 import { Navigate } from 'react-router-dom';
 const useStyles = makeStyles({
 	
@@ -126,7 +130,7 @@ const commentCard = (comment)=>{
 							 {comment.UserID?comment.UserID.charAt(0):" "}
 						</Avatar>
 					</ListItemAvatar>
-					<ListItemText
+					<ListItemText 
 						  primary={comment.UserID}
 						  secondary={
 						<React.Fragment>
@@ -138,6 +142,10 @@ const commentCard = (comment)=>{
 					  ></Typography>
 						  {comment.comment}
 						</React.Fragment>}/>
+						<ThumbUpIcon/>Like &nbsp;&nbsp;&nbsp;&nbsp;
+						<br></br>count
+						<ThumbDownIcon/>Dislike<br></br>
+						Count
 				</ListItem>
 			</List>
 		</Paper>
@@ -152,69 +160,61 @@ const commentCard = (comment)=>{
 		})
 	}
 
-    if(data )
+    if(data)
     {
         return(
 			<div className='homeWithoutLogin'>
-			<br/><br/><br/>
-			<Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
-				<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
-                <Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
-                  {data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
-                </Avatar>
-              } action={
-				<Box sx={{ width: 200, sizeWidth:800, alignItems: 'center', alignSelf:'center', marginTop:'0.5cm',}} title='TMDB Rating'>		  
-					<Rating
-						name="text-feedback"
-						value={Number(data.movieById.tmDbRating)/2}
-						readOnly
-						precision={0.5}
-						emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-						size='large'
+				<br/><br/><br/>
+				<Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
+					<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
+					<Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
+					{data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
+					</Avatar>
+				} action={
+					<Box sx={{ width: 200, sizeWidth:800, alignItems: 'center', alignSelf:'center', marginTop:'0.5cm',}} title='TMDB Rating'>		  
+						<Rating
+							name="text-feedback"
+							value={Number(data.movieById.tmDbRating)/2}
+							readOnly
+							precision={0.5}
+							emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+							size='large'
+						/>
+					</Box>}>
+					</CardHeader>				
+					<CardMedia
+						className={classes.media}
+						component='img'
+						image={data.movieById.image!=="0"?data.movieById.image:noImage  }
+						title='show image'  
 					/>
-				</Box>}>
-				</CardHeader>
-				
-				
-				<CardMedia
-					className={classes.media}
-					component='img'
-					image={data.movieById.image!=="0"?data.movieById.image:noImage  }
-					title='show image'  
-				/>
-
-				<CardContent>
-					
-				<Typography className='tagline'>
-					<div className='tagline'> {data.movieById.tagline}</div>
-				</Typography>
-				
-					<Typography variant='body2' color='textPrimary' component='span'>
-						<dl>
-                            
-                            <h1>{data.movieById.name}</h1>
-							<p>
-								<dt className='title'>Description:</dt><br></br>
-								{data.movieById && data.movieById.plot ? <dd>{data.movieById.plot}</dd> : <dd>N/A</dd>}
-							</p>
-						
-						</dl>
-					</Typography>
-					<Typography >
-					<div className='releaseDate' >Release Date : {data.movieById.releaseDate}</div>
-				</Typography>
-					<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
-
-				</CardContent>
-				<div><Button checked={checked} onClick={()=>showCommentsOfMovie()}><CommentIcon/>Comment</Button></div>
-				{checked?<div>
-					<TextField required id="comment" label="Enter Comment" />
-					<button onClick={addComment}>Submit</button></div>
-				:<div></div>}
-				  {checked?displayComment:<div></div>}
-			</Card>
-			<br />
-		</div>
+					<CardContent>	
+						<Typography className='tagline'>
+							<div className='tagline'> {data.movieById.tagline}</div>
+						</Typography>
+							<Typography variant='body2' color='textPrimary' component='span'>
+								<dl>
+									<h1>{data.movieById.name}</h1>
+									<p>
+										<dt className='title'>Description:</dt><br></br>
+										{data.movieById && data.movieById.plot ? <dd>{data.movieById.plot}</dd> : <dd>N/A</dd>}
+									</p>
+								</dl>
+							</Typography>
+							<Typography >
+							<div className='releaseDate' >Release Date : {data.movieById.releaseDate}</div>
+						</Typography>
+						<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
+					</CardContent>
+					<div><Button checked={checked} onClick={()=>showCommentsOfMovie()}><CommentIcon/>Comment</Button></div>
+					{checked?<div>
+						<TextField required id="comment" label="Enter Comment" />
+						<button onClick={addComment}>Submit</button></div>
+					:<div></div>}
+					{checked?displayComment:<div></div>}
+				</Card>
+				<br />
+			</div>
         );
     }
     else

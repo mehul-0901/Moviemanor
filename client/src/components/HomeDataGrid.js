@@ -171,11 +171,36 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
-      if (!props.searchTerm && props.moodData) {
+      if (!props.searchTerm && props.moodData && props.moodId) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
             if (!currentUser) {
               return (buildCard(movie, false, false));
+            } else if (currentUser) {
+              if(movie!==null){
+                let save=false;
+                let wishList=false;
+                if(props.data2 && props.data2.savedMovies) {  
+                  if(props.data2.savedMovies.length !== 0){
+                    for (const x of props.data2.savedMovies) {
+                      if(x.id===movie.id)
+                        {
+                          save=true;
+                        }
+                      }
+                    }
+                  }
+                if (props.data1 && props.data1.checkIfwatched) {
+                  if(props.data1.checkIfwatched.length !== 0){
+                    for (const x of props.data1.checkIfwatched) {
+                      if(x.id===movie.id) {
+                        wishList=true;
+                      }
+                    }
+                  } 
+                }
+                return (buildCard(movie,save,wishList));
+              }
             }
           })
         }
@@ -221,7 +246,7 @@ const HomeDataGrid = (props) => {
               <Pagination 
               onChange={(event, page)=>handlePageClick(event, page)}
               count= {page}
-              page={Number(props.pageNum)}
+              page={ props.pageNum ? Number(props.pageNum) : 1 }
               variant="outlined"
               color="primary" ></Pagination>
           </div>
