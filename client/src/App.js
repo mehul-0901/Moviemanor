@@ -36,7 +36,7 @@ function App() {
   return (
     <AuthProvider>
     <ApolloProvider client = {client}>
-           <Router>
+      <Router>
         <div className="App">
           <NavBar setSearchTerm={setSearchTerm} setMoodId={setMoodId} noOfBookmarks={noOfBookmarks} noOfWatchedMovies={noOfWatchedMovies} loggedIn={setLoggedIn}/>
           <div className='App-body'>
@@ -45,7 +45,7 @@ function App() {
 
               <Route path='/SignIn' element={ <SignIn/> } />
               <Route path='/SignUp' element={ <SignUp/> } />
-              <Route path='/movie/:id' element={ <MovieById/> } />
+              <Route path='/movie/:id' element={ <MovieById setSearchTerm={setSearchTerm}/> } />
               <Route path='/SavedMovies' element={ <SavedMovies setSearchTerm={setSearchTerm}/> } />
               <Route path='/WatchList' element={ <WatchList setSearchTerm={setSearchTerm}/> } />
               <Route path='/UserProfile' element={<UserProfile setSearchTerm={setSearchTerm}/>} />

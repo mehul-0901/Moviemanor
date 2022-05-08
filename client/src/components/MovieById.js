@@ -12,11 +12,11 @@ import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-
-
+import ThumbDownIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
+import ThumbUpIcon from '@mui/icons-material/ThumbUpOutlined';
 import { Navigate } from 'react-router-dom';
+
+
 const useStyles = makeStyles({
 	
 	card: {
@@ -52,10 +52,30 @@ const useStyles = makeStyles({
 		fontWeight: 'bold',
 		fontSize: 12
 	},
+	commentLikeButton:
+	{
+		background:'#0A7BF6',fontWeight: 'bold',
+		fontSize: 12,
+		border:"none"
+	},
+	commentNormalLikeButton:
+	{	color: '#1e8678',
+	fontWeight: 'bold',
+	fontSize: 12,
+	border:"none"	
+	},
+
+	commentDisLikeButton:
+	{
+		background:'#DE1818',fontWeight: 'bold',
+		fontSize: 12,
+		border:"none"
+	}
+
 	
 });
 
-function MovieById()
+function MovieById(props)
 {
     const classes = useStyles();
 	const navigate=useNavigate()
@@ -87,6 +107,21 @@ function MovieById()
         }
       );
 
+
+	  const [addLikeToComment, {loading:loading3, error:error3, data:addLikeComment}] = useMutation(
+        queries.ADD_LIKE,
+        {
+            fetchPolicy:"network-only",
+			onCompleted:refetch1
+        }
+      );
+	  const [addDisLikeToComment, {loading:loading4, error:error4, data:addDisLikeComment}] = useMutation(
+        queries.ADD_DISLIKE,
+        {
+            fetchPolicy:"network-only",
+			onCompleted:refetch1
+        }
+      );
 
       useEffect(() => {
 		console.log('on load useeffect');
@@ -120,6 +155,26 @@ function MovieById()
 
 
 	}
+	const likeComment=(commentID)=>{
+		console.log("here");
+		console.log(commentID);
+		if(currentUser){
+		addLikeToComment({variables:{movieID:id,  commentID: commentID, emailID: currentUser.email}})
+		}else{
+			alert("Login to add a comment");
+			navigate('/SignIn');
+		}
+
+	}
+	const dislikeComment=(commentID)=>{
+		if(currentUser){
+		addDisLikeToComment({variables:{movieID:id,  commentID: commentID, emailID: currentUser.email}})
+		}
+		else{
+			alert("Login to add a comment");
+			navigate('/SignIn');
+		}
+	}
 const commentCard = (comment)=>{
 	return(
 		<Paper sx={{m:1}} elevation={4} key={comment.UserID}>
@@ -140,12 +195,17 @@ const commentCard = (comment)=>{
 						variant="body2"
 						color="text.primary"
 					  ></Typography>
-						  {comment.comment}
+						  {comment.comment} 
 						</React.Fragment>}/>
-						<ThumbUpIcon/>Like &nbsp;&nbsp;&nbsp;&nbsp;
-						<br></br>count
-						<ThumbDownIcon/>Dislike<br></br>
-						Count
+						{comment.like.includes(currentUser.email)?
+						<button className={classes.commentLikeButton}  onClick={()=>likeComment(comment.id)}><ThumbUpIcon/>Like </button>:
+						<button className={classes.commentNormalLikeButton}  onClick={()=>likeComment(comment.id)}><ThumbUpIcon/>Like </button>} &nbsp;&nbsp;&nbsp;&nbsp; 
+						{comment.like.length-comment.dislike.length} &nbsp;&nbsp;&nbsp;&nbsp;
+						{comment.dislike.includes(currentUser.email)?
+						<button className={classes.commentDisLikeButton} onClick={()=>dislikeComment(comment.id)}><ThumbDownIcon/>Dislike</button>:
+						<button className={classes.commentNormalLikeButton}   onClick={()=>dislikeComment(comment.id)}><ThumbDownIcon/>Dislike</button>}
+						<br></br>
+						
 				</ListItem>
 			</List>
 		</Paper>
@@ -162,6 +222,7 @@ const commentCard = (comment)=>{
 
     if(data)
     {
+		props.setSearchTerm("")
         return(
 			<div className='homeWithoutLogin'>
 				<br/><br/><br/>
@@ -219,6 +280,7 @@ const commentCard = (comment)=>{
     }
     else
     {
+		props.setSearchTerm("")
         return(
             <div>Error</div>
         );
