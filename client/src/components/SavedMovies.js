@@ -62,24 +62,26 @@ const SavedMovies = (props) => {
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
 
-    const [getusersavedmovies, {loading, error, data, refetch:refetchSaved}] = useLazyQuery(
-        queries.GET_USER_SAVEDMOVIES,
-        {
-            fetchPolicy:"cache-and-network",
-        }
-      );
-
       const [getmoviesbyIDS, {data: saved_movies}] = useLazyQuery(
         queries.Get_Movies_By_IDS,
         {
-            fetchPolicy:"cache-and-network",
+            // onCompleted:refetchSaved1
         }
       ); 
+      
+    const [getusersavedmovies, {loading, error, data, refetch:refetchSaved}] = useLazyQuery(
+        queries.GET_USER_SAVEDMOVIES,
+        {
+            // onCompleted: refetchSaved1
+        }
+      );
 
-      const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER)
+      const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER, {
+       // onCompleted:refetchSaved
+    });
 
       useEffect(() => {
-		console.log('on load useeffect');
+		console.log('on load useeffect1');
         console.log(id);
 		async function fetchData() 
         {
@@ -88,32 +90,35 @@ const SavedMovies = (props) => {
                 console.log(currentUser.email);
                 getusersavedmovies({variables:{userId:currentUser.email}});
                 console.log(data);
+                const idArray = data?.savedMovies?.map((node)=> node.id)
+            console.log(idArray);
+                getmoviesbyIDS({variables:{ids:idArray}});
              //   getmoviesbyIDS({variables:{ids:data}});
               //  console.log(data);
             }
 		}
 		fetchData();
 
-    }	, [id]);
-
-    useEffect(() => {
-		console.log('on load useeffect');
-        console.log(id);
-		async function fetchData() 
-        {
-            if(currentUser)
-            {
-                console.log(data);
-            const idArray = data?.savedMovies?.map((node)=> node.id)
-            console.log(idArray);
-                getmoviesbyIDS({variables:{ids:idArray}});
-               console.log(data);
-             
-            }
-		}
-		fetchData();
-
     }	, [data]);
+
+    // useEffect(() => {
+		// console.log('on load useeffect2');
+    //     console.log(id);
+		// async function fetchData() 
+    //     {
+    //         if(currentUser)
+    //         {
+    //             console.log(data);
+    //         const idArray = data?.savedMovies?.map((node)=> node.id)
+    //         console.log(idArray);
+    //             getmoviesbyIDS({variables:{ids:idArray}});
+    //            console.log(data);
+             
+    //         }
+		// }
+		// fetchData();
+
+    // }	, [data]);
 
 
     const removeSave=(email,id)=>
@@ -123,6 +128,9 @@ const SavedMovies = (props) => {
         onCompleted: refetchSaved
      })
      getusersavedmovies({ variables: { userId:currentUser.email}});
+     const idArray = data?.savedMovies?.map((node)=> node.id)
+            console.log(idArray);
+                getmoviesbyIDS({variables:{ids:idArray}});
     }
 
 
@@ -148,22 +156,16 @@ const SavedMovies = (props) => {
               alt={show.title}
             />
               </Link>
-
-
             <CardActions disableSpacing>
                <Button aria-label="Remove saved movie" 
                 onClick={() => {removeSave(currentUser.email,show.id)}}>
                  <BookmarkRemoveSharpIcon/> Remove from Save
                 </Button>
                 
-            </CardActions>
-
-
-         
+            </CardActions>         
               <CardContent>
                 <Typography variant='body2' color='textSecondary' component='span'>
                 {show.plot.replace(regex, '').substring(0, 139) + '...'}
-
                 </Typography>
               </CardContent>
             

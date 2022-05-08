@@ -67,17 +67,13 @@ const WatchList = (props) => {
 
     const [getUserWatchedMovies, {loading, error, data,refetch:refetchWatched}] = useLazyQuery(
         queries.GET_USER_WATCHEDMOVIES,
-        {
-            fetchPolicy:"cache-and-network",
-        }
+        {}
       );
 
 
       const [getmoviesbyIDS, {data: watched_movies}] = useLazyQuery(
         queries.Get_Movies_By_IDS,
-        {
-            fetchPolicy:"cache-and-network",
-        }
+        {}
       );
 
       const [removefromWatchList] = useMutation(queries.REMOVE_FROM_WATCHLIST)
