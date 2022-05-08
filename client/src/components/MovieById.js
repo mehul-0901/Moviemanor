@@ -12,11 +12,11 @@ import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
-
 import ThumbDownIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUpOutlined';
-
 import { Navigate } from 'react-router-dom';
+
+
 const useStyles = makeStyles({
 	
 	card: {
@@ -75,7 +75,7 @@ const useStyles = makeStyles({
 	
 });
 
-function MovieById()
+function MovieById(props)
 {
     const classes = useStyles();
 	const navigate=useNavigate()
@@ -216,13 +216,13 @@ const commentCard = (comment)=>{
 
 	if(comments && comments.listOfComments && comments.listOfComments.comment){
 		displayComment =comments.listOfComments.comment.map((comment)=>{
-
 			return commentCard(comment);
 		})
 	}
 
     if(data)
     {
+		props.setSearchTerm("")
         return(
 			<div className='homeWithoutLogin'>
 				<br/><br/><br/>
@@ -280,6 +280,7 @@ const commentCard = (comment)=>{
     }
     else
     {
+		props.setSearchTerm("")
         return(
             <div>Error</div>
         );

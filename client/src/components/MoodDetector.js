@@ -5,9 +5,13 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	button: {
-		color: '#1e8678',
+		color: '#515ce2',
 		fontWeight: 'bold',
-		fontSize: "2rem"
+		fontSize: "2rem",
+        '&:hover': {
+            backgroundColor: "#515ce2",
+            color: "white"
+        }
 	}
 });
 
@@ -186,7 +190,7 @@ const MoodDetector = (props) => {
         props.setPageNum()
     }
     return(
-        <div style={{marginTop: "11rem"}}>
+        <div style={{marginTop: "17rem"}}>
             <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
                 I am feeling...
             </Typography>
