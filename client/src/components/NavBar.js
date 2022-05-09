@@ -88,6 +88,7 @@ const NavBar = (props) => {
                     autoComplete="off"
                     inputProps={{ 'aria-label': 'search' }}
                     sx={{color: "#dedede"}}
+                    value={props.searchTerm}
                     onChange= {(e) => {
                         props.setSearchTerm(e.target.value)
                         console.log(e.target.value);

@@ -38,7 +38,7 @@ function App() {
     <ApolloProvider client = {client}>
       <Router>
         <div className="App">
-          <NavBar setSearchTerm={setSearchTerm} setMoodId={setMoodId} noOfBookmarks={noOfBookmarks} noOfWatchedMovies={noOfWatchedMovies} loggedIn={setLoggedIn}/>
+          <NavBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} setMoodId={setMoodId} noOfBookmarks={noOfBookmarks} noOfWatchedMovies={noOfWatchedMovies} loggedIn={setLoggedIn}/>
           <div className='App-body'>
             <Routes>
               <Route path='/' element={ <Home searchTerm={searchTerm} moodId={moodId} setMoodId={setMoodId} setNoOfBookmarks={setNoOfBookmarks} setNoOfWatchedMovies={setNoOfWatchedMovies}/> } />
