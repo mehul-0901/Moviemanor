@@ -63,7 +63,7 @@ const UserProfile = () =>{
    
     }
       return (
-        <div>
+        <div style={{marginTop: "5rem"}}>
           <div className="container">
             <div className="main-body">
               <div className="row gutters-sm">

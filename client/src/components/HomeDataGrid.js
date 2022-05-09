@@ -107,7 +107,7 @@ const HomeDataGrid = (props) => {
                 <CardMedia
                   component="img"
                   height="400"
-                  image={show.image!=="NA"?show.image: noImage  }
+                  image={show.image!=="0"?show.image: noImage  }
                   alt={show.title}
                   sx={{borderRadius: "10px"}}
                 />
@@ -241,7 +241,7 @@ const HomeDataGrid = (props) => {
               shape="rounded"
               size="large"
               color="secondary"
-              sx={{color: "#ffffff"}} ></Pagination>
+              sx={{color: "#ffffff !important"}} ></Pagination>
           </div>
           );
       }
