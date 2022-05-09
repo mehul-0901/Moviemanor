@@ -21,7 +21,7 @@ import { textAlign } from '@mui/system';
 const useStyles = makeStyles({
 	
 	card: {	
-		maxWidth: 500,
+		maxWidth: 400,
 		height: 'auto',
 		borderRadius: 15,
 		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
@@ -216,7 +216,6 @@ const commentCard = (comment)=>{
 
     if(data)
     {
-		props.setSearchTerm("")
         return(
 			<div className='homeWithoutLogin' style={{marginTop: "5rem"}}>
 				<Link to={"/"} style={{textDecoration: "none", color: "#c384d2", fontSize: "larger", textAlign: "start"}}>Back to all shows...</Link>
@@ -308,7 +307,6 @@ const commentCard = (comment)=>{
     }
     else
     {
-		props.setSearchTerm("")
         return(
             <div>Error</div>
         );
