@@ -1,7 +1,7 @@
 import React, {useEffect, useState,useContext} from "react";
 import '../App.css';
 import { styled, alpha } from '@mui/material/styles';
-import {AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button} from '@mui/material';
+import { Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -95,7 +95,7 @@ const NavBar = (props) => {
                     }}
                     />
                 </Search>
-                <Link to={"/SavedMovies"} onClick={() => {props.setSearchTerm("")}} title="My Saved Movies">
+                <Link to={"/SavedMovies"} onClick={() => { document.getElementById('searchInput').value = ''}} title="My Saved Movies">
                     <IconButton size="large" color="secondary" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} title="My Saved Movies">
                         <Badge badgeContent={props.noOfBookmarks} color="error">
                             <BookmarksIcon />
@@ -103,7 +103,7 @@ const NavBar = (props) => {
                     </IconButton>
                     <p style={{display: "none"}}>My Saved Movies</p>
                 </Link>
-                <Link to={"/WatchList"} onClick={() => {props.setSearchTerm("")}} title="My Watched Movies">
+                <Link to={"/WatchList"} onClick={() => { document.getElementById('searchInput').value = ''}} title="My Watched Movies">
                     <IconButton size="large" color="secondary" aria-label={`show ${props.noOfWatchedMovies} watched movies`} title="My Watched Movies">
                         <Badge badgeContent={props.noOfWatchedMovies} color="error">
                             <ListAltIcon />
@@ -155,22 +155,22 @@ const NavBar = (props) => {
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}
-            sx={{marginTop: "4rem", color: "#202226 !important"}}
+            sx={{marginTop: "4rem", color: "#202226"}}
         >
         <Link to={"/UserProfile"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#515ce2", fontSize: "20px", backgroundColor: alpha("#fff", 0.3), backdropFilter: "blur(30px)"}, () => ({'&:hover': {textDecoration: "none", backgroundColor: alpha("#515ce2", 0.5)}})]}
-            onClick={handleMenuClose}>Profile</MenuItem>
+            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
+            onClick={handleMenuClose }>Profile</MenuItem>
         </Link>
         <Link to={"/SavedMovies"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#515ce2", fontSize: "20px", backgroundColor: alpha("#fff", 0.3), backdropFilter: "blur(30px)"}, () => ({'&:hover': {textDecoration: "none", backgroundColor: alpha("#515ce2", 0.5)}})]}
+            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
             >My Saved Movies</MenuItem>
         </Link>
         <Link to={"/WatchList"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#515ce2", fontSize: "20px", backgroundColor: alpha("#fff", 0.3), backdropFilter: "blur(30px)"}, () => ({'&:hover': {textDecoration: "none", backgroundColor: alpha("#515ce2", 0.5)}})]}
+            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
             >My Watched List</MenuItem>
         </Link>
         <Link to={"/"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#515ce2", fontSize: "20px", backgroundColor: alpha("#fff", 0.3), backdropFilter: "blur(30px)"}, () => ({'&:hover': {textDecoration: "none", backgroundColor: alpha("#515ce2", 0.5)}})]}
+            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
             onClick={(e) => { 
                 e.preventDefault()
                 props.setSearchTerm("")

@@ -66,6 +66,7 @@ const Home = (props) => {
           // setSearchTerm(props.searchTerm);
     async function fetchData() {
       console.log("i am here inside the useEffect in Home Component");
+      console.log(currentUser);
       if(props.moodId !== 0){
         await getMoodBasedMovies({
           variables: {
