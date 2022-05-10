@@ -1,11 +1,12 @@
 import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
-import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination} from '@mui/material';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination, PaginationItem} from '@mui/material';
 import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
 import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {AuthContext} from '../firebase/Auth';
 import { makeStyles } from '@material-ui/core';
 import noImage from '../img/download.jpeg';
@@ -13,14 +14,30 @@ import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles({
+  root: {
+    '& ul > li:not(:first-child):not(:last-child) > button:not(.Mui-selected)': {
+      backgroundColor: "transparent",
+      color: "#ffffff",
+      '&:hover': {
+        backgroundColor: "#9b27af"
+      }    
+    },
+    '& ul > li > div': {
+      color: "#fff",
+      backgroundColor: "transparent"
+    }
+  },
 	card: {
 		maxWidth: 300,
 		height: 'auto',
 		marginLeft: '2cm',
 		marginRight: 'auto',
-		borderRadius: 5,
-    backgroundColor: "rgba(255,255,255,0)",
-		boxShadow: '0 0px 0px rgba(255,255,255,0), 0 0px 0px rgba(255,255,255,0);'
+		borderRadius: "10px",
+    backgroundColor: "rgba(255,255,255,0) !important",
+		boxShadow: '0 0px 0px rgba(255,255,255,0), 0 0px 0px rgba(255,255,255,0); !important',
+    '&:hover': {
+      color: "secondary !important"
+    }
 	},
 	titleHead: {
 		borderBottom: '1px solid #1e8678',
@@ -34,11 +51,16 @@ const useStyles = makeStyles({
 		height: '100%',
 		width: '100%'
 	},
+  link: {
+    '&:hover': {
+      color: "#9b27af !important"
+    }
+  },
 	button: {
 		color: '#1e8678',
 		fontWeight: 'bold',
 		fontSize: 12
-	}
+	},  
 });
 
 const HomeDataGrid = (props) => {
@@ -103,7 +125,7 @@ const HomeDataGrid = (props) => {
         return (
           <Grid item key={show.id} sx={{paddingLeft: "0px", padding: "0px !important"}}>
             <Card  className={classes.card} sx={{paddingLeft: "0px", maxWidth: 345, marginLeft: "0px !important" }} >
-              <Link to={`/movie/${show.id}`} style={{textDecoration: "none"}} >
+              <Link className={classes.link} to={`/movie/${show.id}`} style={{textDecoration: "none"}} >
                 <CardMedia
                   component="img"
                   height="400"
@@ -111,7 +133,7 @@ const HomeDataGrid = (props) => {
                   alt={show.title}
                   sx={{borderRadius: "10px"}}
                 />
-                <CardHeader sx={{paddingLeft: "0px", textAlign: "start"}}
+                <CardHeader sx={{width: "320px",paddingLeft: "0px", textAlign: "start"}}
                   title={show.title}
                 />
               </Link>
@@ -120,10 +142,10 @@ const HomeDataGrid = (props) => {
                   <Button aria-label="Remove saved movie" 
                     title="Remove from Save"
                     onClick={() => {removeSave(currentUser.email,show.id)}}>
-                    <BookmarkRemoveSharpIcon title="Remove from Save"/> {/*Remove from Save*/}
+                    <BookmarkRemoveSharpIcon sx={{color: "#9b27af"}} title="Remove from Save"/> {/*Remove from Save*/}
                   </Button>
                   :
-                  <Button aria-label="Save for later" 
+                  <Button aria-label="Save for later"
                     title="Save for Later"
                     onClick={(e) => { 
                       e.preventDefault()
@@ -133,7 +155,7 @@ const HomeDataGrid = (props) => {
                         addSave(currentUser.email,show.id)
                       }
                     }}>
-                      <BookmarkAddOutlinedIcon title="Save for Later"/> {/*Add to Save*/}
+                      <BookmarkAddOutlinedIcon sx={{color: "#9b27af"}} title="Save for Later"/> {/*Add to Save*/}
                   </Button> 
                 } 
                 {wishList ? 
@@ -235,13 +257,21 @@ const HomeDataGrid = (props) => {
           return (
           <div className="pagination" style={{color: "#ffffff"}}> 
               <Pagination 
-              onChange={(event, page)=>handlePageClick(event, page)}
-              count= {page}
-              page={ props.pageNum ? Number(props.pageNum) : 1 }
-              shape="rounded"
-              size="large"
-              color="secondary"
-              sx={{color: "#ffffff !important"}} ></Pagination>
+                className={classes.root}
+                onChange={(event, page)=>handlePageClick(event, page)}
+                count= {props.searchTerm ? page : 20}
+                page={ props.pageNum ? Number(props.pageNum) : 1 }
+                shape="rounded"
+                size="large"
+                color="secondary"
+                sx={{color: "#ffffff !important"}} 
+                renderItem={(item) => (
+                  <PaginationItem style={{color: "#fff"}}
+                    components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                    {...item}
+                  />
+                )}
+              />
           </div>
           );
       }

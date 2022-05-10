@@ -163,7 +163,7 @@ const resolvers = {
             if (!like && !dislike){
                 const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
             {$push:{"comment.$.like":args.emailID}},false, true)
-            console.log("here");
+            // console.log("here");
             }
 
             else if(dislike && !like){
@@ -484,14 +484,13 @@ const resolvers = {
             // temp["MovieId"]=commentByMovie[0].MovieId;
             // temp["comment"]=array;
             // console.log(temp);
+            commentByMovie[0].comment.reverse()
             return commentByMovie[0]
 
           },
 
 
           savedMovies: async (_, args) => {
-
-
             console.log("tesdsdiuyhj");
             const saveForLater = await SaveMovie();
             let array = []

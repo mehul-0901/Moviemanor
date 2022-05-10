@@ -116,11 +116,11 @@ query ListOfComments($movieId: String) {
   listOfComments(movieId: $movieId) {
     MovieId
     comment {
+      id
       UserID
       comment
       like
       dislike
-      id
     }
   }
 }
