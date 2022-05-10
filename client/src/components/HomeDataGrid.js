@@ -129,7 +129,7 @@ const HomeDataGrid = (props) => {
                 <CardMedia
                   component="img"
                   height="400"
-                  image={show.image!=="0"?show.image: noImage  }
+                  image={show.image!=="NA"?show.image: noImage  }
                   alt={show.title}
                   sx={{borderRadius: "10px"}}
                 />
@@ -184,6 +184,7 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
+      
       if (!props.searchTerm && props.moodData && props.moodId) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{

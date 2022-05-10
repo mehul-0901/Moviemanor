@@ -1,8 +1,11 @@
+require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
+
+
 const settings = {
     mongoConfig: {
-      serverUrl: 'mongodb://localhost:27017/',
-      database: 'Movie'
+      serverUrl: `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@moviemanor.amazq.mongodb.net/`,
+      database: 'Moviemanor'
     }
   };
 const mongoConfig = settings.mongoConfig;
@@ -21,3 +24,13 @@ module.exports = async () => {
 
   return _db;
 };
+
+
+// const { MongoClient, ServerApiVersion } = require('mongodb');
+// const uri = "mongodb+srv://vatsal007:<password>@moviemanor.amazq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });

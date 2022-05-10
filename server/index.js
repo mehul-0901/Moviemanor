@@ -1,8 +1,6 @@
 
 const { ApolloServer, gql } = require('apollo-server');
 const { default: axios } = require('axios');
-const redis = require('redis');
-const client = redis.createClient();
 const {v4:uuid} = require('uuid');
 const {ObjectId} = require('mongodb')
 const mongoCollections = require('../server/config/mongoCollections');
@@ -10,25 +8,9 @@ const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
 const Comments = mongoCollections.Comments;
 const UserImage = mongoCollections.UserImage;
+require("dotenv").config()
 
 
-
-
-
-// const { default: axios } = require('axios');
-
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
-// (async () => {
-//     // const client = createClient();
-  
-//     client.on('error', (err) => console.log('Redis Client Error', err));
-  
-//     await client.connect();
-  
-//   })();
-  
 const typeDefs = gql`
     type Movies {
         id: ID!
@@ -404,7 +386,7 @@ const resolvers = {
 
     Query:{
         movieList: async (_, args) => {
-            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
+            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {
                 return [];
@@ -431,7 +413,7 @@ const resolvers = {
                     temp["image"]="https://image.tmdb.org/t/p/w500"+x.poster_path;
                 }
                 else{
-                    temp["image"]="0";
+                    temp["image"]="NA";
                 }if(x.overview)
                 {
                     temp["plot"]=x.overview;
@@ -511,7 +493,7 @@ const resolvers = {
             let movieArray = []
             for(id in args.ids){
                // console.log(args.ids[id]);
-                const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.ids[id]}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
+                const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.ids[id]}?api_key=${process.env.TMDB_API_KEY}&language=en-US`);
                 let temp={};
 
                 if(data){  
@@ -533,7 +515,7 @@ const resolvers = {
                         temp["image"]="https://image.tmdb.org/t/p/w500"+data.poster_path;
                     }
                     else{
-                        temp["image"]="0";
+                        temp["image"]="NA";
                     }if(data.overview)
                     {
                         temp["plot"]=data.overview;
@@ -557,7 +539,7 @@ const resolvers = {
 
         movieById: async (_, args) => {
         
-            const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
+            const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`);
             let temp={};
 
             if(data){  
@@ -579,7 +561,7 @@ const resolvers = {
                     temp["image"]="https://image.tmdb.org/t/p/w500"+data.poster_path;
                 }
                 else{
-                    temp["image"]="0";
+                    temp["image"]="NA";
                 }if(data.overview)
                 {
                     temp["plot"]=data.overview;
@@ -627,7 +609,7 @@ const resolvers = {
             if(!args.pageNum) {
                 args.pageNum = 1
             }
-            const {data} = await axios.get(`https://api.themoviedb.org/3/movie/${args.moodId}/similar?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&language=en-US`)
+            const {data} = await axios.get(`https://api.themoviedb.org/3/movie/${args.moodId}/similar?api_key=${process.env.TMDB_API_KEY}&page=${args.pageNum}&language=en-US`)
             const moviesArray = []
             console.log(data);
             data.results.forEach(x => {
