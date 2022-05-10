@@ -302,7 +302,7 @@ const commentCardLoggedIn = (comment)=>{
 							className={classes.media}
 							component='img'
 							height="700"
-							image={data.movieById.image!=="0"?data.movieById.image:noImage  }
+							image={data.movieById.image!=="NA"?data.movieById.image:noImage  }
 							title={data.movieById.title}  
 						/>
 					</Card>

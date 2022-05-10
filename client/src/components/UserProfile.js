@@ -77,7 +77,7 @@ const UserProfile = () => {
               <div className="card">
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src={photoURL} className="rounded-circle" alt="Admin" width="150" />
+                    <img src={photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
                     <div className="mt-3">
                       <h4> {name} </h4>
                     </div>
