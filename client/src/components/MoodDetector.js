@@ -5,9 +5,13 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	button: {
-		color: '#1e8678',
+		color: '#676fe9',
 		fontWeight: 'bold',
-		fontSize: "2rem"
+		fontSize: "2rem",
+        '&:hover': {
+            backgroundColor: "#676fe9",
+            color: "white"
+        }
 	}
 });
 
@@ -23,7 +27,7 @@ const MoodDetector = (props) => {
 
     const initialMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     setInitialMoods(false)
@@ -66,7 +70,7 @@ const MoodDetector = (props) => {
 
     const happyMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -98,7 +102,7 @@ const MoodDetector = (props) => {
 
     const sadMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -130,7 +134,7 @@ const MoodDetector = (props) => {
 
     const angryMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -152,7 +156,7 @@ const MoodDetector = (props) => {
 
     const neutralMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -186,7 +190,7 @@ const MoodDetector = (props) => {
         props.setPageNum()
     }
     return(
-        <div style={{marginTop: "11rem"}}>
+        <div style={{marginTop: "17rem"}}>
             <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
                 I am feeling...
             </Typography>
@@ -200,7 +204,7 @@ const MoodDetector = (props) => {
             {neutralMoods && neutralMood()}
             <br />
             <br />
-            {backOption && <Button sx={{fontSize: "1rem"}} onClick={(e) => {
+            {backOption && <Button style={{textDecoration: "none", fontSize: "larger", textAlign: "start", color: "#c384d2"}} onClick={(e) => {
                 e.preventDefault()
                 setSadMoods(false)
                 setAngryMoods(false)

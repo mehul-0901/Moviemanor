@@ -116,12 +116,26 @@ query ListOfComments($movieId: String) {
   listOfComments(movieId: $movieId) {
     MovieId
     comment {
+      id
       UserID
       comment
       like
       dislike
     }
   }
+}
+`;
+
+const ADD_LIKE = gql`
+mutation AddLike($movieID: String, $commentID: String, $emailID: String) {
+  addLike(movieID: $movieID, commentID: $commentID, emailID: $emailID)
+}
+
+`;
+
+const ADD_DISLIKE = gql`
+mutation AddDislike($movieID: String, $commentID: String, $emailID: String) {
+  addDislike(movieID: $movieID, commentID: $commentID, emailID: $emailID)
 }
 `;
 
@@ -143,7 +157,9 @@ let exported = {
   Get_Movies_By_IDS,
   GET_MOOD_BASED_MOVIES,
   ADD_COMMENT,
-  SHOW_COMMENTS
+  SHOW_COMMENTS,
+  ADD_LIKE,
+  ADD_DISLIKE
   };
   
 export default exported

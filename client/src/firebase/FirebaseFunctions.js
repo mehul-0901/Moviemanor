@@ -1,11 +1,37 @@
 import firebase from 'firebase/app';
+import {storage} from './Firebase'
 
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   await firebase.auth().createUserWithEmailAndPassword(email, password);
   await firebase.auth().currentUser.updateProfile({displayName: displayName});
 }
+async function addProfilePic(photoUrl,email)
+{
+  const uploadTask = storage.ref(`${email}/${photoUrl.name}`).put(photoUrl);
+  uploadTask.on(
+    "state_changed",
+    snapshot => {
+      const progress = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+      console.log(progress);
+    },
+    error => {
+      console.log(error);
+    },
+    () => {
+      storage
+        .ref(email)
+        .child(photoUrl.name)
+        .getDownloadURL()
+        .then(url => {
+           firebase.auth().currentUser.updateProfile({photoURL:url})
+        });
+    }
+  );
 
+}
 async function doChangePassword(email, oldPassword, newPassword) {
   let credential = firebase.auth.EmailAuthProvider.credential(
     email,
@@ -13,6 +39,7 @@ async function doChangePassword(email, oldPassword, newPassword) {
   );
   await firebase.auth().currentUser.reauthenticateWithCredential(credential);
   await firebase.auth().currentUser.updatePassword(newPassword);
+ 
   await doSignOut();
 }
 
@@ -54,5 +81,6 @@ export {
   doPasswordReset,
   doPasswordUpdate,
   doSignOut,
-  doChangePassword
+  doChangePassword,
+  addProfilePic
 };

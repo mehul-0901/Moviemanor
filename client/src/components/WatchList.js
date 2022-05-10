@@ -1,32 +1,24 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, {useEffect, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
 import {  useParams } from 'react-router-dom';
-import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
+import { useMutation, useLazyQuery} from '@apollo/client';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
-import BookmarkRemoveSharpIcon from '@mui/icons-material/BookmarkRemoveSharp';
 import {AuthContext} from '../firebase/Auth';
-
-import { makeStyles,Box} from '@material-ui/core';
+import { makeStyles} from '@material-ui/core';
 import { Grid } from "@mui/material";
 import noImage from '../img/download.jpeg';
 import { Button } from "@mui/material";
-import { Pagination } from "@mui/material";
 import { Link } from "react-router-dom";
-import Rating from '@mui/material/Rating';
-import StarIcon from '@mui/icons-material/Star';
+
 
 const useStyles = makeStyles({
 	card: {
@@ -34,9 +26,12 @@ const useStyles = makeStyles({
 		height: 'auto',
 		marginLeft: '2cm',
 		marginRight: 'auto',
-		borderRadius: 5,
-		border: '1px solid #1e8678',
-		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
+		borderRadius: "10px",
+    backgroundColor: "rgba(255,255,255,0) !important",
+		boxShadow: '0 0px 0px rgba(255,255,255,0), 0 0px 0px rgba(255,255,255,0);',
+    '&:hover': {
+      color: "secondary !important"
+    }
 	},
 	titleHead: {
 		borderBottom: '1px solid #1e8678',
@@ -50,13 +45,17 @@ const useStyles = makeStyles({
 		height: '100%',
 		width: '100%'
 	},
+  link: {
+    '&:hover': {
+      color: "#9b27af !important"
+    }
+  },
 	button: {
 		color: '#1e8678',
 		fontWeight: 'bold',
 		fontSize: 12
-	}
+	},  
 });
-
 
 const WatchList = (props) => {
     const classes = useStyles();
@@ -67,17 +66,13 @@ const WatchList = (props) => {
 
     const [getUserWatchedMovies, {loading, error, data,refetch:refetchWatched}] = useLazyQuery(
         queries.GET_USER_WATCHEDMOVIES,
-        {
-            fetchPolicy:"cache-and-network",
-        }
+        {}
       );
 
 
       const [getmoviesbyIDS, {data: watched_movies}] = useLazyQuery(
         queries.Get_Movies_By_IDS,
-        {
-            fetchPolicy:"cache-and-network",
-        }
+        {}
       );
 
       const [removefromWatchList] = useMutation(queries.REMOVE_FROM_WATCHLIST)
@@ -92,8 +87,6 @@ const WatchList = (props) => {
                 console.log(currentUser.email);
                 getUserWatchedMovies({variables:{userId:currentUser.email}});
                 console.log(data);
-             //   getmoviesbyIDS({variables:{ids:data}});
-              //  console.log(data);
             }
 		}
 		fetchData();
@@ -132,47 +125,30 @@ const WatchList = (props) => {
 
     const buildCard = (show) => {
         return (
-            <div key={show.id}>
-          <Card  className={classes.card} sx={{ maxWidth: 345 }} >
-          <Link to={{pathname:`/movie/${show.id}`}} >
-
-            <CardHeader 
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  {show.title.charAt(0)}
-                </Avatar>
-              }
-              title={show.title}
-            />
-            <CardMedia
-              component="img"
-              height="400"
-              image={show.image!=="0"?show.image:noImage  }
-              alt={show.title}
-            />
+          <Grid item key={show.id} sx={{paddingLeft: "0px", padding: "0px !important"}}>
+            <Card className={classes.card} sx={{paddingLeft: "0px", maxWidth: 345, marginLeft: "0px !important" }} >
+              <Link className={classes.link} to={`/movie/${show.id}`} style={{textDecoration: "none"}} >
+                <CardMedia
+                  component="img"
+                  height="400"
+                  image={show.image!=="0"?show.image: noImage  }
+                  alt={show.title}
+                  sx={{borderRadius: "10px"}}
+                />
+                <CardHeader sx={{width: "320px",paddingLeft: "0px", textAlign: "start"}}
+                  title={show.title}
+                />
               </Link>
-
-
-            <CardActions disableSpacing>
-            <Button aria-label="Delete watchlist"
-            onClick={(e) => {removeWatchList(currentUser.email,show.id) }}>
-              <RemoveCircleOutlineSharpIcon />Delete from watchlist
-            </Button>
-                
-            </CardActions>
-
-
-         
-              <CardContent>
-                <Typography variant='body2' color='textSecondary' component='span'>
-                {show.plot.replace(regex, '').substring(0, 139) + '...'}
-
-                </Typography>
-              </CardContent>
-            
-          </Card>
-          <br></br>
-          </div>
+              <CardActions sx={{padding: "0px"}}>
+                <Button aria-label="Delete watchlist"
+                  title="Delete from Watched List"
+                  onClick={(e) => {removeWatchList(currentUser.email,show.id) }}>
+                  <RemoveCircleOutlineSharpIcon title="Delete from Watched List"/> {/*Delete from watched list*/}
+                </Button> 
+              </CardActions>                
+            </Card>
+            <br></br>
+          </Grid>
         )
     }
    // console.log(watched_movies);
@@ -184,10 +160,11 @@ const WatchList = (props) => {
       });}
       else
       {
-          return(
-              <div style={{color:"white"}}>  "Kindly add movies to watch!"
-              </div>
-          );
+        return(
+            <div style={{color:"white"}}> 
+              "Kindly add watched movies!"
+            </div>
+        );
       }
 
 
@@ -202,9 +179,8 @@ const WatchList = (props) => {
       }
        else {
         return (
-            <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
-
-          <Grid container className={classes.grid} spacing={3}>
+          <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
+            <Grid container sx={{marginTop: 0, maxWidth: "1660px", marginLeft: "auto", marginRight: "auto", justifyContent: "center", gridGap: "3.5rem"}} className={classes.grid} spacing={3}>
               {card}
             </Grid>
           </div>
