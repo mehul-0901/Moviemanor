@@ -53,6 +53,13 @@ body {
 .homeWithoutLogin{
   height: 100vh;
   margin-top: -16vh;
+  margin-bottom: 10rem;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  row-gap: 1.5rem;
 }
 
 .pagination{
@@ -69,6 +76,10 @@ body {
   align-items: center;
 }
 
+a{
+  text-decoration: none !important;
+}
+
 .card{
   align-items: center; 
 }
@@ -80,6 +91,16 @@ body {
 .movieDetailsBox{
   display: flex;
   justify-content: space-around;
+  width: 1660px;
+  max-width: 1660px;
+}
+
+.commentsSection{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 1400px;
+  row-gap: 1.5rem;
 }
 
 .tagline{

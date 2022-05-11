@@ -27,7 +27,7 @@ const MoodDetector = (props) => {
 
     const initialMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     setInitialMoods(false)
@@ -70,7 +70,7 @@ const MoodDetector = (props) => {
 
     const happyMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -102,7 +102,7 @@ const MoodDetector = (props) => {
 
     const sadMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -134,7 +134,7 @@ const MoodDetector = (props) => {
 
     const angryMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -156,7 +156,7 @@ const MoodDetector = (props) => {
 
     const neutralMood = () => {
         return (
-            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1000px", margin: "auto"}}>
+            <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -204,7 +204,7 @@ const MoodDetector = (props) => {
             {neutralMoods && neutralMood()}
             <br />
             <br />
-            {backOption && <Button sx={{fontSize: "1rem", color: "#6f9ce6"}} onClick={(e) => {
+            {backOption && <Button style={{textDecoration: "none", fontSize: "larger", textAlign: "start", color: "#c384d2"}} onClick={(e) => {
                 e.preventDefault()
                 setSadMoods(false)
                 setAngryMoods(false)

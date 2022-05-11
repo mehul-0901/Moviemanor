@@ -12,14 +12,21 @@ import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
-import ThumbDownIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
-import ThumbUpIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import { Navigate } from 'react-router-dom';
 import { textAlign } from '@mui/system';
+import {alpha, styled} from '@mui/material/styles'
 
 
 const useStyles = makeStyles({
-	
+	commenterName: {
+		'& MuiTypography-root MuiTypography-body1 MuiListItemText-primary': {
+			fontWeight: "bold !important"
+		}
+	},
 	card: {	
 		maxWidth: 400,
 		height: 'auto',
@@ -45,29 +52,57 @@ const useStyles = makeStyles({
 		width: '100%'
 	},
 	button: {
-		color: '#1e8678',
+		color: '#676fe9',
 		fontWeight: 'bold',
-		fontSize: 12
+		fontSize: "1.5rem",
+		borderRadius: "10px",
+        '&:hover': {
+            backgroundColor: "#676fe9",
+            color: "white"
+        }
 	},
 	commentLikeButton:
 	{
-		background:'#0A7BF6',fontWeight: 'bold',
+		color: '#007b6d !important',
+		fontWeight: 'bold',
 		fontSize: 12,
 		border:"none"
 	},
 	commentNormalLikeButton:
-	{	color: '#1e8678',
-	fontWeight: 'bold',
-	fontSize: 12,
-	border:"none"	
+	{	
+		color: '#007b6d !important',
+		fontWeight: 'bold',
+		fontSize: 12,
+		border:"none"	
 	},
 	commentDisLikeButton:
 	{
-		background:'#DE1818',fontWeight: 'bold',
+		color: '#de1818 !important',
+		fontWeight: 'bold',
 		fontSize: 12,
 		border:"none"
 	}
 });
+
+const RedditTextField = styled((props) => (
+	<TextField InputProps={{ disableUnderline: true }} {...props} />
+  ))(({ theme }) => ({
+	  '& .MuiInputLabel-root': {
+		color: "white !important"
+	  },
+	'& .MuiFilledInput-root': {
+	  color: "white",	
+	  overflow: 'hidden',
+	  borderRadius: 10,
+	  width: "900px",
+	  backgroundColor: '#ffffff4d',
+	  transition: theme.transitions.create([
+		'border-color',
+		'background-color',
+		'box-shadow',
+	  ]),
+	},
+  }));   
 
 function MovieById(props)
 {
@@ -124,17 +159,18 @@ function MovieById(props)
         {
 			console.log(currentUser);
 			getMoviesById({variables:{id:id}});
+			showComments({variables:{movieId:id}})
 		}
 		fetchData();
 
     }	, [id]);
 
-	const showCommentsOfMovie=()=>{
-		setChecked((prev)=>!prev);
-		showComments({variables:{movieId:id}})
-		console.log(comments);
+	// const showCommentsOfMovie=()=>{
+	// 	setChecked((prev)=>!prev);
+	// 	showComments({variables:{movieId:id}})
+	// 	console.log("Comments:", comments);
 
-	}
+	// }
 	const addComment=()=>{
 		
 		let com=(document.getElementById("comment").value);
@@ -169,69 +205,110 @@ function MovieById(props)
 			navigate('/SignIn');
 		}
 	}
-const commentCard = (comment)=>{
+
+const commentCardLoggedIn = (comment)=>{
 	return(
-		<Paper sx={{m:1}} elevation={4} key={comment.UserID}>
-			<List sx={{width:'100%', maxwidth:360, bgcolor:'background.paper'}}>
-				<ListItem alignItems="flex-start">
+		<Paper sx={{display: "flex", width: "1100px", borderRadius: "15px !important"}} elevation={4} key={comment.id}>
+			<div style={{display: "flex", flexDirection: "column"}}>
+				{comment.like.includes(currentUser.email) ?
+					<Button sx={{display: "flex", flexDirection: "column"}} className={classes.commentLikeButton} onClick={()=>likeComment(comment.id)}>
+						<ThumbUpAltIcon sx={{color: "#007b6d"}}/>Upvote
+					</Button>
+					:
+					<Button sx={{display: "flex", flexDirection: "column"}} className={classes.commentLikeButton} onClick={()=>likeComment(comment.id)}>
+						<ThumbUpOffAltIcon sx={{color: "#007b6d"}}/>Upvote
+					</Button>
+				}
+				{comment.like.length-comment.dislike.length}
+				{comment.dislike.includes(currentUser.email) ?
+					<Button sx={{display: "flex", flexDirection: "column"}} className={classes.commentDisLikeButton} onClick={()=>dislikeComment(comment.id)}>
+						<ThumbDownAltIcon sx={{color: "#de1818"}}/>Downvote
+					</Button>
+					:
+					<Button sx={{display: "flex", flexDirection: "column"}} className={classes.commentDisLikeButton} onClick={()=>dislikeComment(comment.id)}>
+						<ThumbDownOffAltIcon sx={{color: "#de1818"}}/>Downvote
+					</Button>
+				}	
+			</div>
+			<List sx={{width:'100%', borderRadius: "15px", bgcolor:'background.paper'}}>
+				<ListItem sx={{alignItems:"center"}}>
 					<ListItemAvatar>
 						<Avatar sx={{ bgcolor: "blue" }} >
-							 {comment.UserID?comment.UserID.charAt(0):" "}
+							{comment.UserID?comment.UserID.charAt(0):" "}
 						</Avatar>
 					</ListItemAvatar>
-					<ListItemText 
-						  primary={comment.UserID}
-						  secondary={
-						<React.Fragment>
-						  <Typography
-						sx={{ display: 'inline' }}
-						component="span"
-						variant="body2"
-						color="text.primary"
-					  ></Typography>
-						  {comment.comment} 
-						</React.Fragment>}/>
-						{comment.like.includes(currentUser.email)?
-						<button className={classes.commentLikeButton}  onClick={()=>likeComment(comment.id)}><ThumbUpIcon/>Like </button>:
-						<button className={classes.commentNormalLikeButton}  onClick={()=>likeComment(comment.id)}><ThumbUpIcon/>Like </button>} &nbsp;&nbsp;&nbsp;&nbsp; 
-						{comment.like.length-comment.dislike.length} &nbsp;&nbsp;&nbsp;&nbsp;
-						{comment.dislike.includes(currentUser.email)?
-						<button className={classes.commentDisLikeButton} onClick={()=>dislikeComment(comment.id)}><ThumbDownIcon/>Dislike</button>:
-						<button className={classes.commentNormalLikeButton}   onClick={()=>dislikeComment(comment.id)}><ThumbDownIcon/>Dislike</button>}
-						<br></br>
-						
+					<h4>{comment.UserID}</h4>	
 				</ListItem>
+				<Typography style={{fontSize: "23px", textAlign: "left", paddingLeft: "16px", paddingRight: "16px"}} variant='body2' component="div">
+					{comment.comment}
+				</Typography>
 			</List>
 		</Paper>
 	 );
 	}
 
+	const commentCardNotLoggedIn = (comment)=>{
+		return(
+			<Paper sx={{display: "flex", width: "1100px", borderRadius: "15px !important"}} elevation={4} key={comment.id}>
+				<div style={{display: "flex", flexDirection: "column"}}>
+						<Button sx={{display: "flex", flexDirection: "column"}} className={classes.commentLikeButton} onClick={()=>likeComment(comment.id)}>
+							<ThumbUpOffAltIcon sx={{color: "#007b6d"}}/>Upvote
+						</Button>
+					{comment.like.length-comment.dislike.length}
+						<Button sx={{display: "flex", flexDirection: "column"}} className={classes.commentDisLikeButton} onClick={()=>dislikeComment(comment.id)}>
+							<ThumbDownOffAltIcon sx={{color: "#de1818"}}/>Downvote
+						</Button>	
+				</div>
+				<List sx={{width:'100%', borderRadius: "15px", bgcolor:'background.paper'}}>
+					<ListItem sx={{alignItems:"center"}}>
+						<ListItemAvatar>
+							<Avatar sx={{ bgcolor: "blue" }} >
+								{comment.UserID?comment.UserID.charAt(0):" "}
+							</Avatar>
+						</ListItemAvatar>
+						<h4>{comment.UserID}</h4>	
+					</ListItem>
+					<Typography style={{fontSize: "23px", textAlign: "left", paddingLeft: "16px", paddingRight: "16px"}} variant='body2' component="div">
+						{comment.comment}
+					</Typography>
+				</List>
+			</Paper>
+		 );
+		}
 
-
+	console.log(comments);
 	if(comments && comments.listOfComments && comments.listOfComments.comment){
-		displayComment =comments.listOfComments.comment.map((comment)=>{
-			return commentCard(comment);
-		})
+		if(currentUser){
+			displayComment =comments.listOfComments.comment.map((comment)=>{
+				return commentCardLoggedIn(comment);
+			})
+		} else {
+			displayComment =comments.listOfComments.comment.map((comment)=>{
+				return commentCardNotLoggedIn(comment);
+			})
+		}
 	}
 
     if(data && !isNaN(id))
     {
         return(
 			<div className='homeWithoutLogin' style={{marginTop: "5rem"}}>
+				{/* Back Button */}
 				<Link to={"/"} style={{textDecoration: "none", color: "#c384d2", fontSize: "larger", textAlign: "start"}}>Back to all shows...</Link>
-				<br /><br />
+				{/* Movie Poster */}
 				<div className='movieDetailsBox'>
 					<Card className={classes.card}>
 						<CardMedia
 							className={classes.media}
 							component='img'
 							height="700"
-							image={data.movieById.image!=="0"?data.movieById.image:noImage  }
-							title='show image'  
+							image={data.movieById.image!=="NA"?data.movieById.image:noImage  }
+							title={data.movieById.title}  
 						/>
 					</Card>
+					{/* Movie Details */}
 					<Typography variant='body1' component="div" color='primary' style={{width: "850px", display: "flex", flexDirection: "column", alignItems: "start"}}>
-						<Typography variant='h2' component="h1" style={{color: "#676fe9", fontWeight: "bold"}}>
+						<Typography variant='h2' component="h1" style={{color: "#676fe9", fontWeight: "bold", textAlign: "start"}}>
 							{data.movieById.title}
 						</Typography>
 						<Typography variant='body2' component="div" style={{ display: "flex", width: "auto", columnGap: "1.7rem", maxWidth: "850px"}} >		  
@@ -248,59 +325,27 @@ const commentCard = (comment)=>{
 								Released: {data.movieById.releaseDate}
 							</Typography>
 						</Typography>
-						<Typography variant='body2' component="div" style={{display: "flex", fontSize: "30px", color: "whitesmoke", textAlign: "justify", marginTop: "1.5rem"}}>
+						<Typography variant='body2' component="div" style={{display: "flex", fontSize: "30px", color: "whitesmoke", textAlign: "justify", marginTop: "1.8rem"}}>
 							{data.movieById && data.movieById.plot ? data.movieById.plot : `N/A`}
 						</Typography>
 					</Typography>
 				</div>
-				{/* <Card className={classes.card} variant='outlined' style={{marginBottom: "10rem"}}>
-					<CardHeader className={classes.titleHead} classes={{title:classes.title}} title={data.movieById.title} avatar={
-					<Avatar sx={{ bgcolor: data.movieById.adult ? red[500] : blue[500] ,width: 55, height: 55,fontSize:"small"}} aria-label="recipe">
-					{data.movieById.adult?"ADULT MOVIE":"FAMILY MOVIE"}
-					</Avatar>
-				} action={
-					<Box sx={{ width: 200, sizeWidth:800, alignItems: 'center', alignSelf:'center', marginTop:'0.5cm',}} title='TMDB Rating'>		  
-						<Rating
-							name="text-feedback"
-							value={Number(data.movieById.tmDbRating)/2}
-							readOnly
-							precision={0.5}
-							emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-							size='large'
+				{/* Comments */}
+				<div className='commentsSection'>
+					<Typography variant='h4' component="h3" style={{color: "whitesmoke"}}>
+						Comments ({comments && comments.listOfComments ? comments.listOfComments.comment.length : 0} <CommentIcon />):
+					</Typography>
+					<Typography variant='body2' component="div" style={{display: "flex", columnGap: "1rem", width: "1100px", color: "white"}}>
+						<RedditTextField
+							required
+							label="Enter Comment"
+							id="comment"
+							variant="filled"
 						/>
-					</Box>}>
-					</CardHeader>				
-					<CardMedia
-						className={classes.media}
-						component='img'
-						image={data.movieById.image!=="0"?data.movieById.image:noImage  }
-						title='show image'  
-					/>
-					<CardContent>	
-						<Typography className='tagline'>
-							<div className='tagline'> {data.movieById.tagline}</div>
-						</Typography>
-							<Typography variant='body2' color='textPrimary' component='span'>
-								<dl>
-									<h1>{data.movieById.name}</h1>
-									<p>
-										<dt className='title'>Description:</dt><br></br>
-										{data.movieById && data.movieById.plot ? <dd>{data.movieById.plot}</dd> : <dd>N/A</dd>}
-									</p>
-								</dl>
-							</Typography>
-							<Typography >
-							<div className='releaseDate' >Release Date : {data.movieById.releaseDate}</div>
-						</Typography>
-						<Link to={"/"} style={{textDecoration: "none", color: "brown"}}>Back to all shows...</Link>
-					</CardContent>
-					<div><Button checked={checked} onClick={()=>showCommentsOfMovie()}><CommentIcon/>Comment</Button></div>
-					{checked?<div>
-						<TextField required id="comment" label="Enter Comment" />
-						<button onClick={addComment}>Submit</button></div>
-					:<div></div>}
-					{checked?displayComment:<div></div>}
-				</Card> */}
+						<Button className={classes.button} onClick={addComment}>Submit</Button>
+					</Typography>
+					{comments ? displayComment : <div> No Comments </div>}
+				</div>
 				<br />
 			</div>
         );

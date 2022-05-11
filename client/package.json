@@ -18,8 +18,10 @@
     "gm": "^1.23.1",
     "graphql": "^16.3.0",
     "react": "^17.0.2",
+    "react-aws-s3": "^1.5.0",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.3.0",
+    "react-s3": "^1.3.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },

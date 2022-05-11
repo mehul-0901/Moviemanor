@@ -27,9 +27,12 @@ const useStyles = makeStyles({
 		height: 'auto',
 		marginLeft: '2cm',
 		marginRight: 'auto',
-		borderRadius: 5,
-		border: '1px solid #1e8678',
-		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
+		borderRadius: "10px",
+    backgroundColor: "rgba(255,255,255,0) !important",
+		boxShadow: '0 0px 0px rgba(255,255,255,0), 0 0px 0px rgba(255,255,255,0);',
+    '&:hover': {
+      color: "secondary !important"
+    }
 	},
 	titleHead: {
 		borderBottom: '1px solid #1e8678',
@@ -43,11 +46,16 @@ const useStyles = makeStyles({
 		height: '100%',
 		width: '100%'
 	},
+  link: {
+    '&:hover': {
+      color: "#9b27af !important"
+    }
+  },
 	button: {
 		color: '#1e8678',
 		fontWeight: 'bold',
 		fontSize: 12
-	}
+	},  
 });
 
 const SavedMovies = (props) => {
@@ -105,41 +113,30 @@ const SavedMovies = (props) => {
 
     const buildCard = (show) => {
         return (
-            <div key={show.id}>
-          <Card  className={classes.card} sx={{ maxWidth: 345 }} >
-          <Link to={{pathname:`/movie/${show.id}`}} >
-
-            <CardHeader 
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  {show.title.charAt(0)}
-                </Avatar>
-              }
-              title={show.title}
-            />
-            <CardMedia
-              component="img"
-              height="400"
-              image={show.image!=="0"?show.image:noImage  }
-              alt={show.title}
-            />
+          <Grid item key={show.id} sx={{paddingLeft: "0px", padding: "0px !important"}}>
+            <Card  className={classes.card} sx={{paddingLeft: "0px", maxWidth: 345, marginLeft: "0px !important" }} >
+              <Link className={classes.link} to={`/movie/${show.id}`} style={{textDecoration: "none"}} >
+                <CardMedia
+                  component="img"
+                  height="400"
+                  image={show.image!=="0"?show.image: noImage  }
+                  alt={show.title}
+                  sx={{borderRadius: "10px"}}
+                />
+                <CardHeader sx={{width: "320px",paddingLeft: "0px", textAlign: "start"}}
+                  title={show.title}
+                />
               </Link>
-            <CardActions disableSpacing>
-               <Button aria-label="Remove saved movie" 
-                onClick={() => {removeSave(currentUser.email,show.id)}}>
-                 <BookmarkRemoveSharpIcon/> Remove from Save
-                </Button>
-                
-            </CardActions>         
-              <CardContent>
-                <Typography variant='body2' color='textSecondary' component='span'>
-                {show.plot.replace(regex, '').substring(0, 139) + '...'}
-                </Typography>
-              </CardContent>
-            
-          </Card>
-          <br></br>
-          </div>
+              <CardActions sx={{padding: "0px"}}>
+                  <Button aria-label="Remove saved movie" 
+                    title="Remove from Save"
+                    onClick={() => {removeSave(currentUser.email,show.id)}}>
+                    <BookmarkRemoveSharpIcon sx={{color: "#9b27af"}} title="Remove from Save"/> {/*Remove from Save*/}
+                  </Button>
+              </CardActions>                
+            </Card>
+            <br></br>
+          </Grid>
         )
     }
 
@@ -168,7 +165,7 @@ const SavedMovies = (props) => {
   } else {
     return (
       <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
-        <Grid container className={classes.grid} spacing={3}>
+        <Grid container sx={{marginTop: 0, maxWidth: "1660px", marginLeft: "auto", marginRight: "auto", justifyContent: "center", gridGap: "3.5rem"}} className={classes.grid} spacing={3}>
           {card}
         </Grid>
       </div>

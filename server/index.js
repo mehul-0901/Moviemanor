@@ -1,8 +1,6 @@
 
 const { ApolloServer, gql } = require('apollo-server');
 const { default: axios } = require('axios');
-const redis = require('redis');
-const client = redis.createClient();
 const {v4:uuid} = require('uuid');
 const {ObjectId} = require('mongodb')
 const mongoCollections = require('../server/config/mongoCollections');
@@ -10,6 +8,7 @@ const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
 const Comments = mongoCollections.Comments;
 const UserImage = mongoCollections.UserImage;
+require("dotenv").config()
 
 const gm = require('gm');
 
@@ -161,7 +160,7 @@ const resolvers = {
             if (!like && !dislike){
                 const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
             {$push:{"comment.$.like":args.emailID}},false, true)
-            console.log("here");
+            // console.log("here");
             }
 
             else if(dislike && !like){
@@ -403,13 +402,6 @@ const resolvers = {
     Query:{
         movieList: async (_, args) => {
 
-            gm("niyu.jpg").identify(function(err, value) {
-                console.log(value);
-            
-                if(err) {
-                    console.log(err);
-                }
-            });
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {
@@ -437,7 +429,7 @@ const resolvers = {
                     temp["image"]="https://image.tmdb.org/t/p/w500"+x.poster_path;
                 }
                 else{
-                    temp["image"]="0";
+                    temp["image"]="NA";
                 }if(x.overview)
                 {
                     temp["plot"]=x.overview;
@@ -490,14 +482,13 @@ const resolvers = {
             // temp["MovieId"]=commentByMovie[0].MovieId;
             // temp["comment"]=array;
             // console.log(temp);
+            commentByMovie[0].comment.reverse()
             return commentByMovie[0]
 
           },
 
 
           savedMovies: async (_, args) => {
-
-
             console.log("tesdsdiuyhj");
             const saveForLater = await SaveMovie();
             let array = []
@@ -518,7 +509,7 @@ const resolvers = {
             let movieArray = []
             for(id in args.ids){
                // console.log(args.ids[id]);
-                const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.ids[id]}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
+                const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.ids[id]}?api_key=${process.env.TMDB_API_KEY}&language=en-US`);
                 let temp={};
 
                 if(data){  
@@ -540,7 +531,7 @@ const resolvers = {
                         temp["image"]="https://image.tmdb.org/t/p/w500"+data.poster_path;
                     }
                     else{
-                        temp["image"]="0";
+                        temp["image"]="NA";
                     }if(data.overview)
                     {
                         temp["plot"]=data.overview;
@@ -564,7 +555,7 @@ const resolvers = {
 
         movieById: async (_, args) => {
         
-            const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=279284daf2704eb941bfa86708c00a4f&language=en-US`);
+            const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`);
             let temp={};
 
             if(data){  
@@ -586,7 +577,7 @@ const resolvers = {
                     temp["image"]="https://image.tmdb.org/t/p/w500"+data.poster_path;
                 }
                 else{
-                    temp["image"]="0";
+                    temp["image"]="NA";
                 }if(data.overview)
                 {
                     temp["plot"]=data.overview;
@@ -634,7 +625,7 @@ const resolvers = {
             if(!args.pageNum) {
                 args.pageNum = 1
             }
-            const {data} = await axios.get(`https://api.themoviedb.org/3/movie/${args.moodId}/similar?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&language=en-US`)
+            const {data} = await axios.get(`https://api.themoviedb.org/3/movie/${args.moodId}/similar?api_key=${process.env.TMDB_API_KEY}&page=${args.pageNum}&language=en-US`)
             const moviesArray = []
             console.log(data);
             data.results.forEach(x => {
