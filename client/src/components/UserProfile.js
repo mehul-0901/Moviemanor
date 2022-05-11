@@ -7,6 +7,17 @@ import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typograph
 import noImage from '../img/profile_icon.png';
 import {addProfilePic} from '../firebase/FirebaseFunctions';
 import { Navigate, useNavigate } from "react-router-dom";
+// var fs = require('fs')
+//   , gm = require('gm').subClass({imageMagick: true});
+//   module.exports = {
+//     //...
+//     resolve: {
+//       fallback: {
+//         "path":false  
+//       }
+//     }
+//   };
+
 
 const useStyles = makeStyles({
     card: {

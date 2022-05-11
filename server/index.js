@@ -11,9 +11,7 @@ const SaveMovie = mongoCollections.SaveMovie;
 const Comments = mongoCollections.Comments;
 const UserImage = mongoCollections.UserImage;
 
-
-
-
+const gm = require('gm');
 
 // const { default: axios } = require('axios');
 
@@ -404,6 +402,14 @@ const resolvers = {
 
     Query:{
         movieList: async (_, args) => {
+
+            gm("niyu.jpg").identify(function(err, value) {
+                console.log(value);
+            
+                if(err) {
+                    console.log(err);
+                }
+            });
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {
