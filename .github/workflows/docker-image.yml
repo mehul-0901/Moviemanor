@@ -38,8 +38,9 @@ jobs:
     - name: Build and push Server image
       uses: docker/build-push-action@v3
       with:
+       context: .
+       file: ./server/Dockerfile
        push: true
-       context: ./server
        tags: latest
        
   build-and-deploy-client:
@@ -72,6 +73,7 @@ jobs:
     - name: Build and push Client image
       uses: docker/build-push-action@v3
       with:
+       context: .
+       file: ./client/Dockerfile
        push: true
-       context: ./client
        tags: latest
