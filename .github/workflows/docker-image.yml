@@ -15,10 +15,10 @@ jobs:
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v3
-#       with:
-#         # list of Docker images to use as base name for tags
-#         images: |
-#           marksman007/moviemanor-server      
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          moviemanor-server      
         
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -37,7 +37,7 @@ jobs:
       with:
        context: ./server
        push: true
-       tags: marksman007/moviemanor-server
+       tags: moviemanor-server
        
 #   build-and-deploy-client:
 #     name: Build and Deploy client
