@@ -14,7 +14,15 @@ jobs:
     steps: 
     - name: Checkout code
       uses: actions/checkout@v3
-      
+    
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          marksman007/moviemanor-server      
+        
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
       
@@ -26,16 +34,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v3
-      with:
-        # list of Docker images to use as base name for tags
-        images: |
-          marksman007/moviemanor-server
-          
-                    
+                      
     - name: Build and push Server image
       uses: docker/build-push-action@v3
       with:
