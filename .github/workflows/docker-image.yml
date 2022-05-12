@@ -39,7 +39,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
        context: .
-       file: ./server/Dockerfile
+       file: server/Dockerfile
        push: true
        tags: latest
        
@@ -74,6 +74,6 @@ jobs:
       uses: docker/build-push-action@v3
       with:
        context: .
-       file: ./client/Dockerfile
+       file: client/Dockerfile
        push: true
        tags: latest
