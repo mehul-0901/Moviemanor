@@ -12,9 +12,9 @@ jobs:
     name: Build and Deploy server
     runs-on: ubuntu-latest
     steps:     
-#     - name: Docker meta
-#       id: meta
-#       uses: docker/metadata-action@v3
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v3
 #       with:
 #         # list of Docker images to use as base name for tags
 #         images: |
@@ -37,7 +37,7 @@ jobs:
       with:
        context: ./server
        push: true
-       tags: marksman007/moviemanor-server:latest
+       tags: marksman007/moviemanor-server
        
 #   build-and-deploy-client:
 #     name: Build and Deploy client
