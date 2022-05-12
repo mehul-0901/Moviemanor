@@ -17,4 +17,4 @@ jobs:
       with:
         context: ./server
     - name: Build the Docker image
-      run: docker build --tag moviemanor-server:$(date +%s) --file server/Dockerfile
+      run: docker build . --tag moviemanor-server:$(date +%s) --file server/Dockerfile
