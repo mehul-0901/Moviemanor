@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build --no-cache --tag moviemanor-server:$(date +%s) --file server/Dockerfile server/package.json
+      run: docker build --no-cache --tag moviemanor-server:$(date +%s) --file server/Dockerfile
