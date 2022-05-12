@@ -167,7 +167,7 @@ const UserProfile = () => {
   
 
   return (
-    <Form method="POST" action="/CreatePost" onSubmit={handleSubmit}>
+    <Form method="POST"  onSubmit={handleSubmit}>
 
     <div style={{ marginTop: "5rem" }}>
       <div className="container">
@@ -196,6 +196,7 @@ const UserProfile = () => {
                     </div>
                   </div>
                 </div>
+                
                 <div className="col-md-8">
                   <div className="card mb-3">
                     <div className="card-body">
@@ -214,21 +215,19 @@ const UserProfile = () => {
                          {email}
                         </div>
                       </div>
-                      <hr />
-                      <input type="file" name="getImage" accept="image/*" onChange={e=> setImage(e.target.files[0])} required/><br/><br/>
-                      <button type="submit" onClick={onImageChange}>SAVE PROFILE PIC</button>
+                      <hr/>
+                      
              
                   </div>
-                  <hr />
+                  <hr/>
                 
                 
-   
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
       </div>
     </Form>
