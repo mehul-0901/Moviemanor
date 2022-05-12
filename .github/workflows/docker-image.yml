@@ -41,39 +41,39 @@ jobs:
        context: .
        file: server/Dockerfile
        push: true
-       tags: latest
+       tags: moviemanor-server
        
-  build-and-deploy-client:
-    name: Build and Deploy client
-    runs-on: ubuntu-latest
-    steps: 
-    - name: Checkout code
-      uses: actions/checkout@v3
+#   build-and-deploy-client:
+#     name: Build and Deploy client
+#     runs-on: ubuntu-latest
+#     steps: 
+#     - name: Checkout code
+#       uses: actions/checkout@v3
     
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v3
-      with:
-        # list of Docker images to use as base name for tags
-        images: |
-          marksman007/moviemanor-client      
+#     - name: Docker meta
+#       id: meta
+#       uses: docker/metadata-action@v3
+#       with:
+#         # list of Docker images to use as base name for tags
+#         images: |
+#           marksman007/moviemanor-client      
         
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+#     - name: Set up QEMU
+#       uses: docker/setup-qemu-action@v2
       
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+#     - name: Set up Docker Buildx
+#       uses: docker/setup-buildx-action@v2
     
-    - name: Login to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+#     - name: Login to DockerHub
+#       uses: docker/login-action@v2
+#       with:
+#         username: ${{ secrets.DOCKER_USERNAME }}
+#         password: ${{ secrets.DOCKER_PASSWORD }}
                       
-    - name: Build and push Client image
-      uses: docker/build-push-action@v3
-      with:
-       context: .
-       file: client/Dockerfile
-       push: true
-       tags: latest
+#     - name: Build and push Client image
+#       uses: docker/build-push-action@v3
+#       with:
+#        context: .
+#        file: client/Dockerfile
+#        push: true
+#        tags: latest
