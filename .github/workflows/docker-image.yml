@@ -11,17 +11,14 @@ jobs:
   build-and-deploy-server:
     name: Build and Deploy server
     runs-on: ubuntu-latest
-    steps: 
-    - name: Checkout code
-      uses: actions/checkout@v3
-    
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v3
-      with:
-        # list of Docker images to use as base name for tags
-        images: |
-          marksman007/moviemanor-server      
+    steps:     
+#     - name: Docker meta
+#       id: meta
+#       uses: docker/metadata-action@v3
+#       with:
+#         # list of Docker images to use as base name for tags
+#         images: |
+#           marksman007/moviemanor-server      
         
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -38,9 +35,9 @@ jobs:
     - name: Build and push Server image
       uses: docker/build-push-action@v3
       with:
-       context: ./server
+#        context: ./server
        push: true
-       tags: moviemanor-server
+       tags: marksman007/moviemanor-server:latest
        
 #   build-and-deploy-client:
 #     name: Build and Deploy client
