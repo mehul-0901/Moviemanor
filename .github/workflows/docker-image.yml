@@ -36,6 +36,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
        context: .
+       file: server/Dockerfile
        push: true
        tags: moviemanor-server
        
