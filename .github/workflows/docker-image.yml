@@ -34,4 +34,4 @@ jobs:
        username: ${{ secrets.DOCKER_USERNAME }}
        password: ${{ secrets.DOCKER_PASSWORD }}
        dockerfile: server/Dockerfile
-       tags: marksman007/moviemanor-server
+       tags: moviemanor-server
