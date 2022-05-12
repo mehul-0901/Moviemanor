@@ -3,14 +3,29 @@ const { ApolloServer, gql } = require('apollo-server');
 const { default: axios } = require('axios');
 const {v4:uuid} = require('uuid');
 const {ObjectId} = require('mongodb')
-const mongoCollections = require('../server/config/mongoCollections');
+const mongoCollections = require('./config/mongoCollections');
 const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
 const Comments = mongoCollections.Comments;
 const UserImage = mongoCollections.UserImage;
 require("dotenv").config()
 
+const gm = require('gm');
 
+// const { default: axios } = require('axios');
+
+// A schema is a collection of type definitions (hence "typeDefs")
+// that together define the "shape" of queries that are executed against
+// your data.
+// (async () => {
+//     // const client = createClient();
+  
+//     client.on('error', (err) => console.log('Redis Client Error', err));
+  
+//     await client.connect();
+  
+//   })();
+  
 const typeDefs = gql`
     type Movies {
         id: ID!
@@ -384,7 +399,8 @@ const resolvers = {
 
     Query:{
         movieList: async (_, args) => {
-            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&page=${args.pageNum}&query=${args.title}&language=en-US`);
+
+            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {
                 return [];

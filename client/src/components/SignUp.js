@@ -21,7 +21,8 @@ function SignUp() {
       await doCreateUserWithEmailAndPassword(
         email.value,
         passwordOne.value,
-        displayName.value
+        displayName.value,
+      
       );
     } catch (error) {
       alert(error);

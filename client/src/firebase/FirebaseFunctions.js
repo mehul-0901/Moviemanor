@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import {storage} from './Firebase'
+import {storage} from './Firebase';
 
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
@@ -8,6 +8,7 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
 }
 async function addProfilePic(photoUrl,email)
 {
+  console.log(photoUrl);
   const uploadTask = storage.ref(`${email}/${photoUrl.name}`).put(photoUrl);
   uploadTask.on(
     "state_changed",
