@@ -27,4 +27,4 @@ jobs:
       run: docker tag moviemanor-server marksman007/moviemanor-server
     
     - name: Push
-      run: docker push moviemanor-server
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/moviemanor-server
