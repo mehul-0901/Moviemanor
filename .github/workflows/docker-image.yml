@@ -33,6 +33,5 @@ jobs:
        registry: docker.io
        username: ${{ secrets.DOCKER_USERNAME }}
        password: ${{ secrets.DOCKER_PASSWORD }}
-       repository: marksman007/moviemanor-server
        dockerfile: server/Dockerfile
-       tags: moviemanor-server
+       tags: marksman007/moviemanor-server
