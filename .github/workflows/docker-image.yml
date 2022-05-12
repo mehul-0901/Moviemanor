@@ -31,7 +31,6 @@ jobs:
       uses: docker/build-push-action@v3
       with:
        push: true
-       image: moviemanor-server
        context: ./server
        tags: latest
        
