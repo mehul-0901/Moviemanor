@@ -38,8 +38,7 @@ jobs:
     - name: Build and push Server image
       uses: docker/build-push-action@v3
       with:
-       context: .
-       file: server/Dockerfile
+       context: ./server
        push: true
        tags: moviemanor-server
        
