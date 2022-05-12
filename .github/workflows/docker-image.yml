@@ -23,8 +23,7 @@ jobs:
        username: ${{ secrets.DOCKER_USERNAME }}
        password: ${{ secrets.DOCKER_PASSWORD }}
        repository: marksman007/moviemanor-server
-       context: .
-       dockerfile: server/Dockerfile
+       dockerfile: /server/Dockerfile
        tags: latest
        
   build-and-deploy-client:
@@ -42,6 +41,5 @@ jobs:
        username: ${{ secrets.DOCKER_USERNAME }}
        password: ${{ secrets.DOCKER_PASSWORD }}
        repository: marksman007/moviemanor-client
-       context: .
-       dockerfile: client/Dockerfile
+       dockerfile: /client/Dockerfile
        tags: latest
