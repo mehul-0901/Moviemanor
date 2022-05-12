@@ -74,6 +74,14 @@ const GET_MOOD_BASED_MOVIES = gql`
   }
 `;
 
+const GET_IMAGE = gql`
+query GetUserImage($userId: String) {
+  getUserImage(userId: $userId) {
+    image
+  }
+}
+`
+
 
 const ADD_TOWATCHLIST = gql`
 mutation AddtowacthList($userId: String, $movieId: String) {
@@ -139,7 +147,13 @@ mutation AddDislike($movieID: String, $commentID: String, $emailID: String) {
 }
 `;
 
-
+const ADD_IMAGE = gql`
+mutation AddImage($id: String, $image: String) {
+  addImage(userID: $id, image: $image) {
+    image
+  }
+}
+`
 
 
 
@@ -159,7 +173,9 @@ let exported = {
   ADD_COMMENT,
   SHOW_COMMENTS,
   ADD_LIKE,
-  ADD_DISLIKE
+  ADD_DISLIKE,
+  ADD_IMAGE,
+  GET_IMAGE
   };
   
 export default exported

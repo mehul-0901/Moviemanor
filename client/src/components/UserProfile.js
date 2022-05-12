@@ -3,6 +3,9 @@ import "../App.css";
 // import Dropzone from 'react-dropzone-uploader'
 import { AuthContext } from "../firebase/Auth";
 import { makeStyles } from "@material-ui/core";
+import { useMutation, useLazyQuery, useQuery} from '@apollo/client';
+import { Form} from "react-bootstrap";
+
 import {
   Card,
   CardHeader,
@@ -18,6 +21,24 @@ import {
 import noImage from "../img/profile_icon.png";
 import { addProfilePic } from "../firebase/FirebaseFunctions";
 import { Navigate, useNavigate } from "react-router-dom";
+import queries from '../queries';
+
+import AWS from 'aws-sdk'
+
+const S3_BUCKET ='moviemanor554';
+const REGION ='us-east-1';
+
+
+AWS.config.update({
+    accessKeyId: 'AccessKey',
+    secretAccessKey: 'SecretKey'
+})
+
+const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET},
+    region: REGION,
+})
+
 
 const useStyles = makeStyles({
   card: {
@@ -52,23 +73,100 @@ const UserProfile = () => {
   // const classes = useStyles();
   // let card=null;
   let { currentUser } = useContext(AuthContext);
+  const [progress , setProgress] = useState(0);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [error, setError] = useState("");
   // console.log(currentUser);
   const email = currentUser.email || "Email not found";
   const name = currentUser.displayName || "Name not found";
   const photoURL = currentUser.photoURL || noImage;
   const [image, setImage] = useState();
   const navigate = useNavigate();
-  const onImageChange = async (e) => {
-    console.log(image);
-    try {
-      await addProfilePic(image, currentUser.email);
-      document.getElementsByName("getImage").value = null;
-      navigate("/userProfile");
-    } catch (error) {
-      console.log(error);
+ // const [getImage,{data: data1, loading: getimageLoading, refetch:refetchgetImage}] = useLazyQuery(queries.GET_IMAGE, {});
+  const [data1,{data,error:error1,refetch}] = useLazyQuery(queries.GET_IMAGE,{variables:{userId: currentUser.email}})
+  const [addImage] = useMutation(queries.ADD_IMAGE,{onCompleted:refetch})
+
+  // const addnewImage=(email,id)=> {
+  //   addImage({
+  //     variables: { userId:email, Image: image},
+  //     onCompleted: refetchgetImage
+  //  });
+  //  getImage({variables: { userId:currentUser.email}});
+  // }
+
+
+
+
+
+  // const onImageChange = async (e) => {
+  //   console.log(image);
+  //   try {
+  //     await addProfilePic(image, currentUser.email);
+  //     document.getElementsByName("getImage").value = null;
+  //     navigate("/userProfile");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  useEffect(() => {
+		console.log('on load useeffect');
+        // console.log(id);
+		async function fetchData() 
+        {
+			data1({variables:{userId: currentUser.email}})
+		}
+		fetchData();
+
+    }	, []);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setError("");
+      let url = await uploadFile(selectedFile);
+      console.log(url);
+
+      if (url !== "") {
+        const sendObj = {
+          variables: {
+            image: url,
+          },
+        };
+        addImage({variables:{id:currentUser.email,image:sendObj.variables.image}});
+        console.log(sendObj);
+        
+      }
+    };
+  
+    const handleFileInput = (e) => {
+        setSelectedFile(e.target.files[0]);
+        
     }
-  };
+
+    const uploadFile = async (file) => {
+        let url =  `https://${S3_BUCKET}.s3.amazonaws.com/${file.name}`;
+        console.log(file.name);
+    
+        const params = {
+          Body: file,
+          Bucket: S3_BUCKET,
+          Key: file.name,
+        };
+    
+        await myBucket.putObject(params).send((err) => {
+          if (err) {
+            setError("Oops, somthing went wrong !");
+            url = "";
+          }
+        });
+    
+        return url;
+      };
+  
+
   return (
+    <Form method="POST" action="/CreatePost" onSubmit={handleSubmit}>
+
     <div style={{ marginTop: "5rem" }}>
       <div className="container">
         <div className="main-body">
@@ -77,8 +175,21 @@ const UserProfile = () => {
               <div className="card">
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src={photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
+                  
+                    <img src={data?data.getUserImage.image:photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
+                
                     <div className="mt-3">
+                    <div> 
+                    <label>Select File:</label>
+                    <input type="file" onChange={handleFileInput} />
+                    <br />
+                    <br />
+                    <Button type="submit" variant="primary">
+                      Submit
+                    </Button>
+                    {error !== "" ? <span>{error}</span> : ""}
+            
+                     </div>
                       <h4> {name} </h4>
                     </div>
                   </div>
@@ -100,25 +211,19 @@ const UserProfile = () => {
                     <div className="col-sm-9">{email}</div>
                   </div>
                   <hr />
-                  <input
-                    type="file"
-                    name="getImage"
-                    accept="image/*"
-                    onChange={(e) => setImage(e.target.files[0])}
-                    required
-                  />
-                  <br />
-                  <br />
-                  <button type="submit" onClick={onImageChange}>
-                    SAVE PROFILE PIC
-                  </button>
+                
+                
+   
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      
     </div>
+    </Form>
+   
   );
 };
 
