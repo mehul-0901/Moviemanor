@@ -7,7 +7,7 @@ on:
 
 jobs:
 
-  build-server-and-client:
+  build-server:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -28,7 +28,14 @@ jobs:
     
     - name: Push
       run: docker push ${{ secrets.DOCKER_USERNAME }}/moviemanor-server
-    
+
+  build-client:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        context: ./
+
     - name: Build the Docker client image
       run: docker build . --tag moviemanor-client --file client/Dockerfile
     
@@ -43,4 +50,5 @@ jobs:
     
     - name: Push
       run: docker push ${{ secrets.DOCKER_USERNAME }}/moviemanor-client
-      
+        
+    
