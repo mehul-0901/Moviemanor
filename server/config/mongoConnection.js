@@ -4,8 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 
 const settings = {
     mongoConfig: {
-      serverUrl: `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@moviemanor.amazq.mongodb.net/`,
-      database: 'Moviemanor'
+      serverUrl: `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@${process.env.ATLAS_DATABASE_NO_CAPS}.amazq.mongodb.net/`,
+      database: `${process.env.ATLAS_DATABASE}`
     }
   };
 const mongoConfig = settings.mongoConfig;

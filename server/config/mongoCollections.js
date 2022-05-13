@@ -15,9 +15,8 @@ const getCollectionFn = (collection) => {
 
 
 module.exports = {
-Movie: getCollectionFn('Movie'),
-SaveMovie:getCollectionFn('SaveMovie'),
-Comments: getCollectionFn('Comments'),
-UserImage:  getCollectionFn('UserImage')
-
+Movie: getCollectionFn(`${process.env.ATLAS_MOVIE_COLLECTION}`),
+SaveMovie:getCollectionFn(`${process.env.ATLAS_MOVIE_COLLECTION}`),
+Comments: getCollectionFn(`${process.env.ATLAS_COMMENTS_COLLECTION}`),
+UserImage:  getCollectionFn(`${process.env.ATLAS_USERIMAGE_COLLECTION}`)
 };
