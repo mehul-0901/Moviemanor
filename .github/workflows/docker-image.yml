@@ -58,8 +58,8 @@ jobs:
 #       with:
 #         context: ./
       
-#     - name: Login to heroku
-#       run: docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+    - name: Login to heroku
+      run: docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
     
     
     
