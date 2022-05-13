@@ -50,3 +50,17 @@ jobs:
     
     - name: Push
       run: docker push ${{ secrets.DOCKER_USERNAME }}/moviemanor-client
+      
+  push-on-heroku:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        context: ./
+      
+    - name: Login to heroku
+      run: docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+    
+    
+    
+    
