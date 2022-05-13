@@ -15,7 +15,7 @@ jobs:
         context: ./server
     
     - name: Build the Docker image
-      run: docker build . --tag moviemanor-server --file server/Dockerfile
+      run: docker build . --tag moviemanor-server --file server/Dockerfile.server
     
     - name: Log in to Docker Hub
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -37,7 +37,7 @@ jobs:
         context: ./client
     
     - name: Build the Docker image
-      run: docker build . --tag moviemanor-client --file client/Dockerfile
+      run: docker build . --tag moviemanor-client --file client/Dockerfile.client
     
     - name: Log in to Docker Hub
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
