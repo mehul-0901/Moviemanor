@@ -7,14 +7,14 @@ on:
 
 jobs:
 
-  build-server:
+  build-server-and-client:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
-        context: ./server
+        context: ./
     
-    - name: Build the Docker image
+    - name: Build the Docker server image
       run: docker build . --tag moviemanor-server --file server/Dockerfile.server
     
     - name: Log in to Docker Hub
@@ -29,14 +29,14 @@ jobs:
     - name: Push
       run: docker push ${{ secrets.DOCKER_USERNAME }}/moviemanor-server
       
-  build-client:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        context: ./client
+#   build-client:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#       with:
+#         context: ./client
     
-    - name: Build the Docker image
+    - name: Build the Docker client image
       run: docker build . --tag moviemanor-client --file client/Dockerfile.client
     
     - name: Log in to Docker Hub
@@ -51,15 +51,15 @@ jobs:
     - name: Push
       run: docker push ${{ secrets.DOCKER_USERNAME }}/moviemanor-client
       
-  push-on-heroku:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        context: ./
+#   push-on-heroku:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#       with:
+#         context: ./
       
-    - name: Login to heroku
-      run: docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+#     - name: Login to heroku
+#       run: docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
     
     
     
