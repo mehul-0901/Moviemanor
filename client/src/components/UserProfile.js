@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
 import { AuthContext } from "../firebase/Auth";
 import { makeStyles } from "@material-ui/core";
-import { useMutation, useLazyQuery, useQuery} from '@apollo/client';
+import { useMutation, useLazyQuery } from '@apollo/client';
 import { Form} from "react-bootstrap";
 import {
   Card,
@@ -22,12 +22,12 @@ import queries from '../queries';
 import AWS from 'aws-sdk'
 
 
-const S3_BUCKET ='moviemanor554';
-const REGION ='us-east-1';
+const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
+const REGION = process.env.REACT_APP_REGION;
 
 AWS.config.update({
-    accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
-    secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_KEY}`
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY
 })
 
 const myBucket = new AWS.S3({
@@ -82,7 +82,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
  // const [getImage,{data: data1, loading: getimageLoading, refetch:refetchgetImage}] = useLazyQuery(queries.GET_IMAGE, {});
   const [data1,{data,error:error1,refetch}] = useLazyQuery(queries.GET_IMAGE,{variables:{userId: currentUser.email}})
-  const [addImage] = useMutation(queries.ADD_IMAGE,{onCompleted:refetch})
+  const [addImage] = useMutation(queries.ADD_IMAGE,{})
 
   // const addnewImage=(email,id)=> {
   //   addImage({
@@ -91,11 +91,6 @@ const UserProfile = () => {
   //  });
   //  getImage({variables: { userId:currentUser.email}});
   // }
-
-
-
-
-
   // const onImageChange = async (e) => {
   //   console.log(image);
   //   try {
@@ -130,7 +125,10 @@ const UserProfile = () => {
             image: url,
           },
         };
-        addImage({variables:{id:currentUser.email,image:sendObj.variables.image}});
+        addImage({
+          variables:{id:currentUser.email,image:sendObj.variables.image}, 
+          onCompleted: refetch
+        });
         console.log(sendObj);
         
       }

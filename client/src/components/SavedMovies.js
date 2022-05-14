@@ -106,7 +106,6 @@ const SavedMovies = (props) => {
         variables: { userId:email, movieId: id},
         onCompleted: refetchSaved
      })
-     getusersavedmovies({ variables: { userId:currentUser.email}});
     }
 
 
