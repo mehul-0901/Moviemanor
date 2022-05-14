@@ -8,9 +8,9 @@ import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} 
 import noImage from '../img/download.jpeg';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
+import CommentIcon from '@mui/icons-material/CommentRounded'
 import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
-import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
