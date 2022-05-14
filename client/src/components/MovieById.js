@@ -335,6 +335,7 @@ const commentCardLoggedIn = (comment)=>{
 					<Typography variant='h4' component="h3" style={{color: "whitesmoke"}}>
 						Comments ({comments && comments.listOfComments ? comments.listOfComments.comment.length : 0} <CommentIcon />):
 					</Typography>
+					{error2 ? <div style={{color:"red"}}>{error2.message}</div>:<div></div>}
 					<Typography variant='body2' component="div" style={{display: "flex", columnGap: "1rem", width: "1100px", color: "white"}}>
 						<RedditTextField
 							required

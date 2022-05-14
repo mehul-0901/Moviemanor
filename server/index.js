@@ -8,6 +8,7 @@ const Movie = mongoCollections.Movie;
 const SaveMovie = mongoCollections.SaveMovie;
 const Comments = mongoCollections.Comments;
 const UserImage = mongoCollections.UserImage;
+const { UserInputError } = require('apollo-server');
 require("dotenv").config()
 
 
@@ -74,6 +75,23 @@ const resolvers = {
     Mutation:{
         addComments:async(_,args)=>{
             
+            if (!args.comment.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('COMMENT cannot be empty or just space');
+            }
+            if (!args.movieID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
+            }
+            if (isNaN(args.movieID))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            if (!args.userID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{  
             const addToComment = await Comments();
             const MovieIDExist = await addToComment.findOne({MovieId:args.movieID})
             if (MovieIDExist){
@@ -81,6 +99,9 @@ const resolvers = {
                 let temp={id:uuid(),UserID:args.userID,comment:args.comment,like:[],dislike:[]}
                 array.push(temp);
                 const addMovieCommentToDB=await addToComment.updateOne({MovieId:args.movieID},{$set:{comment:array}});
+                if (addMovieCommentToDB.modifiedCount === 0) {
+                    throw new UserInputError('Could not add comment');
+                }
             }
             else{
                 let addMovieComment = {
@@ -88,12 +109,40 @@ const resolvers = {
                     comment:[{id:uuid(),UserID:args.userID,comment:args.comment,like:[],dislike:[]}]
                 }
                 const addMovieCommentToDB = await addToComment.insertOne(addMovieComment)
+                if (addMovieCommentToDB.insertedCount === 0) {
+                    throw new UserInputError('Unable to add COMMENT');
+                }
             }
             return true
+        }catch(e){
+            if(e.message){
+                throw new UserInputError(e.message)
+            }
+            else{
+                throw new Error('INTERNAL SERVER ERROR')
+            }
+        }
         },
 
         addLike:async(_,args)=>{
 
+            if (!args.commentID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('COMMENT cannot be empty or just space');
+            }
+            if (!args.movieID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
+            }
+            if (isNaN(args.movieID))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            if (!args.emailID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('EMAILID cannot be empty or just space');
+            }
+            try{
             const addToComment = await Comments();
             const findCommentLike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{like:args.emailID}});
             let temp=null;
@@ -144,28 +193,65 @@ const resolvers = {
 
             if (!like && !dislike){
                 const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
-            {$push:{"comment.$.like":args.emailID}},false, true)
-            // console.log("here");
+                {$push:{"comment.$.like":args.emailID}},false, true)
+                console.log(userLike);
+                if (userLike.modifiedCount === 0) {
+                    throw new UserInputError('Could not LIKE comment');
+                }            
             }
 
             else if(dislike && !like){
                 const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
                 {$pull:{"comment.$.dislike":args.emailID}},false, true)
+                if (userdislikeRemoved.modifiedCount === 0) {
+                    throw new UserInputError('Could not LIKE comment');
+                }
                 const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
                 {$push:{"comment.$.like":args.emailID}},false, true)
+                if (userLike.modifiedCount === 0) {
+                    throw new UserInputError('Could not LIKE comment');
+                }
             }
             else if(!dislike && like){
                 const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
                 {$pull:{"comment.$.like":args.emailID}},false, true)
+                if (userdislikeRemoved.modifiedCount === 0) {
+                    throw new UserInputError('Could not LIKE comment');
+                }
             }
 
             return true
+        }catch(e){
+            if(e.message){
+                throw new UserInputError(e.message)
+            }
+            else{
+                throw new Error('INTERNAL SERVER ERROR')
+            }
+        }
         },
 
 
 
         addDislike:async(_,args)=>{
 
+            if (!args.commentID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('COMMENT cannot be empty or just space');
+            }
+            if (!args.movieID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
+            }
+            if (isNaN(args.movieID))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            if (!args.emailID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('EMAILID cannot be empty or just space');
+            }
+            try{
             const addToComment = await Comments();
             const findCommentLike = await addToComment.findOne({comment:{$elemMatch:{id:args.commentID}}},{$elemMatch:{like:args.emailID}});
             let temp=null;
@@ -217,53 +303,99 @@ const resolvers = {
             if (!like && !dislike){
                 const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
             {$push:{"comment.$.dislike":args.emailID}},false, true)
+            if (userLike.modifiedCount === 0) {
+                throw new UserInputError('Could not LIKE comment');
+            }
             console.log("here");
             }
 
             else if(!dislike && like){
                 const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
                 {$pull:{"comment.$.like":args.emailID}},false, true)
+                if (userdislikeRemoved.modifiedCount === 0) {
+                    throw new UserInputError('Could not LIKE comment');
+                }
                 const userLike = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
                 {$push:{"comment.$.dislike":args.emailID}},false, true)
+                if (userLike.modifiedCount === 0) {
+                    throw new UserInputError('Could not LIKE comment');
+                }
             }
             else if(dislike && !like){
                 const userdislikeRemoved = await addToComment.updateOne({MovieId:args.movieID, "comment.id":args.commentID},
                 {$pull:{"comment.$.dislike":args.emailID}},false, true)
+                if (userdislikeRemoved.modifiedCount === 0) {
+                    throw new UserInputError('Could not LIKE comment');
+                }
             }
             return true
+        }catch(e){
+            if(e.message){
+                throw new UserInputError(e.message)
+            }
+            else{
+                throw new Error('INTERNAL SERVER ERROR')
+            }
+        }
         },
 
         AddtowacthList:async(_,args)=>{
-            if(args.movieID == null){
-                return
+            
+            if (!args.movieID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
             }
-
+            if (isNaN(args.movieID))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            if (!args.userId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const addToWatch = await Movie();
             let watchList = { 
               userId:args.userId,
               movieId:args.movieID
             }
-
             const find_id = await addToWatch.findOne({userId:args.userId, movieId:args.movieID});
-            //console.log(find_id);
             if(find_id){
-                throw "Movie is already added in watchlist"
+                throw new Error("Movie is already added in watchlist");
             }
-            const insertInfo = await addToWatch.insertOne(watchList);
-           
+            const insertInfo = await addToWatch.insertOne(watchList);           
             let new_id = insertInfo.insertedId;
-            if (insertInfo.insertedCount === 0) throw 'Unable to add in watchList';
-    
+            if (insertInfo.insertedCount === 0) {
+                throw new Error('Unable to add in watchList');
+            }    
             let x  = await addToWatch.findOne(new_id);
-            x._id = (x._id).toString();
-    
+            x._id = (x._id).toString();    
             return {id: x._id};
+        }catch(e){
+            if(e.message){
+                throw new UserInputError(e.message)
+            }
+            else{
+                throw new Error('INTERNAL SERVER ERROR')
+            }
+        }
           
         },
         removeFromWatchList:async(_,args)=>{
-            if(args.movieID == null){
-                return
+            
+            if (!args.movieID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
             }
+            if (isNaN(args.movieID))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            if (!args.userId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const addToWatch = await Movie();
             let watchList = { 
               userId:args.userId,
@@ -271,23 +403,39 @@ const resolvers = {
             }
 
             const find_id = await addToWatch.findOne({userId:args.userId, movieId:args.movieID});
-            //console.log(find_id);
-
             if(!find_id){
-                throw "Movie does not exist in watchlist"
+                throw new Error('Movie does not exist in watchlist');
             }
             const deletionInfo = await addToWatch.deleteOne(watchList);
-          // console.log(deletionInfo);
             if (deletionInfo.deletedCount === 0) {
-                throw 'Could not delete restaurants with given id';
+                throw new Error('Could not delete restaurants with given id');
             }
             return deletionInfo.acknowledged;
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
         },
 
         AddSaveforLater:async(_,args)=>{
-            if(args.movieID == null){
-                return
+            
+            if (!args.movieID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
             }
+            if (isNaN(args.movieID))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            if (!args.userId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const saveForLater = await SaveMovie();
             let saveList = { 
               userId:args.userId,
@@ -295,27 +443,44 @@ const resolvers = {
             }
 
             const find_id = await saveForLater.findOne({userId:args.userId, movieId:args.movieID});
-            //console.log(find_id);
 
             if(find_id){
-                throw "Movie is already saved"
+                throw new Error('Movie is already saved');
             }
             const insertInfo = await saveForLater.insertOne(saveList);
            
             let new_id = insertInfo.insertedId;
-            if (insertInfo.insertedCount === 0) throw 'Unable to add in saveList';
-    
+            if (insertInfo.insertedCount === 0) {
+                throw new Error('Unable to add in saveList');
+            }
             let x  = await saveForLater.findOne(new_id);
-    
             x._id = (x._id).toString();
-    
             return {id: x._id};
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
         },
 
         removeSaveforLater:async(_,args)=>{
-            if(args.movieID == null){
-                return
+            
+            if (!args.movieID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
             }
+            if (isNaN(args.movieID))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            if (!args.userId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const saveForLater = await SaveMovie();
             let saveList = { 
               userId:args.userId,
@@ -323,17 +488,23 @@ const resolvers = {
             }
 
             const find_id = await saveForLater.findOne({userId:args.userId, movieId:args.movieID});
-            //console.log(find_id);
 
             if(!find_id){
-                throw "Movie does not exist in saveList"
+                throw new Error('Movie does not exist in saveList')
             }
             const deletionInfo = await saveForLater.deleteOne(saveList);
-          // console.log(deletionInfo);
             if (deletionInfo.deletedCount === 0) {
-                throw 'Could not delete movie with given id';
+                throw new Error('Could not delete movie with given id');
             }
             return deletionInfo.acknowledged;
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
         },
 
         addImage:async(_,args)=>{
@@ -385,6 +556,15 @@ const resolvers = {
     Query:{
         movieList: async (_, args) => {
 
+            if (typeof (args.pageNum) != 'number')
+            {
+                throw new UserInputError ('Invalid PAGE NUMBER ');
+            }
+            if (!args.title.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('TITLE cannot be empty or just space');
+            }
+            try{
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {
@@ -432,10 +612,24 @@ const resolvers = {
                arr.push(temp);
             }}
             return arr;
+        }catch(e){
+            if(e.message){
+                throw new UserInputError(e.message)
+            }
+            else{
+                throw new Error('INTERNAL SERVER ERROR')
+            }
+        }
         },
 
         //list of movies watched by user
         checkIfwatched: async (_, args) => {
+
+            if (!args.userId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const addToWatch = await Movie();
             let array = []
             const find_ids = await addToWatch.find({  userId: args.userId } ).toArray();
@@ -448,31 +642,50 @@ const resolvers = {
                 array.push({id: find_ids[list].movieId})
             }
             return array;
-          },
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
+        },
 
           listOfComments: async(_,args)=>{
 
+            if (!args.movieId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('MOVIEID cannot be empty or just space');
+            }
+            if (isNaN(args.movieId))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
+            }
+            try{
             const addToComment = await Comments();
             const commentByMovie = await addToComment.find({MovieId: args.movieId}).toArray();
-            // console.log(commentByMovie[0].comment);
-            // let array=[];
-            // for (const x of commentByMovie[0].comment) {
-            //     // console.log(x.UserID+"      "+x.comment);
-            //     array.push({UserID:x.UserID,comment:x.comment});
-            // }
-
-            // let temp={}
-            // temp["MovieId"]=commentByMovie[0].MovieId;
-            // temp["comment"]=array;
-            // console.log(temp);
             commentByMovie[0].comment.reverse()
             return commentByMovie[0]
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
 
           },
 
 
           savedMovies: async (_, args) => {
-            
+
+            if (!args.userId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const saveForLater = await SaveMovie();
             let array = []
             const find_ids = await saveForLater.find({  userId: args.userId } ).toArray();
@@ -485,10 +698,25 @@ const resolvers = {
                 array.push({id:find_ids[list].movieId})
             }
             return array;
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
         },
   
         moviesByIds:async (_, args) => {
-            console.log("12345");
+
+            for(id in args.ids){
+                if (!args.ids[id].replace(/\s/g, '').length)
+                {
+                    throw new UserInputError ('USERID cannot be empty or just space');
+                }
+            }
+            try{
             let movieArray = []
             for(id in args.ids){
                // console.log(args.ids[id]);
@@ -534,10 +762,22 @@ const resolvers = {
                 movieArray.push(temp)
             }
             return movieArray
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
         },
 
         movieById: async (_, args) => {
         
+            if (!args.id.replace(/\s/g, '').length)
+                {
+                    throw new UserInputError ('USERID cannot be empty or just space');
+                }
             const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`);
             let temp={};
 
