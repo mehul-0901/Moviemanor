@@ -1,21 +1,25 @@
 import { Link, useParams,useNavigate } from 'react-router-dom';
 import '../App.css';
 import queries from '../queries';
-import {useLazyQuery, useMutation} from '@apollo/client';
+import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
 import React, { useEffect ,useContext, useState} from 'react';
 import {AuthContext} from '../firebase/Auth';
-import { makeStyles, Card, CardMedia, Typography } from '@material-ui/core';
+import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} from '@material-ui/core';
 import noImage from '../img/download.jpeg';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import Avatar from '@mui/material/Avatar';
-import { Button, List, ListItem, ListItemAvatar, Paper, TextField } from '@mui/material';
+import { blue,red } from '@mui/material/colors';
+import CommentIcon from '@mui/icons-material/Comment';
+import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import {styled} from '@mui/material/styles'
-import CommentIcon from '@mui/icons-material/Comment'
+import { Navigate } from 'react-router-dom';
+import { textAlign } from '@mui/system';
+import {alpha, styled} from '@mui/material/styles'
+
 
 const useStyles = makeStyles({
 	commenterName: {
@@ -106,7 +110,9 @@ function MovieById(props)
 	const navigate=useNavigate()
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
+	const [checked,setChecked] = useState(false);
 	let displayComment=null;
+	const [defaultVal,setDefault]=useState("");
     const [getMoviesById, {loading, error, data}] = useLazyQuery(
         queries.GET_MOVIES_BY_ID,
         {

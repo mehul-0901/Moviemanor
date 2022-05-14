@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 	}
 });
 
+
 const MoodDetector = (props) => {
     const classes = useStyles()
     const [initialMoods, setInitialMoods] = useState(true)
@@ -27,9 +28,6 @@ const MoodDetector = (props) => {
     const initialMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
-                <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
-                I am feeling...
-                </Typography>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     setInitialMoods(false)
@@ -73,9 +71,6 @@ const MoodDetector = (props) => {
     const happyMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
-                <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
-                    I am feeling Happy ...
-                </Typography>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -108,9 +103,6 @@ const MoodDetector = (props) => {
     const sadMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
-                <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
-                    I am feeling Sad ...
-                </Typography>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -143,9 +135,6 @@ const MoodDetector = (props) => {
     const angryMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
-                <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
-                    I am feeling Angry ...
-                </Typography>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -168,9 +157,6 @@ const MoodDetector = (props) => {
     const neutralMood = () => {
         return (
             <div style={{display: "flex", columnGap: "3rem", justifyContent: "center", width: "auto", maxWidth: "1100px", margin: "auto"}}>
-                <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
-                    I am feeling Neutral ...
-                </Typography>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
@@ -205,6 +191,12 @@ const MoodDetector = (props) => {
     }
     return(
         <div style={{marginTop: "17rem"}}>
+            <Typography variant="h2" component="h1" sx={{color: "#fff", fontWeight: "bold !important"}}>
+                I am feeling...
+            </Typography>
+            <br />
+            <br />
+            
             {initialMoods && initialMood()}
             {happyMoods && happyMood()}
             {sadMoods && sadMood()}

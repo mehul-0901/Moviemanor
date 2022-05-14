@@ -1,13 +1,13 @@
-import React, {useState,useContext} from "react";
+import React, {useEffect, useState,useContext} from "react";
 import '../App.css';
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button } from '@mui/material';
+import { Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import { doSignOut } from '../firebase/FirebaseFunctions';
-import {BrowserRouter as Link, useNavigate} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Routes,NavLink, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../firebase/Auth';
 
  
@@ -59,6 +59,7 @@ const NavDiv = styled("div")(({ theme }) => ({
 
 const NavBar = (props) => {
 	const [anchorEl, setAnchorEl] = useState(null);
+    const [loggedIn, setLoggedIn] = useState(false);
     const {currentUser} = useContext(AuthContext);
     const navigate=useNavigate();
     const isMenuOpen = Boolean(anchorEl);

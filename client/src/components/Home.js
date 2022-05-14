@@ -1,16 +1,49 @@
 import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
-import {useMutation, useLazyQuery} from '@apollo/client';
+import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
 import {AuthContext} from '../firebase/Auth';
+import { makeStyles } from '@material-ui/core';
 import HomeDataGrid from "./HomeDataGrid";
 import MoodDetector from "./MoodDetector";
 
 
+const useStyles = makeStyles({
+	card: {
+		maxWidth: 300,
+		height: 'auto',
+		marginLeft: '2cm',
+		marginRight: 'auto',
+		borderRadius: 5,
+		border: '1px solid #1e8678',
+		boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);'
+	},
+	titleHead: {
+		borderBottom: '1px solid #1e8678',
+		fontWeight: 'bold'
+	},
+	grid: {
+		flexGrow: 1,
+		flexDirection: 'row'
+	},
+	media: {
+		height: '100%',
+		width: '100%'
+	},
+	button: {
+		color: '#1e8678',
+		fontWeight: 'bold',
+		fontSize: 12
+	}
+});
 
 const Home = (props) => {
   const {currentUser} = useContext(AuthContext);
   const[searchTerm,setSearchTerm]=useState();
+  let card=null;
+  let pagination=null;
+  const classes = useStyles();
+  const regex = /(<([^>]+)>)/gi;
 
   const [getAllMovies,{loading, error, data, refetch}] = useLazyQuery(
       queries.GET_MOVIES,
@@ -30,6 +63,7 @@ const Home = (props) => {
 
   useEffect(() => {
     console.log('on load useeffect '+props.searchTerm);
+          // setSearchTerm(props.searchTerm);
     async function fetchData() {
       console.log("i am here inside the useEffect in Home Component");
       console.log(currentUser);
@@ -49,7 +83,7 @@ const Home = (props) => {
         getUserWatchedMovies({variables: { userId:currentUser.email}});
         getUserSavedMovies({ variables: { userId:currentUser.email}});
       }
-      if(props.searchTerm==="") {
+      if(props.searchTerm=="") {
         getAllMovies({variables:{"title":props.searchTerm,"pageNum":pageNum}}); 
       }
       console.log("Searched Movie Data", data);

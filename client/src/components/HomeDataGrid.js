@@ -1,6 +1,6 @@
-import React, {useContext} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
-import {Card, CardHeader, CardMedia, CardActions, Grid, Button, Pagination, PaginationItem} from '@mui/material';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination, PaginationItem} from '@mui/material';
 import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
@@ -68,6 +68,7 @@ const HomeDataGrid = (props) => {
     let card=null;
     let pagination=null;
     const classes = useStyles();
+    const regex = /(<([^>]+)>)/gi;
 
     const removeWatchList=(email,id)=> {
         props.removefromWatchList({
