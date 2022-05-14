@@ -4,6 +4,6 @@ EXPOSE 3000
 WORKDIR /app
 COPY ./client/package.json ./
 RUN npm install
-COPY . ./
+COPY ./client ./
 RUN ls -l
 CMD [ "npm", "start" ]
