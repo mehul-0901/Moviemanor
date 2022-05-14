@@ -161,8 +161,7 @@ const UserProfile = () => {
   
 
   return (
-    <Form method="POST"  onSubmit={handleSubmit}>
-
+    <form method="POST"  onSubmit={handleSubmit}>
     <div style={{ marginTop: "5rem" }}>
       <div className="container">
         <div className="main-body">
@@ -171,11 +170,8 @@ const UserProfile = () => {
               <div className="card">
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
-                  
-                    <img src={data?data.getUserImage.image:photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
-                
+                  <img src={data?data.getUserImage.image:photoURL} className="rounded-circle" alt={name} width="150" />
                     <div className="mt-3">
-                    <div> 
                     <label>Select File:</label>
                     <input type="file" onChange={handleFileInput} />
                     <br />
@@ -184,49 +180,41 @@ const UserProfile = () => {
                       Submit
                     </Button>
                     {error !== "" ? <span>{error}</span> : ""}
-            
-                     </div>
-                      <h4> {name} </h4>
+                     <h4> {name} </h4>
                     </div>
-                  </div>
-                </div>
-                
-                <div className="col-md-8">
-                  <div className="card mb-3">
-                    <div className="card-body">
-                      <div className="row">
-                       
-                          <h6 className="mb-0">Name</h6>
-                        
-                        <div className="col-sm-9">{name}</div>
-                      </div>
-                      <hr />
-                      <div className="row">
-                      
-                          <h6 className="mb-0">Email</h6>
-                   
-                        <div className="col-sm-9">
-                         {email}
-                        </div>
-                      </div>
-                      <hr/>
-                      
-             
-                  </div>
-                  <hr/>
-                
-                
                   </div>
                 </div>
               </div>
             </div>
+            <div className="col-md-8">
+              <div className="card mb-3">
+                <div className="card-body">
+                  <div className="row">
+                      <h6 >Name</h6>
+                    <div className="col-sm-9 ">{name}</div>
+                  </div>
+                  <hr />
+                  <div className="row">
+                    
+                      <h6 className="mb-0">Email</h6>
+                   
+                    <div className="col-sm-9 "> {email}</div>
+                  </div>
+                  <hr />
+                </div>
+              </div>
+              
+            </div>
           </div>
         </div>
       </div>
-      </div>
-    </Form>
+    </div>
+ </form>
+  
    
   );
 };
 
 export default UserProfile
+
+
