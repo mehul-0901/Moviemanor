@@ -8,9 +8,9 @@ import { makeStyles, Card, CardContent, CardMedia, Typography, CardHeader ,Box} 
 import noImage from '../img/download.jpeg';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
+import CommentIcon from '@mui/icons-material/CommentRounded'
 import Avatar from '@mui/material/Avatar';
 import { blue,red } from '@mui/material/colors';
-import CommentIcon from '@mui/icons-material/Comment';
 import { Button, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from '@mui/material';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
@@ -335,6 +335,7 @@ const commentCardLoggedIn = (comment)=>{
 					<Typography variant='h4' component="h3" style={{color: "whitesmoke"}}>
 						Comments ({comments && comments.listOfComments ? comments.listOfComments.comment.length : 0} <CommentIcon />):
 					</Typography>
+					{error2 ? <div style={{color:"red"}}>{error2.message}</div>:<div></div>}
 					<Typography variant='body2' component="div" style={{display: "flex", columnGap: "1rem", width: "1100px", color: "white"}}>
 						<RedditTextField
 							required
