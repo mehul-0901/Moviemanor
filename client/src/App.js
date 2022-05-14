@@ -1,7 +1,7 @@
 import './App.css';
 import Home from './components/Home';
 import NavBar from './components/NavBar';
-import {BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import React, {useState} from 'react';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
@@ -14,8 +14,7 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  HttpLink,
-  useQuery 
+  HttpLink
 } from "@apollo/client";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -30,7 +29,6 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [noOfBookmarks, setNoOfBookmarks] = useState(0)
   const [noOfWatchedMovies, setNoOfWatchedMovies] = useState(0)
-  const [moodMovieList, setMoodMovieList] = useState(false)
   const [moodId, setMoodId] = useState(0)
 
   return (
@@ -42,7 +40,6 @@ function App() {
           <div className='App-body'>
             <Routes>
               <Route path='/' element={ <Home searchTerm={searchTerm} moodId={moodId} setMoodId={setMoodId} setNoOfBookmarks={setNoOfBookmarks} setNoOfWatchedMovies={setNoOfWatchedMovies}/> } />
-
               <Route path='/SignIn' element={ <SignIn/> } />
               <Route path='/SignUp' element={ <SignUp/> } />
               <Route path='/movie/:id' element={ <MovieById setSearchTerm={setSearchTerm}/> } />
