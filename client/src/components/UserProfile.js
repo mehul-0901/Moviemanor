@@ -108,6 +108,7 @@ const UserProfile = () => {
 		async function fetchData() 
         {
 			data1({variables:{userId: currentUser.email}})
+      console.log(data);
 		}
 		fetchData();
 
@@ -161,6 +162,7 @@ const UserProfile = () => {
   
 
   return (
+  
     <Form method="POST"  onSubmit={handleSubmit}>
 
     <div style={{ marginTop: "5rem" }}>
@@ -172,7 +174,7 @@ const UserProfile = () => {
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
                   
-                    <img src={data?data.getUserImage.image:photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
+                    <img src={data&&data.getUserImage.image!=null?data.getUserImage.image:currentUser.photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
                 
                     <div className="mt-3">
                     <div> 

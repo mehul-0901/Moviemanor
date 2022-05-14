@@ -52,6 +52,7 @@ async function doSocialSignIn(provider) {
   let socialProvider = null;
   if (provider === 'google') {
     socialProvider = new firebase.auth.GoogleAuthProvider();
+    console.log(socialProvider);
   } else if (provider === 'facebook') {
     socialProvider = new firebase.auth.FacebookAuthProvider();
   }
