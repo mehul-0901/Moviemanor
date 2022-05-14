@@ -10,6 +10,7 @@ import MovieById from './components/MovieById';
 import SavedMovies from './components/SavedMovies';
 import WatchList from './components/WatchList';
 import UserProfile from './components/UserProfile';
+import ErrorPage from './components/ErrorPage';
 import {
   ApolloClient,
   InMemoryCache,
@@ -49,6 +50,7 @@ function App() {
               <Route path='/SavedMovies' element={ <SavedMovies setSearchTerm={setSearchTerm}/> } />
               <Route path='/WatchList' element={ <WatchList setSearchTerm={setSearchTerm}/> } />
               <Route path='/UserProfile' element={<UserProfile setSearchTerm={setSearchTerm}/>} />
+              <Route path='*' element={ <ErrorPage/> } />
             </Routes>
           </div>
         </div>
