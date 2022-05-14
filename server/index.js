@@ -41,9 +41,9 @@ const typeDefs = gql`
 
     }
 
-   # type userImage{ 
-   #     image: String
-   #    }
+    type userImage{ 
+        image: String
+       }
 
     type Query {
         movieById(id:String):Movies
@@ -53,7 +53,7 @@ const typeDefs = gql`
         listOfComments(movieId:String): Comments
         moodBasedMovies(moodId: ID!, pageNum: Int): [Movies]
         movieList(title: String,pageNum:Int): [Movies]
-      ##  getUserImage(userId:String): userImage
+        getUserImage(userId:String): userImage
     }
 
     type Mutation {
@@ -64,7 +64,7 @@ const typeDefs = gql`
         addComments(movieID:String, userID:String, comment:String):Boolean
         addLike(movieID:String,commentID:String, emailID:String):Boolean
         addDislike(movieID:String,commentID:String, emailID:String):Boolean
-       ## addImage(userID:String, image: String): userImage
+        addImage(userID:String, image: String): userImage
     }
 `;
 
@@ -336,57 +336,56 @@ const resolvers = {
             return deletionInfo.acknowledged;
         },
 
-        // addImage:async(_,args)=>{
-        //     const getImage = await  UserImage();
-        //     let url = URL.createObjectURL("blob:http://localhost:3000/80e22920-e523-461e-9f08-b9f963b6af32")
-        //     console.log(url);
-        //     fs.copyFile("blob:http://localhost:3000/80e22920-e523-461e-9f08-b9f963b6af32", '../client/src/userImages/HW_07_Plot.png')
-        //     const newImage ={
-        //         userId:args.userID,
-        //         userImage:args.image 
-        //     }
+        addImage:async(_,args)=>{
+            const getImage = await  UserImage();
+        
+            const newImage ={
+                userId:args.userID,
+                userImage:args.image 
+            }
 
-        //     const find_id = await getImage.findOne({userId:args.userID});
-        //     //console.log(find_id);
+            const find_id = await getImage.findOne({userId:args.userID});
+            //console.log(find_id);
 
-        //     if(find_id){
-        //         console.log(find_id);
-        //         let parsedId = ObjectId(find_id._id); 
-        //     console.log(parsedId);
-        //         const updatedProfile = {
-        //             userId:args.userID,
-        //             userImage:args.image 
+            if(find_id){
+                console.log(find_id);
+                let parsedId = ObjectId(find_id._id); 
+            console.log(parsedId);
+                const updatedProfile = {
+                    userId:args.userID,
+                    userImage:args.image 
     
-        //         };
-        //         if(args.image === find_id.userImage){
-        //             return {image: updatedProfile.userImage}
-        //         }
+                };
+                if(args.image === find_id.userImage){
+                    return {image: updatedProfile.userImage}
+                }
     
-        //         const updatedInfo = await getImage.updateOne(
-        //             {  _id: parsedId},
-        //             { $set: updatedProfile }
-        //         );
+                const updatedInfo = await getImage.updateOne(
+                    {  _id: parsedId},
+                    { $set: updatedProfile }
+                );
     
-        //         if (updatedInfo.modifiedCount === 0) {
-        //             throw 'could not update user image successfully';
-        //         }
+                if (updatedInfo.modifiedCount === 0) {
+                    throw 'could not update user image successfully';
+                }
 
-        //         return {image: updatedProfile.userImage}
-        //     }
-        //     else{
-        //     const insertInfo = await getImage.insertOne(newImage);
-        //     if (insertInfo.insertedCount === 0) throw 'Unable to add in saveList';
+                return {image: updatedProfile.userImage}
+            }
+            else{
+            const insertInfo = await getImage.insertOne(newImage);
+            if (insertInfo.insertedCount === 0) throw 'Unable to add in saveList';
     
-        //     return {image: newImage.userImage}
+            return {image: newImage.userImage}
 
-        //     } 
-        // }
+            } 
+        }
 
     },
 
     Query:{
         movieList: async (_, args) => {
-            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&page=${args.pageNum}&query=${args.title}&language=en-US`);
+
+            const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {
                 return [];
@@ -473,7 +472,7 @@ const resolvers = {
 
 
           savedMovies: async (_, args) => {
-            console.log("tesdsdiuyhj");
+            
             const saveForLater = await SaveMovie();
             let array = []
             const find_ids = await saveForLater.find({  userId: args.userId } ).toArray();
@@ -623,22 +622,22 @@ const resolvers = {
                 moviesArray.push(movie)
             })
             return moviesArray
-        }
+        },
 
 
-        // getUserImage: async(_, args) => {
+        getUserImage: async(_, args) => {
 
-        //     const getImage = await  UserImage(); 
-        //     const find_image = await getImage.find({  userId: args.userId } ).toArray();
-        //     if(find_image.length === 0) return {};
-        //     let image = {}
-        //     for(list in find_image ){
-        //         image = {image: find_image[list].userImage}
+            const getImage = await  UserImage(); 
+            const find_image = await getImage.find({  userId: args.userId } ).toArray();
+            if(find_image.length === 0) return {};
+            let image = {}
+            for(list in find_image ){
+                image = {image: find_image[list].userImage}
                
-        //     }
-        //     return image;
+            }
+            return image;
 
-        // }
+        }
 
 
 
