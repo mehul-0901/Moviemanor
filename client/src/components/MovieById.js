@@ -15,7 +15,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import {styled} from '@mui/material/styles'
-
+import CommentIcon from '@mui/icons-material/Comment'
 
 const useStyles = makeStyles({
 	commenterName: {
