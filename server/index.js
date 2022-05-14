@@ -10,22 +10,7 @@ const Comments = mongoCollections.Comments;
 const UserImage = mongoCollections.UserImage;
 require("dotenv").config()
 
-const gm = require('gm');
 
-// const { default: axios } = require('axios');
-
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
-// (async () => {
-//     // const client = createClient();
-  
-//     client.on('error', (err) => console.log('Redis Client Error', err));
-  
-//     await client.connect();
-  
-//   })();
-  
 const typeDefs = gql`
     type Movies {
         id: ID!

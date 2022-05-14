@@ -1,11 +1,9 @@
 import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
-// import Dropzone from 'react-dropzone-uploader'
 import { AuthContext } from "../firebase/Auth";
 import { makeStyles } from "@material-ui/core";
 import { useMutation, useLazyQuery, useQuery} from '@apollo/client';
 import { Form} from "react-bootstrap";
-
 import {
   Card,
   CardHeader,
@@ -19,19 +17,17 @@ import {
   Pagination,
 } from "@mui/material";
 import noImage from "../img/profile_icon.png";
-import { addProfilePic } from "../firebase/FirebaseFunctions";
 import { Navigate, useNavigate } from "react-router-dom";
 import queries from '../queries';
-
 import AWS from 'aws-sdk'
+
 
 const S3_BUCKET ='moviemanor554';
 const REGION ='us-east-1';
 
-
 AWS.config.update({
-    accessKeyId: `${process.env.AWS_ACCESS_KEY}`,
-    secretAccessKey: `${process.env.AWS_SECRET_KEY}`
+    accessKeyId: `${process.env.REACT_APP_AWS_ACCESS_KEY}`,
+    secretAccessKey: `${process.env.REACT_APP_AWS_SECRET_KEY}`
 })
 
 const myBucket = new AWS.S3({
