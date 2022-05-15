@@ -186,10 +186,7 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
-      if(props.error){
-        return(<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{props.error.message}</Alert>)
-      }
-      else if (!props.searchTerm && props.moodData && props.moodId) {
+       if (!props.searchTerm && props.moodData && props.moodId) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
             if (!currentUser) {
@@ -223,6 +220,11 @@ const HomeDataGrid = (props) => {
           })
         }
       } 
+      
+     else if(props.error){
+        console.log("I am hhdbghjere");
+        return(<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{props.error.message}</Alert>)
+      }
       else if (props.data && currentUser && props.searchTerm) {
         if(props.data.movieList!==null)
         {    

@@ -580,11 +580,11 @@ const resolvers = {
             {
                 throw new UserInputError ('Invalid PAGE NUMBER ');
             }
-            if (!args.title.replace(/\s/g, '').length)
-            {
-                throw new UserInputError ('TITLE cannot be empty or just space');
-            }
-            try{
+            // if (!args.title.replace(/\s/g, '').length)
+            // {
+            //     throw new UserInputError ('TITLE cannot be empty or just space');
+            // }
+     
                 console.log("aesrydtfjkygjhd");
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
@@ -634,18 +634,17 @@ const resolvers = {
             }
             }
             else{
-                console.log("srgsg");
+        
                 throw new Error('No Movie Found')
             }
             return arr;
-        }catch(e){
-            if(e.message){
-                throw new UserInputError(e.message)
-            }
-            else{
-                throw new Error('INTERNAL SERVER ERROR')
-            }
-        }
+            // if(e.message){
+            //     throw new UserInputError(e.message)
+            // }
+            // else{
+            //     throw new Error('INTERNAL SERVER ERROR')
+            // }
+        
         },
 
         //list of movies watched by user
