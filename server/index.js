@@ -508,6 +508,12 @@ const resolvers = {
         },
 
         addImage:async(_,args)=>{
+
+            if (!args.userID.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const getImage = await  UserImage();
         
             const newImage ={
@@ -537,18 +543,28 @@ const resolvers = {
                 );
     
                 if (updatedInfo.modifiedCount === 0) {
-                    throw 'could not update user image successfully';
+                    throw new Error('could not update user image successfully');
                 }
 
                 return {image: updatedProfile.userImage}
             }
             else{
             const insertInfo = await getImage.insertOne(newImage);
-            if (insertInfo.insertedCount === 0) throw 'Unable to add in saveList';
+            if (insertInfo.insertedCount === 0) {
+                throw new Error('Unable to add in saveList');
+            }
     
             return {image: newImage.userImage}
 
-            } 
+            }
+        } catch(e){
+            if(e.message){
+                throw new UserInputError(e.message)
+            }
+            else{
+                throw new Error('INTERNAL SERVER ERROR')
+            }
+        }
         }
 
     },
@@ -775,9 +791,10 @@ const resolvers = {
         movieById: async (_, args) => {
         
             if (!args.id.replace(/\s/g, '').length)
-                {
-                    throw new UserInputError ('USERID cannot be empty or just space');
-                }
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`);
             let temp={};
 
@@ -839,6 +856,14 @@ const resolvers = {
             }
             }
             return temp;
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
         },
 
         moodBasedMovies: async(_, args) => {
@@ -867,6 +892,11 @@ const resolvers = {
 
         getUserImage: async(_, args) => {
 
+            if (!args.userId.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            try{
             const getImage = await  UserImage(); 
             const find_image = await getImage.find({  userId: args.userId } ).toArray();
             if(find_image.length === 0) return {};
@@ -876,6 +906,14 @@ const resolvers = {
                
             }
             return image;
+            }catch(e){
+                if(e.message){
+                    throw new UserInputError(e.message)
+                }
+                else{
+                    throw new Error('INTERNAL SERVER ERROR')
+                }
+            }
 
         }
 
