@@ -50,7 +50,7 @@ function SignIn() {
       <h1 style={{color: "#fff"}}>Log in</h1>
       <form onSubmit={handleLogin}>
         <div className='form-group'>
-          <label style={{color: "#888989"}}>
+          <label style={{color: "#9a9b9b"}}>
             Email:
             <input
               className='form-control'
@@ -63,7 +63,7 @@ function SignIn() {
           </label>
         </div>
         <div className='form-group'>
-          <label style={{color: "#888989"}}>
+          <label style={{color: "#9a9b9b"}}>
             Password:
             <input
               className='form-control'
@@ -78,7 +78,7 @@ function SignIn() {
         <Button className='loginBtn' type='submit'>Log in</Button>
         <br />
         <br />
-        <Button className='forgotPassword' sx={{color: "#5089dc"}} onClick={passwordReset}>
+        <Button className='forgotPassword' sx={{color: "#6f9ce7"}} onClick={passwordReset}>
           Forgot Password
         </Button>
       </form>
