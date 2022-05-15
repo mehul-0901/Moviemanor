@@ -17,7 +17,7 @@ Team Members :-
 ---
 # Instuctions to Run Application
 
-Type command on Command propt-
+To clone project -
 ```
  git clone "https://github.com/vatsalshah007/Moviemanor.git"
 ```
