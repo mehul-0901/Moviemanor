@@ -1,3 +1,7 @@
+# MovieManor
+
+The movie recommendation app recommends movies to users based on their current mood. Users will be asked to select their current mood and based on their selection, a list of movies will be displayed. The users can also search for movies, view a particular movie's description, cast, and overall rating. Only logged-in users can comment, and upVote or downVote a particular user’s comments.  
+
 Group project repository for CS 554 - Web Programming II @ Stevens Institute of Technology
 
 ![License](https://img.shields.io/github/license/vatsalshah007/Moviemanor)
