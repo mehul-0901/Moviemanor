@@ -84,25 +84,6 @@ const SavedMovies = (props) => {
 
       useEffect(() => {
 		console.log('on load useeffect1');
-<<<<<<< HEAD
-        console.log(id);
-		async function fetchData() 
-        {
-            if(currentUser)
-            {
-                console.log(currentUser.email);
-                getusersavedmovies({variables:{userId:currentUser.email}});
-                console.log(data);
-                const idArray = data?.savedMovies?.map((node)=> node.id)
-            console.log(idArray);
-                getmoviesbyIDS({variables:{ids:idArray}});
-            }
-            else{
-              navigate('/Forbidden');
-            }
-		}
-		fetchData();
-=======
 		async function fetchData() {
         console.log(currentUser.email);
         getusersavedmovies({variables:{userId:currentUser.email}});
@@ -114,10 +95,8 @@ const SavedMovies = (props) => {
       if(currentUser) {
         fetchData();
       }else{
-        alert("Login to see your saved movies");
-        navigate('/SignIn');
+        navigate('/Forbidden');
       }
->>>>>>> 97a17a8661775c8a8c5e91ae4464f6e0f2789845
 
     }	, [data]);
 
