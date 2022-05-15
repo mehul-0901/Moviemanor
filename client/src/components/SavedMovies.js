@@ -65,7 +65,6 @@ const SavedMovies = (props) => {
     const classes = useStyles();
     const regex = /(<([^>]+)>)/gi;
     let card = null
-    const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
 
       const [getmoviesbyIDS, {data: saved_movies,error:error2}] = useLazyQuery(
@@ -85,24 +84,20 @@ const SavedMovies = (props) => {
 
       useEffect(() => {
 		console.log('on load useeffect1');
-        console.log(id);
-		async function fetchData() 
-        {
-            if(currentUser)
-            {
-                console.log(currentUser.email);
-                getusersavedmovies({variables:{userId:currentUser.email}});
-                console.log(data);
-                const idArray = data?.savedMovies?.map((node)=> node.id)
-            console.log(idArray);
-                getmoviesbyIDS({variables:{ids:idArray}});
-            }
-            else{
-              alert("Login to add a MOVIE");
-              navigate('/SignIn');
-            }
-		}
-		fetchData();
+		async function fetchData() {
+        console.log(currentUser.email);
+        getusersavedmovies({variables:{userId:currentUser.email}});
+        console.log(data);
+        const idArray = data?.savedMovies?.map((node)=> node.id)
+        console.log(idArray);
+        getmoviesbyIDS({variables:{ids:idArray}});
+    }
+      if(currentUser) {
+        fetchData();
+      }else{
+        alert("Login to see your saved movies");
+        navigate('/SignIn');
+      }
 
     }	, [data]);
 
