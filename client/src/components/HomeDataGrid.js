@@ -11,6 +11,8 @@ import {AuthContext} from '../firebase/Auth';
 import { makeStyles } from '@material-ui/core';
 import noImage from '../img/download.jpeg';
 import { Link } from "react-router-dom";
+import {Alert} from "@mui/material";
+
 
 
 const useStyles = makeStyles({
@@ -184,8 +186,10 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
-      
-      if (!props.searchTerm && props.moodData && props.moodId) {
+      if(props.error){
+        return(<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{props.error.message}</Alert>)
+      }
+      else if (!props.searchTerm && props.moodData && props.moodId) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
             if (!currentUser) {

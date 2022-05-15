@@ -18,7 +18,9 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import { Navigate } from 'react-router-dom';
 import { textAlign } from '@mui/system';
-import {alpha, styled} from '@mui/material/styles'
+import {alpha, styled} from '@mui/material/styles';
+import {Alert} from "@mui/material";
+
 
 
 const useStyles = makeStyles({
@@ -119,7 +121,6 @@ function MovieById(props)
             fetchPolicy:"cache-and-network",
         }
       );
-
 	  const [showComments, {loading:loading1, error:error1, data:comments,refetch:refetch1}] = useLazyQuery(
         queries.SHOW_COMMENTS,
         {
@@ -153,11 +154,9 @@ function MovieById(props)
       );
 
       useEffect(() => {
-		console.log('on load useeffect');
-        console.log(id);
+
 		async function fetchData() 
         {
-			console.log(currentUser);
 			getMoviesById({variables:{id:id}});
 			showComments({variables:{movieId:id}})
 		}
@@ -165,12 +164,6 @@ function MovieById(props)
 
     }	, [id]);
 
-	// const showCommentsOfMovie=()=>{
-	// 	setChecked((prev)=>!prev);
-	// 	showComments({variables:{movieId:id}})
-	// 	console.log("Comments:", comments);
-
-	// }
 	const addComment=()=>{
 		
 		let com=(document.getElementById("comment").value);
@@ -186,8 +179,7 @@ function MovieById(props)
 
 	}
 	const likeComment=(commentID)=>{
-		console.log("here");
-		console.log(commentID);
+		
 		if(currentUser){
 		addLikeToComment({variables:{movieID:id,  commentID: commentID, emailID: currentUser.email}})
 		}else{
@@ -276,7 +268,6 @@ const commentCardLoggedIn = (comment)=>{
 		 );
 		}
 
-	console.log(comments);
 	if(comments && comments.listOfComments && comments.listOfComments.comment){
 		if(currentUser){
 			displayComment =comments.listOfComments.comment.map((comment)=>{
@@ -289,7 +280,22 @@ const commentCardLoggedIn = (comment)=>{
 		}
 	}
 
-    if(data && !isNaN(id))
+	if (loading) {
+        return (
+          <div>
+            <h2>Loading....</h2>
+          </div>
+        );
+      } else if (error) {
+        return (<><br></br><br></br><Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{error.message}</Alert></>);
+      } 
+      else if (error3) {
+        return (<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{error3.message}</Alert>);
+      } 
+      else if (error4) {
+        return (<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{error4.message}</Alert>);
+      }
+    else if(data && !isNaN(id))
     {
         return(
 			<div className='homeWithoutLogin' style={{marginTop: "5rem"}}>
@@ -335,7 +341,7 @@ const commentCardLoggedIn = (comment)=>{
 					<Typography variant='h4' component="h3" style={{color: "whitesmoke"}}>
 						Comments ({comments && comments.listOfComments ? comments.listOfComments.comment.length : 0} <CommentIcon />):
 					</Typography>
-					{error2 ? <div style={{color:"red"}}>{error2.message}</div>:<div></div>}
+					{error2 ? <Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center"}}>{error2.message}</Alert>:<div></div>}
 					<Typography variant='body2' component="div" style={{display: "flex", columnGap: "1rem", width: "1100px", color: "white"}}>
 						<RedditTextField
 							required
@@ -345,7 +351,7 @@ const commentCardLoggedIn = (comment)=>{
 						/>
 						<Button className={classes.button} onClick={addComment}>Submit</Button>
 					</Typography>
-					{comments ? displayComment : <div> No Comments </div>}
+					{comments ? displayComment : <div style={{color: "whitesmoke"}}> No Comments </div>}
 				</div>
 				<br />
 			</div>

@@ -57,9 +57,9 @@ const Home = (props) => {
   const [addToSave] = useMutation(queries.ADD_SAVEFORLATER)
   const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER)
   const [pageNum,setPageNum] = useState();
-  const [getUserWatchedMovies,{data: data1, loading: watchedLoading, refetch:refetchWatched}] = useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
-  const [getUserSavedMovies,{data: data2, loading: savedLoading, refetch:refetchSaved}] = useLazyQuery(queries.GET_USER_SAVEDMOVIES,{});
-  const [getMoodBasedMovies, {data: moodData, loading: moodMoviesLoading, refetch: moodRefetch}] = useLazyQuery(queries.GET_MOOD_BASED_MOVIES, {})
+  const [getUserWatchedMovies,{data: data1,error:error1, loading: watchedLoading, refetch:refetchWatched}] = useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
+  const [getUserSavedMovies,{data: data2,error:error2, loading: savedLoading, refetch:refetchSaved}] = useLazyQuery(queries.GET_USER_SAVEDMOVIES,{});
+  const [getMoodBasedMovies, {data: moodData,error:error3, loading: moodMoviesLoading, refetch: moodRefetch}] = useLazyQuery(queries.GET_MOOD_BASED_MOVIES, {})
 
   useEffect(() => {
     console.log('on load useeffect '+props.searchTerm);
@@ -107,7 +107,7 @@ const Home = (props) => {
         {searchTerm || props.moodId ? <HomeDataGrid data={data} data1={data1} data2={data2} pageNum={pageNum} setPageNum={setPageNum} searchTerm={searchTerm} getAllMovies={getAllMovies} 
             getUserSavedMovies={getUserSavedMovies} addToSave={addToSave} refetchSaved={refetchSaved} removefromSave={removefromSave} getUserWatchedMovies={getUserWatchedMovies}
             refetchWatched={refetchWatched} removefromWatchList={removefromWatchList} addToWatchList={addToWatchList} moodData={moodData} moodRefetch={moodRefetch}
-            getMoodBasedMovies={getMoodBasedMovies} moodId={props.moodId}/>
+            getMoodBasedMovies={getMoodBasedMovies} moodId={props.moodId} error={error}/>
         : <MoodDetector setMoodId={props.setMoodId} setPageNum={setPageNum}/> }
       </div>
     </div>

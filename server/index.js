@@ -585,13 +585,14 @@ const resolvers = {
                 throw new UserInputError ('TITLE cannot be empty or just space');
             }
             try{
+                console.log("aesrydtfjkygjhd");
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {
                 return [];
             }
             let arr=[]
-            if(data.results){  
+            if(data.results.length!=0){  
               for(let x of data.results) {
                 let temp={};
                 if(x.id)
@@ -630,7 +631,12 @@ const resolvers = {
                } 
                temp["page"]=data.total_pages;
                arr.push(temp);
-            }}
+            }
+            }
+            else{
+                console.log("srgsg");
+                throw new Error('No Movie Found')
+            }
             return arr;
         }catch(e){
             if(e.message){
@@ -797,6 +803,10 @@ const resolvers = {
             if (!args.id.replace(/\s/g, '').length)
             {
                 throw new UserInputError ('USERID cannot be empty or just space');
+            }
+            if (isNaN(args.id))
+            {
+                throw new UserInputError ('Invalid MOVIEID ');
             }
             try{
             const {data}= await axios.get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`);

@@ -1,16 +1,20 @@
-import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
-import queries from '../queries';
-import {useQuery, useMutation, useLazyQuery} from '@apollo/client';
-import {AuthContext} from '../firebase/Auth';
-import { makeStyles } from '@material-ui/core';
-import HomeDataGrid from "./HomeDataGrid";
-import MoodDetector from "./MoodDetector";
+
 
 
 
 const ErrorPage = (props) => {
-return(<div>ERROR</div>)
+return(<><br></br><br></br><br></br><div class="mars"></div>
+<img src="https://assets.codepen.io/1538474/404.svg" alt='' class="logo-404" />
+<img src="https://assets.codepen.io/1538474/meteor.svg" alt='' class="meteor" />
+<p class="title">Oh no!!</p>
+<p class="subtitle">
+  You’re either misspelling the URL <br /> or requesting a page that's no longer here.
+</p>
+
+<img src="https://assets.codepen.io/1538474/astronaut.svg" alt='' class="astronaut" />
+<img src="https://assets.codepen.io/1538474/spaceship.svg" alt='' class="spaceship" />
+</>)
 }
 
 
