@@ -1,7 +1,7 @@
 import React, {useEffect, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
-import {  useParams } from 'react-router-dom';
+import {  Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useLazyQuery} from '@apollo/client';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -61,6 +61,7 @@ const useStyles = makeStyles({
 
 const SavedMovies = (props) => {
 
+  const navigate=useNavigate();
     const classes = useStyles();
     const regex = /(<([^>]+)>)/gi;
     let card = null
@@ -95,6 +96,10 @@ const SavedMovies = (props) => {
                 const idArray = data?.savedMovies?.map((node)=> node.id)
             console.log(idArray);
                 getmoviesbyIDS({variables:{ids:idArray}});
+            }
+            else{
+              alert("Login to add a MOVIE");
+              navigate('/SignIn');
             }
 		}
 		fetchData();
@@ -153,7 +158,6 @@ const SavedMovies = (props) => {
       </div>
     );
   }
-
   if (loading) {
     return (
       <div>

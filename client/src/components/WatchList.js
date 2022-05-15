@@ -1,7 +1,7 @@
 import React, {useEffect, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
-import {  useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useLazyQuery} from '@apollo/client';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -60,7 +60,7 @@ const WatchList = (props) => {
     let card = null
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
-
+    const navigate=useNavigate()
     const [getUserWatchedMovies, {loading, error, data,refetch:refetchWatched}] = useLazyQuery(
         queries.GET_USER_WATCHEDMOVIES,
         {}
@@ -85,6 +85,11 @@ const WatchList = (props) => {
                 getUserWatchedMovies({variables:{userId:currentUser.email}});
                 console.log(data);
             }
+            else
+            {
+            //  navigate("/SignIn");
+ 
+            }
 		}
 		fetchData();
 
@@ -104,6 +109,10 @@ const WatchList = (props) => {
                 getmoviesbyIDS({variables:{ids:idArray}});
                console.log(data);
              
+            }
+            else{
+              alert("Login to add a MOVIE");
+              navigate('/SignIn');
             }
 		}
 		fetchData();
@@ -147,16 +156,16 @@ const WatchList = (props) => {
           </Grid>
         )
     }
-   // console.log(watched_movies);
    if(watched_movies && watched_movies.moviesByIds.length!==0){ 
     card =
     watched_movies &&
     watched_movies.moviesByIds.map((show) => {
         return buildCard(show);
-      });}
+      });
+    }
       else
       {
-        return(
+          return(
             <div style={{color:"white",marginTop:"250px"}}> 
               "Kindly add watched movies!"
             </div>
