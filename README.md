@@ -35,6 +35,9 @@ To clone project -
 You can skip this step if you have the source code and go to the next steps.
 
 > ### Step 2:- Server
+
+  Make sure you have the .env file for the server, placed in the root directory of the server otherwise the application won't work.
+  
   To start Server -
  ```
  cd Moviemanor
@@ -44,6 +47,9 @@ You can skip this step if you have the source code and go to the next steps.
 ```
 
 > ### Step 3:- Client
+
+  Make sure you have the .env file for the client, placed in the root directory of the client otherwise the application won't work.
+  
   To start Client -
  ```
  cd Moviemanor
