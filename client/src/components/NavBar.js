@@ -176,6 +176,7 @@ const NavBar = (props) => {
             onClick={(e) => { 
                 e.preventDefault()
                 props.setSearchTerm("")
+                props.setMoodId(0)
                 doSignOut() 
                 handleMenuClose()
                 navigate("/")
