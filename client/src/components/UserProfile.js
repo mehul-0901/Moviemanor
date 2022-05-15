@@ -194,7 +194,7 @@ const UserProfile = () => {
                 <div className="card-body">
                   <div className="row">
                       <h2 >Name :</h2>
-                    <div className="col-sm-9 ">{name} </div>
+                    <div className="col-sm-7 ">{name} </div>
                   </div>
                   <hr />
                   <div className="row">
