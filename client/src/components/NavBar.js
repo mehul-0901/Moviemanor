@@ -193,7 +193,7 @@ const NavBar = (props) => {
                     sx={{ display: { xs: 'none', sm: 'block' }, fontSize: "50px !important" }} 
                     fontWeight={"bold"}
                 >
-                   <Link to={"/"} onClick={(e) => {
+                   <Link to={"/"}  className="screen-reader-only" onClick={(e) => {
                        e.preventDefault()
                        props.setSearchTerm("")
                        props.setMoodId(0)

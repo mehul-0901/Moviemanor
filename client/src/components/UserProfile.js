@@ -172,7 +172,7 @@ const UserProfile = () => {
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
                   
-                    <img src={data&&data.getUserImage.image!=null?data.getUserImage.image:currentUser.photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
+                    <img src={data&&data.getUserImage.image!=null?data.getUserImage.image:photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
                 
                     <div className="mt-3">
                     <label>Select File:</label>
@@ -183,7 +183,7 @@ const UserProfile = () => {
                       Submit
                     </Button>
                     {error !== "" ? <span>{error}</span> : ""}
-                     <h4> {name} </h4>
+                     <h1> {name} </h1>
                     </div>
                   </div>
                 </div>
@@ -193,13 +193,13 @@ const UserProfile = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className="row">
-                      <h6 >Name</h6>
-                    <div className="col-sm-9 ">{name}</div>
+                      <h2 >Name :</h2>
+                    <div className="col-sm-9 ">{name} </div>
                   </div>
                   <hr />
                   <div className="row">
                     
-                      <h6 className="mb-0">Email</h6>
+                      <h3 className="mb-0">Email : </h3>
                    
                     <div className="col-sm-9 "> {email}</div>
                   </div>
