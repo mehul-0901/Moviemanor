@@ -222,7 +222,6 @@ const HomeDataGrid = (props) => {
       } 
       
      else if(props.error){
-        console.log("I am hhdbghjere");
         return(<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{props.error.message}</Alert>)
       }
       else if (props.data && currentUser && props.searchTerm) {

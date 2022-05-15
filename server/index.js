@@ -74,11 +74,12 @@ const typeDefs = gql`
 const resolvers = {
     Mutation:{
         addComments:async(_,args)=>{
-            
-            if (!args.comment.replace(/\s/g, '').length)
+           if (!args.comment.replace(/\s/g, '').length)
             {
                 throw new UserInputError ('COMMENT cannot be empty or just space');
             }
+        
+
             if (!args.movieID.replace(/\s/g, '').length)
             {
                 throw new UserInputError ('MOVIEID cannot be empty or just space');
@@ -87,10 +88,8 @@ const resolvers = {
             {
                 throw new UserInputError ('Invalid MOVIEID ');
             }
-            if (!args.userID.replace(/\s/g, '').length)
-            {
-                throw new UserInputError ('USERID cannot be empty or just space');
-            }
+       
+
             try{  
             const addToComment = await Comments();
             const MovieIDExist = await addToComment.findOne({MovieId:args.movieID})
@@ -585,7 +584,6 @@ const resolvers = {
             //     throw new UserInputError ('TITLE cannot be empty or just space');
             // }
      
-                console.log("aesrydtfjkygjhd");
             const {data}= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=279284daf2704eb941bfa86708c00a4f&page=${args.pageNum}&query=${args.title}&language=en-US`);
             if(args.title==undefined)
             {

@@ -60,13 +60,18 @@ const Home = (props) => {
   const [getUserWatchedMovies,{data: data1,error:error1, loading: watchedLoading, refetch:refetchWatched}] = useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
   const [getUserSavedMovies,{data: data2,error:error2, loading: savedLoading, refetch:refetchSaved}] = useLazyQuery(queries.GET_USER_SAVEDMOVIES,{});
   const [getMoodBasedMovies, {data: moodData,error:error3, loading: moodMoviesLoading, refetch: moodRefetch}] = useLazyQuery(queries.GET_MOOD_BASED_MOVIES, {})
-
+  const [mood,setMood]=useState();
   useEffect(() => {
     console.log('on load useeffect '+props.searchTerm);
           // setSearchTerm(props.searchTerm);
     async function fetchData() {
       console.log("i am here inside the useEffect in Home Component");
       console.log(currentUser);
+      if(!currentUser)
+      {
+        setSearchTerm("");
+        
+      }
       if(props.moodId !== 0){
         await getMoodBasedMovies({
           variables: {
