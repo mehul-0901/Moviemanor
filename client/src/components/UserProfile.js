@@ -194,14 +194,14 @@ const UserProfile = () => {
                 <div className="card-body">
                   <div className="row">
                       <h2 >Name :</h2>
-                    <div className="col-sm-7 ">{name} </div>
+                    <div className="col-sm-5">{name} </div>
                   </div>
                   <hr />
                   <div className="row">
                     
                       <h3 className="mb-0">Email : </h3>
                    
-                    <div className="col-sm-8 "> {email}</div>
+                    <div className="col-sm-7 "> {email}</div>
                   </div>
                   <hr />
                 </div>

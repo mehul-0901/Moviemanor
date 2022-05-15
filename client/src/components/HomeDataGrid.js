@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core';
 import noImage from '../img/download.jpeg';
 import { Link } from "react-router-dom";
 import {Alert} from "@mui/material";
+import { color } from "@mui/system";
 
 
 
@@ -186,7 +187,9 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
-       if (!props.searchTerm && props.moodData && props.moodId) {
+      
+      // Mood Movie List
+      if (!props.searchTerm && props.moodData && props.moodId) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
             if (!currentUser) {
@@ -219,12 +222,9 @@ const HomeDataGrid = (props) => {
             }
           })
         }
-      } 
-      
-     else if(props.error){
+      } else if(props.error){
         return(<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{props.error.message}</Alert>)
-      }
-      else if (props.data && currentUser && props.searchTerm) {
+      } else if (props.data && currentUser && props.searchTerm) { // SEARCHED MOVIES
         if(props.data.movieList!==null)
         {    
           card =
@@ -238,7 +238,7 @@ const HomeDataGrid = (props) => {
                       for (const x of props.data2.savedMovies) {
                           if(x.id===show.id)
                           {
-                              save=true;
+                            save=true;
                           }
                       }
                   }
@@ -297,12 +297,13 @@ const HomeDataGrid = (props) => {
       //// PAGINATION ENDS ////
 
       return (
-        <div>
-            {pagination}
-            <Grid container sx={{marginTop: 0, maxWidth: "1660px", marginLeft: "auto", marginRight: "auto", justifyContent: "center", gridGap: "3.5rem"}} className={classes.grid} spacing={3}>
-                {card} 
-            </Grid>
-            {pagination}
+        <div style={{marginTop: "2rem", color: "white"}}>
+          {props.searchTerm ? `Search Term: ${props.searchTerm}`: `Movies based on your selected mood: ${props.myMood}`}
+          {pagination}
+          <Grid container sx={{marginTop: 0, maxWidth: "1660px", marginLeft: "auto", marginRight: "auto", justifyContent: "center", gridGap: "3.5rem"}} className={classes.grid} spacing={3}>
+            {card} 
+          </Grid>
+          {pagination}
         </div>
       )
     }
