@@ -96,7 +96,7 @@ const NavBar = (props) => {
                     }}
                     />
                 </Search>
-                <Link to={"/SavedMovies"} onClick={() => {props.setSearchTerm("")}} title="My Saved Movies">
+                <Link to={"/SavedMovies"} onClick={() => {props.setSearchTerm("")}} title="My Saved Movies" aria-label="My Saved Movies">
                     <IconButton size="large" color="secondary" aria-label={`show ${props.noOfBookmarks} watchlisted movies`} title="My Saved Movies">
                         <Badge badgeContent={props.noOfBookmarks} color="error">
                             <BookmarksIcon />
@@ -104,7 +104,7 @@ const NavBar = (props) => {
                     </IconButton>
                     <p style={{display: "none"}}>My Saved Movies</p>
                 </Link>
-                <Link to={"/WatchList"} onClick={() => {props.setSearchTerm("")}} title="My Watched Movies">
+                <Link to={"/WatchList"} onClick={() => {props.setSearchTerm("")}} title="My Watched Movies" aria-label="My Saved Movies">
                     <IconButton size="large" color="secondary" aria-label={`show ${props.noOfWatchedMovies} watched movies`} title="My Watched Movies">
                         <Badge badgeContent={props.noOfWatchedMovies} color="error">
                             <ListAltIcon />
