@@ -15,6 +15,32 @@ Team Members :-
   Vatsal Shah
 
 ---
+# Instuctions to Run Application
+
+Type command on Command propt-
+```
+ git clone "https://github.com/vatsalshah007/Moviemanor.git"
+```
+> ### Client
+  To start Client -
+ ```
+ cd Moviemanor
+ cd Client
+ npm i
+ npm start
+```  
+>  ### Server
+  To start Server -
+ ```
+ cd Moviemanor
+ cd Server
+ npm i
+ npm start
+```
+
+
+
+
 
 # Docker
 
