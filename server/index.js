@@ -513,6 +513,10 @@ const resolvers = {
             {
                 throw new UserInputError ('USERID cannot be empty or just space');
             }
+            if (!args.image.replace(/\s/g, '').length)
+            {
+                throw new UserInputError ('IMAGE link cannot be empty or just space');
+            }
             try{
             const getImage = await  UserImage();
         
