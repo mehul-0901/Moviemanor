@@ -175,8 +175,8 @@ const UserProfile = () => {
                     <img src={data&&data.getUserImage.image!=null?data.getUserImage.image:photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
                 
                     <div className="mt-3">
-                    <label>Select File:</label>
-                    <input type="file" onChange={handleFileInput} />
+                    <label htmlFor="my-input">Select File:</label>
+                    <input id = "my-input" type="file" onChange={handleFileInput} />
                     <br />
                     <br />
                     <Button type="submit" variant="primary">
@@ -201,7 +201,7 @@ const UserProfile = () => {
                     
                       <h3 className="mb-0">Email : </h3>
                    
-                    <div className="col-sm-9 "> {email}</div>
+                    <div className="col-sm-8 "> {email}</div>
                   </div>
                   <hr />
                 </div>

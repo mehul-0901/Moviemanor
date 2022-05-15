@@ -18,6 +18,7 @@ import { Grid } from "@mui/material";
 import noImage from '../img/download.jpeg';
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import {Alert} from "@mui/material";
 
 
 
@@ -66,7 +67,7 @@ const SavedMovies = (props) => {
     const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
 
-      const [getmoviesbyIDS, {data: saved_movies}] = useLazyQuery(
+      const [getmoviesbyIDS, {data: saved_movies,error:error2}] = useLazyQuery(
         queries.Get_Movies_By_IDS,
         {
         }
@@ -78,7 +79,7 @@ const SavedMovies = (props) => {
         }
       );
 
-      const [removefromSave] = useMutation(queries.REMOVE_SAVEFORLATER, {
+      const [removefromSave,{error:error3}] = useMutation(queries.REMOVE_SAVEFORLATER, {
     });
 
       useEffect(() => {
@@ -147,7 +148,7 @@ const SavedMovies = (props) => {
       });
   } else {
     return(
-      <div style={{color:"white"}}>
+      <div style={{color:"white",marginTop:"250px"}}>
         "Kindly save movies to show!"
       </div>
     );
@@ -160,7 +161,13 @@ const SavedMovies = (props) => {
       </div>
     );
   } else if (error) {
-    return <div>{error.message}</div>;
+    return (<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{error.message}</Alert>);
+  } 
+  else if (error2) {
+    return (<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{error2.message}</Alert>);
+  } 
+  else if (error3) {
+    return (<Alert variat="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center",marginLeft:"200px",marginTop:"200px"}}>{error3.message}</Alert>);
   } else {
     return (
       <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", marginTop: "10rem", width: "100%"}}>
