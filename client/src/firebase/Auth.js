@@ -16,8 +16,8 @@ export const AuthProvider = ({children}) => {
 
   if (loadingUser) {
     return (
-      <div>
-        <h1>Loading....Loading....Loading....Loading....Loading....</h1>
+      <div style={{color: "white", marginLeft: "1rem"}}>
+        <h1>Loading...</h1>
       </div>
     );
   }

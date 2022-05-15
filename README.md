@@ -1,3 +1,7 @@
+# MovieManor
+
+The movie recommendation app recommends movies to users based on their current mood. Users will be asked to select their current mood and based on their selection, a list of movies will be displayed. The users can also search for movies, view a particular movie's description, cast, and overall rating. Only logged-in users can comment, and upVote or downVote a particular user’s comments.  
+
 Group project repository for CS 554 - Web Programming II @ Stevens Institute of Technology
 
 ![License](https://img.shields.io/github/license/vatsalshah007/Moviemanor)
@@ -15,13 +19,42 @@ Team Members :-
   Vatsal Shah
 
 ---
+# Instuctions to Run Application
+
+To clone project -
+```
+ git clone "https://github.com/vatsalshah007/Moviemanor.git"
+```
+> ### Client
+  To start Client -
+ ```
+ cd Moviemanor
+ cd Client
+ npm i
+ npm start
+```  
+>  ### Server
+  To start Server -
+ ```
+ cd Moviemanor
+ cd Server
+ npm i
+ npm start
+```
+
+
+
+
 
 # Docker
+
+You can even run Docker images if you do not wish to pull the repository. For this guide you need to have Docker CLI installed on your local machine. 
+
 **All the Environment variables are provided in the .env file**
 
 If you want to check out our application on Docker, simply follow the steps below:
 
-### Step 1:- Pulling the Server and Client Images from the Docker registry (optional)
+> ### Step 1:- Pulling the Server and Client Images from the Docker registry (optional)
 To pull the Server image run
 ```
 docker pull marksman007/moviemanor-server
@@ -32,7 +65,7 @@ To pull the Client image run
 docker pull marksman007/moviemanor-client
 ```
 
-### Step 2:- Run the Server Image (required)
+> ### Step 2:- Run the Server Image (required)
 Type this command to run the server image and replace the environment variables values with the values provided in the server's .env file
 
 ```
@@ -40,7 +73,7 @@ docker run -p 4000:4000 --env ATLAS_DATABASE="<ATLAS_DATABASE_VALUE>" --env ATLA
 ```
 `Please enter the correct key values `<ins>**`without`**</ins>` "" from the .env file. Also keep the port numbers as they are.`
 
-### Step 3:- Run the Client Image (required)
+> ### Step 3:- Run the Client Image (required)
 Type this command to run the server image and replace the environment variables values with the values provided in the client's .env file
 
 ```
@@ -48,8 +81,8 @@ docker run -p 3000:3000 --env REACT_APP_FIREBASE_KEY="<REACT_APP_FIREBASE_KEY_VA
 ```
 `Please enter the correct key values `<ins>**`without`**</ins>` "" from the .env file. Also keep the port numbers as they are.`
 
-### Step 4:- For Server
+> ### Step 4:- For Server
 Type `localhost:4000` in your browser
 
-### Step 5:- For Client
+> ### Step 5:- For Client
 Type `localhost:3000` in your browser 

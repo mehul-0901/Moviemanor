@@ -144,6 +144,7 @@ const NavBar = (props) => {
 
     const renderMenu = (
         <Menu
+            aria-label="Menu"
             anchorEl={anchorEl}
             anchorOrigin={{
                 vertical: 'top',
@@ -159,20 +160,20 @@ const NavBar = (props) => {
             onClose={handleMenuClose}
             sx={{marginTop: "4rem", color: "#202226"}}
         >
-        <Link to={"/UserProfile"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
+        <Link to={"/UserProfile"} aria-label="Profile" sx={{textDecoration: "none"}}>
+            <MenuItem aria-label="Profile" sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
             onClick={handleMenuClose }>Profile</MenuItem>
         </Link>
-        <Link to={"/SavedMovies"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
+        <Link to={"/SavedMovies"} aria-label="My Saved Movies" sx={{textDecoration: "none"}}>
+            <MenuItem aria-label="My Saved Movies" sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
             >My Saved Movies</MenuItem>
         </Link>
-        <Link to={"/WatchList"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
+        <Link to={"/WatchList"} aria-label="My Watched List" sx={{textDecoration: "none"}}>
+            <MenuItem aria-label="My Watched List" sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
             >My Watched List</MenuItem>
         </Link>
-        <Link to={"/"} sx={{textDecoration: "none"}}>
-            <MenuItem sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
+        <Link to={"/"} aria-label="Logout" sx={{textDecoration: "none"}}>
+            <MenuItem aria-label="Logout" sx={[{color: "#0000CC", fontSize: "20px", backgroundColor: "#a0a5ad", backdropFilter: "blur(30px)"}]}
             onClick={(e) => { 
                 e.preventDefault()
                 props.setSearchTerm("")

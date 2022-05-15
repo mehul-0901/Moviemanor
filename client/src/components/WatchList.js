@@ -1,7 +1,7 @@
 import React, {useEffect, useContext} from "react";
 import '../App.css';
 import queries from '../queries';
-import {  useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useMutation, useLazyQuery} from '@apollo/client';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -58,7 +58,6 @@ const useStyles = makeStyles({
 const WatchList = (props) => {
     const classes = useStyles();
     let card = null
-    const {id}=useParams();
     const {currentUser} = useContext(AuthContext);
     const navigate=useNavigate()
     const [getUserWatchedMovies, {loading, error, data,refetch:refetchWatched}] = useLazyQuery(
@@ -74,49 +73,44 @@ const WatchList = (props) => {
 
       const [removefromWatchList,{error:error3}] = useMutation(queries.REMOVE_FROM_WATCHLIST)
 
-      useEffect(() => {
-		console.log('on load useeffect');
-        console.log(id);
-		async function fetchData() 
-        {
-            if(currentUser)
-            {
-                console.log(currentUser.email);
-                getUserWatchedMovies({variables:{userId:currentUser.email}});
-                console.log(data);
-            }
-            else
-            {
-            //  navigate("/SignIn");
+    //   useEffect(() => {
+		// console.log('on load useeffect');
+		// async function fetchData() 
+    //     {
+    //         if(currentUser)
+    //         {
+    //             console.log(currentUser.email);
+                
+    //             console.log(data);
+    //         }
+    //         else
+    //         {
+    //         //  navigate("/SignIn");
  
-            }
-		}
-		fetchData();
+    //         }
+		// }
+		// fetchData();
 
-    }	, [id]);
+    // }	, []);
 
 
-    useEffect(() => {
+  useEffect(() => {
 		console.log('on load useeffect');
-        console.log(id);
 		async function fetchData() 
-        {
-            if(currentUser)
-            {
-                console.log(data);
-            const idArray = data?.checkIfwatched?.map((node)=> node.id)
-            console.log(idArray);
-                getmoviesbyIDS({variables:{ids:idArray}});
-               console.log(data);
-             
-            }
-            else{
-              navigate('/Forbidden');
-            }
-		}
-		fetchData();
-
-    }	, [data]);
+      {
+        getUserWatchedMovies({variables:{userId:currentUser.email}});
+        console.log(data);
+        const idArray = data?.checkIfwatched?.map((node)=> node.id)
+        console.log(idArray);
+        getmoviesbyIDS({variables:{ids:idArray}});
+        console.log(data);
+      }      
+    if(currentUser) {
+      fetchData();
+    }else{
+      navigate('/Forbidden');
+    }
+  }	, [data]);
 
     const removeWatchList=(email,id)=>
     {

@@ -39,7 +39,7 @@ function SignUp() {
       {pwMatch && <h4 className='error'>{pwMatch}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
-          <label style={{color: "#888989"}}>
+          <label style={{color: "#9a9b9b"}}>
             Name:
             <input
               className='form-control'
@@ -51,7 +51,7 @@ function SignUp() {
           </label>
         </div>
         <div className='form-group'>
-          <label style={{color: "#888989"}}>
+          <label style={{color: "#9a9b9b"}}>
             Email:
             <input
               className='form-control'
@@ -63,7 +63,7 @@ function SignUp() {
           </label>
         </div>
         <div className='form-group'>
-          <label style={{color: "#888989"}}>
+          <label style={{color: "#9a9b9b"}}>
             Password:
             <input
               className='form-control'
@@ -77,7 +77,7 @@ function SignUp() {
           </label>
         </div>
         <div className='form-group'>
-          <label style={{color: "#888989"}}>
+          <label style={{color: "#9a9b9b"}}>
             Confirm Password:
             <input
               className='form-control'
