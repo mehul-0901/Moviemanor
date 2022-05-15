@@ -10,7 +10,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {AuthContext} from '../firebase/Auth';
 import { makeStyles } from '@material-ui/core';
 import noImage from '../img/download.jpeg';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {Alert} from "@mui/material";
 import { color } from "@mui/system";
 
@@ -71,6 +71,7 @@ const HomeDataGrid = (props) => {
     let card=null;
     let pagination=null;
     const classes = useStyles();
+    const navigate = useNavigate()
     const regex = /(<([^>]+)>)/gi;
 
     const removeWatchList=(email,id)=> {
@@ -154,6 +155,7 @@ const HomeDataGrid = (props) => {
                       e.preventDefault()
                       if(!currentUser){
                         alert("Please Sign In to Save a movie or to add it to watched List")
+                        navigate("/SignIn")
                       }else{
                         addSave(currentUser.email,show.id)
                       }
@@ -174,6 +176,7 @@ const HomeDataGrid = (props) => {
                       e.preventDefault()
                       if(!currentUser){
                         alert("Please Sign In to Save a movie or to add it to watched List")
+                        navigate("/SignIn")
                       }else{
                         addWatchList(currentUser.email,show.id)  
                       }

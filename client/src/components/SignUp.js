@@ -36,7 +36,7 @@ function SignUp() {
   return (
     <div>
       <h1 style={{color: "#fff"}}>Sign up</h1>
-      {pwMatch && <h4 className='error'>{pwMatch}</h4>}
+      {pwMatch && <h4 style={{color: "red"}} className='error'>{pwMatch}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
           <label style={{color: "#9a9b9b"}}>
