@@ -78,7 +78,7 @@ const NavBar = (props) => {
         if (x) {
             return (
             <div style={{display: "flex"}}>
-                <Search aria-autocomplete="false" color="#dedede">
+                <Search aria-autocomplete="none" role="searchbox" style={{color: "#dedede"}}>
                     <SearchIconWrapper>
                         <SearchIcon sx={{color: "#dedede"}}/>
                     </SearchIconWrapper>
@@ -131,12 +131,12 @@ const NavBar = (props) => {
             return (
                 <div style={{ display: "flex", columnGap: "1rem" }}>
                     <Link style={{textDecoration: "none"}} to={"/SignIn"}>
-                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 60, width:150, borderRadius: "20px", fontSize: "25px", textDecoration: "none" }} >Sign In </Button>
+                        <Button variant="contained" sx={[{ backgroundColor: '#676fe900', color: "#676fe9", height: 60, width:150, borderRadius: "5px", fontSize: "25px", fontWeight: "bold", textDecoration: "none" }, () => ({'&:hover': {backgroundColor: "#676fe9", color: "white"}})]} >Login </Button>
                     </Link>
                     <Link style={{textDecoration: "none"}} to={"/SignUp"}>
-                        <Button variant="contained" sx={{ backgroundColor: "blue", height: 60, width:150, borderRadius: "20px", fontSize: "25px", textDecoration: "none" }} > Sign Up</Button>
+                        <Button variant="contained" sx={[{ backgroundColor: "#676fe9", height: 60, width:150, borderRadius: "5px", fontSize: "25px", fontWeight: "bold", textDecoration: "none" }, () => ({'&:hover': {backgroundColor: '#676fe900', color: "#676fe9"}})]} > Sign Up</Button>
                     </Link>
-  
+
                 </div>
             );
         }
@@ -176,6 +176,7 @@ const NavBar = (props) => {
             onClick={(e) => { 
                 e.preventDefault()
                 props.setSearchTerm("")
+                props.setMoodId(0)
                 doSignOut() 
                 handleMenuClose()
                 navigate("/")

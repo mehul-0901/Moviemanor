@@ -60,7 +60,7 @@ const Home = (props) => {
   const [getUserWatchedMovies,{data: data1,error:error1, loading: watchedLoading, refetch:refetchWatched}] = useLazyQuery(queries.GET_USER_WATCHEDMOVIES, {});
   const [getUserSavedMovies,{data: data2,error:error2, loading: savedLoading, refetch:refetchSaved}] = useLazyQuery(queries.GET_USER_SAVEDMOVIES,{});
   const [getMoodBasedMovies, {data: moodData,error:error3, loading: moodMoviesLoading, refetch: moodRefetch}] = useLazyQuery(queries.GET_MOOD_BASED_MOVIES, {})
-  const [mood,setMood]=useState();
+
   useEffect(() => {
     console.log('on load useeffect '+props.searchTerm);
           // setSearchTerm(props.searchTerm);
