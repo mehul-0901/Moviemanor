@@ -17,11 +17,14 @@ Team Members :-
 ---
 
 # Docker
+
+You can even run Docker images if you do not wish to pull the repository. For this guide you need to have Docker CLI installed on your local machine. 
+
 **All the Environment variables are provided in the .env file**
 
 If you want to check out our application on Docker, simply follow the steps below:
 
-### Step 1:- Pulling the Server and Client Images from the Docker registry (optional)
+> ### Step 1:- Pulling the Server and Client Images from the Docker registry (optional)
 To pull the Server image run
 ```
 docker pull marksman007/moviemanor-server
@@ -32,7 +35,7 @@ To pull the Client image run
 docker pull marksman007/moviemanor-client
 ```
 
-### Step 2:- Run the Server Image (required)
+> ### Step 2:- Run the Server Image (required)
 Type this command to run the server image and replace the environment variables values with the values provided in the server's .env file
 
 ```
@@ -40,7 +43,7 @@ docker run -p 4000:4000 --env ATLAS_DATABASE="<ATLAS_DATABASE_VALUE>" --env ATLA
 ```
 `Please enter the correct key values `<ins>**`without`**</ins>` "" from the .env file. Also keep the port numbers as they are.`
 
-### Step 3:- Run the Client Image (required)
+> ### Step 3:- Run the Client Image (required)
 Type this command to run the server image and replace the environment variables values with the values provided in the client's .env file
 
 ```
@@ -48,8 +51,8 @@ docker run -p 3000:3000 --env REACT_APP_FIREBASE_KEY="<REACT_APP_FIREBASE_KEY_VA
 ```
 `Please enter the correct key values `<ins>**`without`**</ins>` "" from the .env file. Also keep the port numbers as they are.`
 
-### Step 4:- For Server
+> ### Step 4:- For Server
 Type `localhost:4000` in your browser
 
-### Step 5:- For Client
+> ### Step 5:- For Client
 Type `localhost:3000` in your browser 
