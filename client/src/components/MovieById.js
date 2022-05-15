@@ -19,6 +19,8 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import { Navigate } from 'react-router-dom';
 import { textAlign } from '@mui/system';
 import {alpha, styled} from '@mui/material/styles'
+import { Alert } from '@mui/material';
+
 
 
 const useStyles = makeStyles({
@@ -335,7 +337,8 @@ const commentCardLoggedIn = (comment)=>{
 					<Typography variant='h4' component="h3" style={{color: "whitesmoke"}}>
 						Comments ({comments && comments.listOfComments ? comments.listOfComments.comment.length : 0} <CommentIcon />):
 					</Typography>
-					{error2 ? <div style={{color:"red"}}>{error2.message}</div>:<div></div>}
+					{error2 ? <Alert variant="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center"}} >{error2.message}</Alert>
+:<div></div>}
 					<Typography variant='body2' component="div" style={{display: "flex", columnGap: "1rem", width: "1100px", color: "white"}}>
 						<RedditTextField
 							required

@@ -107,7 +107,7 @@ const Home = (props) => {
         {searchTerm || props.moodId ? <HomeDataGrid data={data} data1={data1} data2={data2} pageNum={pageNum} setPageNum={setPageNum} searchTerm={searchTerm} getAllMovies={getAllMovies} 
             getUserSavedMovies={getUserSavedMovies} addToSave={addToSave} refetchSaved={refetchSaved} removefromSave={removefromSave} getUserWatchedMovies={getUserWatchedMovies}
             refetchWatched={refetchWatched} removefromWatchList={removefromWatchList} addToWatchList={addToWatchList} moodData={moodData} moodRefetch={moodRefetch}
-            getMoodBasedMovies={getMoodBasedMovies} moodId={props.moodId}/>
+            getMoodBasedMovies={getMoodBasedMovies} moodId={props.moodId} error={error}/>
         : <MoodDetector setMoodId={props.setMoodId} setPageNum={setPageNum}/> }
       </div>
     </div>

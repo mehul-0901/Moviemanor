@@ -591,7 +591,8 @@ const resolvers = {
                 return [];
             }
             let arr=[]
-            if(data.results){  
+            
+            if(data.results.length!=0){  
               for(let x of data.results) {
                 let temp={};
                 if(x.id)
@@ -631,6 +632,10 @@ const resolvers = {
                temp["page"]=data.total_pages;
                arr.push(temp);
             }}
+            else
+            {
+                throw new Error('No movies Found.')
+            }
             return arr;
         }catch(e){
             if(e.message){

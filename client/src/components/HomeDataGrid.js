@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from "react";
 import '../App.css';
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination, PaginationItem} from '@mui/material';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Grid, Button, Pagination, PaginationItem,Alert} from '@mui/material';
 import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineSharpIcon from '@mui/icons-material/RemoveCircleOutlineSharp';
@@ -184,8 +184,12 @@ const HomeDataGrid = (props) => {
           </Grid>
         );
       }
-      
-      if (!props.searchTerm && props.moodData && props.moodId) {
+      if(props.error)
+      {
+       
+        return(<Alert variant="filled" severity="error" style={{backgroundColor:"red",width:'1100px',textAlign:"center"}} >{props.error.message}</Alert>)
+      } 
+      else if (!props.searchTerm && props.moodData && props.moodId) {
         if (props.moodData.moodBasedMovies !== null) {
           card = props.moodData && props.moodData.moodBasedMovies.map((movie) =>{
             if (!currentUser) {
@@ -218,7 +222,8 @@ const HomeDataGrid = (props) => {
             }
           })
         }
-      } else if (props.data && currentUser && props.searchTerm) {
+      } 
+      else if (props.data && currentUser && props.searchTerm) {
         if(props.data.movieList!==null)
         {    
           card =
@@ -251,7 +256,6 @@ const HomeDataGrid = (props) => {
           });
         }
       }
-
       //// PAGINATION STARTS ////
       // Pagination Function
       const paginate = (page) => {
