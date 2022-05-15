@@ -75,26 +75,31 @@ const MoodDetector = (props) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(710356)
+                    props.setMyMood("Romantic")
                 }}>Romantic</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(14267)
+                    props.setMyMood("Glamorous")
                 }}>Glamorous</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(128)
+                    props.setMyMood("Powerful")
                 }}>Powerful</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(5590)
+                    props.setMyMood("Euphoric")
                 }}>Euphoric</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(26302)
+                    props.setMyMood("Trippy")
                 }}>Trippy</Button>
             </div>
         )
@@ -107,26 +112,31 @@ const MoodDetector = (props) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(892772)
+                    props.setMyMood("Ashamed")
                 }}>Ashamed</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(2039)
+                    props.setMyMood("Lonely")
                 }}>Lonely</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(62215)
+                    props.setMyMood("Depressed")
                 }}>Depressed</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(1807)
+                    props.setMyMood("Empty")
                 }}>Empty</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(544)
+                    props.setMyMood("Devastated")
                 }}>Devastated</Button>
             </div>
         )
@@ -139,16 +149,19 @@ const MoodDetector = (props) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(9067)
+                    props.setMyMood("Tough")
                 }}>Tough</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(36850)
+                    props.setMyMood("Grumpy")
                 }}>Grumpy</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(11524)
+                    props.setMyMood("Riled Up")
                 }}>Riled Up</Button>
             </div>
         )
@@ -161,26 +174,31 @@ const MoodDetector = (props) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(103328)
+                    props.setMyMood("Bored")
                 }}>Bored</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(24192)
+                    props.setMyMood("Skeptical")
                 }}>Skeptical</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(2105)
+                    props.setMyMood("Horny")
                 }}>Horny</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(44479)
+                    props.setMyMood("Curious")
                 }}>Curious</Button>
                 <Button className={classes.button} onClick={(e) => {
                     e.preventDefault()
                     props.setPageNum(1)
                     props.setMoodId(9353)
+                    props.setMyMood("Safe")
                 }}>Safe</Button>
             </div>
         )
