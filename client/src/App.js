@@ -32,7 +32,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [noOfBookmarks, setNoOfBookmarks] = useState(0)
   const [noOfWatchedMovies, setNoOfWatchedMovies] = useState(0)
-  const [moodMovieList, setMoodMovieList] = useState(false)
+  const [myMood, setMyMood] = useState("")
   const [moodId, setMoodId] = useState(0)
 
   return (
@@ -43,7 +43,7 @@ function App() {
           <NavBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} setMoodId={setMoodId} noOfBookmarks={noOfBookmarks} noOfWatchedMovies={noOfWatchedMovies} loggedIn={setLoggedIn}/>
           <div className='App-body'>
             <Routes>
-              <Route path='/' element={ <Home searchTerm={searchTerm} moodId={moodId} setMoodId={setMoodId} setNoOfBookmarks={setNoOfBookmarks} setNoOfWatchedMovies={setNoOfWatchedMovies}/> } />
+              <Route path='/' element={ <Home searchTerm={searchTerm} setMyMood={setMyMood} myMood={myMood} moodId={moodId} setMoodId={setMoodId} setNoOfBookmarks={setNoOfBookmarks} setNoOfWatchedMovies={setNoOfWatchedMovies}/> } />
 
               <Route path='/SignIn' element={ <SignIn/> } />
               <Route path='/SignUp' element={ <SignUp/> } />

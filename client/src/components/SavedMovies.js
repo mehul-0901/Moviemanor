@@ -95,8 +95,7 @@ const SavedMovies = (props) => {
       if(currentUser) {
         fetchData();
       }else{
-        alert("Login to see your saved movies");
-        navigate('/SignIn');
+        navigate('/Forbidden');
       }
 
     }	, [data]);
