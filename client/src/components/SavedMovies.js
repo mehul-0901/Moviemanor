@@ -98,8 +98,7 @@ const SavedMovies = (props) => {
                 getmoviesbyIDS({variables:{ids:idArray}});
             }
             else{
-              alert("Login to add a MOVIE");
-              navigate('/SignIn');
+              navigate('/Forbidden');
             }
 		}
 		fetchData();

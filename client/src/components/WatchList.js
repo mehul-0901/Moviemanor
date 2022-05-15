@@ -111,8 +111,7 @@ const WatchList = (props) => {
              
             }
             else{
-              alert("Login to add a MOVIE");
-              navigate('/SignIn');
+              navigate('/Forbidden');
             }
 		}
 		fetchData();
