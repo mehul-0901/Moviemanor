@@ -78,7 +78,7 @@ const NavBar = (props) => {
         if (x) {
             return (
             <div style={{display: "flex"}}>
-                <Search aria-autocomplete="false" color="#dedede">
+                <Search aria-autocomplete="none" role="searchbox" style={{color: "#dedede"}}>
                     <SearchIconWrapper>
                         <SearchIcon sx={{color: "#dedede"}}/>
                     </SearchIconWrapper>
@@ -136,7 +136,7 @@ const NavBar = (props) => {
                     <Link style={{textDecoration: "none"}} to={"/SignUp"}>
                         <Button variant="contained" sx={[{ backgroundColor: "#676fe9", height: 60, width:150, borderRadius: "5px", fontSize: "25px", fontWeight: "bold", textDecoration: "none" }, () => ({'&:hover': {backgroundColor: '#676fe900', color: "#676fe9"}})]} > Sign Up</Button>
                     </Link>
-  
+
                 </div>
             );
         }
