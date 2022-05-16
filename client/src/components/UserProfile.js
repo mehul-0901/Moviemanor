@@ -75,13 +75,13 @@ const UserProfile = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [error, setError] = useState("");
   // console.log(currentUser);
-  const email = currentUser.email || "Email not found";
-  const name = currentUser.displayName || "Name not found";
-  const photoURL = currentUser.photoURL || noImage;
+  // const email = currentUser.email || "Email not found";
+  // const name = currentUser.displayName || "Name not found";
+  // const photoURL = currentUser.photoURL || noImage;
   const [image, setImage] = useState();
   const navigate = useNavigate();
  // const [getImage,{data: data1, loading: getimageLoading, refetch:refetchgetImage}] = useLazyQuery(queries.GET_IMAGE, {});
-  const [data1,{data,error:error1,refetch}] = useLazyQuery(queries.GET_IMAGE,{variables:{userId: currentUser.email}})
+  const [data1,{data,error:error1,refetch}] = useLazyQuery(queries.GET_IMAGE,{variables:{userId:(currentUser? currentUser.email:"")}})
   const [addImage] = useMutation(queries.ADD_IMAGE,{})
 
   // const addnewImage=(email,id)=> {
@@ -106,11 +106,16 @@ const UserProfile = () => {
 		console.log('on load useeffect');
         // console.log(id);
 		async function fetchData() 
-        {
+        {if(currentUser){
 			data1({variables:{userId: currentUser.email}})
-      console.log(data);
+      console.log(data);}
 		}
+    if(currentUser){
 		fetchData();
+    }
+    else{
+      navigate('/Forbidden');
+    }
 
     }	, []);
 
@@ -130,6 +135,9 @@ const UserProfile = () => {
           variables:{id:currentUser.email,image:sendObj.variables.image}, 
           onCompleted: refetch
         });
+        data1({variables:{userId: currentUser.email}})
+
+
         console.log(sendObj);
         
       }
@@ -172,7 +180,7 @@ const UserProfile = () => {
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
                   
-                    <img src={data&&data.getUserImage.image!=null?data.getUserImage.image:photoURL} className="rounded-circle" alt={currentUser.displayName} width="150" />
+                    <img src={data&&data.getUserImage.image!=null?data.getUserImage.image:(currentUser&&currentUser.photoURL?currentUser.photoURL:noImage)} className="rounded-circle" alt={currentUser?currentUser.displayName:"noUser"} width="150" />
                 
                     <div className="mt-3">
                     <label htmlFor="my-input">Select File:</label>
@@ -183,7 +191,7 @@ const UserProfile = () => {
                       Submit
                     </Button>
                     {error !== "" ? <span>{error}</span> : ""}
-                     <h1> {name} </h1>
+                     <h1> {currentUser?currentUser.name:"noName"} </h1>
                     </div>
                   </div>
                 </div>
@@ -194,14 +202,14 @@ const UserProfile = () => {
                 <div className="card-body">
                   <div className="row">
                       <h2 >Name :</h2>
-                    <div className="col-sm-5">{name} </div>
+                    <div className="col-sm-5">{currentUser?currentUser.name:"NoName"} </div>
                   </div>
                   <hr />
                   <div className="row">
                     
                       <h3 className="mb-0">Email : </h3>
                    
-                    <div className="col-sm-7 "> {email}</div>
+                    <div className="col-sm-7 "> {currentUser?currentUser.email:"noemail"}</div>
                   </div>
                   <hr />
                 </div>
