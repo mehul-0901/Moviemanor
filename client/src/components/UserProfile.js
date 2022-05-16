@@ -191,7 +191,7 @@ const UserProfile = () => {
                       Submit
                     </Button>
                     {error !== "" ? <span>{error}</span> : ""}
-                     <h1> {currentUser?currentUser.name:"noName"} </h1>
+                     <h1> {currentUser?currentUser.displayName:"noName"} </h1>
                     </div>
                   </div>
                 </div>
@@ -202,7 +202,7 @@ const UserProfile = () => {
                 <div className="card-body">
                   <div className="row">
                       <h2 >Name :</h2>
-                    <div className="col-sm-5">{currentUser?currentUser.name:"NoName"} </div>
+                    <div className="col-sm-5">{currentUser?currentUser.displayName:"NoName"} </div>
                   </div>
                   <hr />
                   <div className="row">
