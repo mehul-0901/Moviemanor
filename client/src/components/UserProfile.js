@@ -184,7 +184,7 @@ const UserProfile = () => {
                 
                     <div className="mt-3">
                     <label htmlFor="my-input">Select File:</label>
-                    <input id = "my-input" type="file" onChange={handleFileInput} />
+                    <input id = "my-input" type="file" accept="image/*" onChange={handleFileInput} />
                     <br />
                     <br />
                     <Button type="submit" variant="primary">
